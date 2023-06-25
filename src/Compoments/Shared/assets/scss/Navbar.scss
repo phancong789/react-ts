@@ -1,0 +1,55 @@
+.NavBarStyle {
+  background-color: #ad180d;
+  position: relative;
+  div:first-child {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+.btnlistWapper {
+  button {
+    height: 100%;
+
+    margin: 0;
+    background-color: inherit;
+    border: none;
+    padding: 0 20px;
+    border-left: 1px groove #b6b6b6;
+    border-radius: 5px;
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    &:hover {
+      background-color: #dd3b2e;
+      p {
+        padding-bottom: 2px;
+        border-bottom: 3px solid white;
+      }
+    }
+  }
+  .lastBtn {
+    background-color: #ffc476;
+    color: gray;
+    &:hover {
+      background-color: #f0bb74;
+      p {
+        padding-bottom: 2px;
+        border-bottom: 3px solid gray;
+      }
+    }
+  }
+  margin-right: 20px;
+}
+.searchWapper {
+  width: 100%;
+  max-height: 10.5rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #da2a1c;
+  display: flex;
+  border-top: 0.001rem groove #b6b6b6;
+  background-image: url(http://wlp.howizbiz.com/static/img/backgroundHeader.75a8e32c.png);
+  background-repeat: no-repeat;
+  background-size: 20% auto;
+  background-position: 100%;
+}

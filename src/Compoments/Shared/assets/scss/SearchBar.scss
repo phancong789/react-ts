@@ -1,0 +1,53 @@
+.searchContainer {
+  width: 100rem;
+  margin: 0 auto;
+  height: 2.8rem;
+  display: flex;
+  justify-content: center !important;
+  padding: 4rem;
+  button {
+    cursor: pointer;
+    border: 0;
+    height: 114%;
+    &:first-of-type {
+      background-color: #404f5a;
+      width: 7%;
+      box-sizing: border-box;
+    }
+  }
+  .advanceBtn {
+    width: 9rem;
+    height: 3.2rem;
+    p {
+      margin: 0.5rem 0;
+    }
+    text-align: center;
+    border: 3px solid rgba(255, 255, 255, 0.212);
+    border-radius: 5px;
+    background-color: inherit;
+    box-sizing: border-box;
+    &:hover {
+      background-color: #cb271a;
+    }
+  }
+
+  .advanceBtnPress {
+    color: white;
+    margin: 1rem 1.4rem;
+    padding: 0.4rem;
+    font-size: 1.3rem;
+    border-bottom: 1px solid white;
+    &:hover {
+      border-bottom: 3px solid white;
+    }
+  }
+
+  .searchInput {
+    width: 60%;
+    height: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+}

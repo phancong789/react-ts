@@ -1,0 +1,15 @@
+.ExtinctionRateWapper {
+  background-image: url(http://wlp.howizbiz.com/static/img/bannerFire.63add0e2.png);
+  background-color: var(--v-home-base);
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  padding: 24px;
+  color: white;
+  p {
+    font-size: 3rem;
+    span {
+      font-weight: bold;
+    }
+  }
+}
