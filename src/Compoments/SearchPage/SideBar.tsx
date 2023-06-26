@@ -6,16 +6,16 @@ import "./assets/scss/SideBar.scss";
 export default function SideBar() {
   return (
     <div className="Sidebar">
-      <div>
+      <div className="wapper">
         <div>
-          <p>
+          <p className="SiderbarFilterTilter">
             LOẠI
             <FontAwesomeIcon icon={solid("circle-question")} />
           </p>
         </div>
         <div>
           <div>
-            <input id="kindInput" type="radio" />
+            <input id="kindInput" type="radio" checked />
             <label htmlFor="kindInput">Loài</label>
           </div>
           <div>
@@ -24,45 +24,45 @@ export default function SideBar() {
           </div>
         </div>
       </div>
-      <div>
+      <div className="wapper">
         <div>
-          <p>
+          <p className="SiderbarFilterTilter">
             BỘ LỌC <FontAwesomeIcon icon={solid("circle-question")} />
           </p>
         </div>
         <div>
           <ul>
-            <li>Phân loại học</li>
+            <span>Phân loại học</span>
           </ul>
           <ul>
-            <li>Hiện trạng loài</li>
+            <span>Hiện trạng loài</span>
           </ul>
           <ul>
-            <li>Địa giới hành chính</li>
+            <span>Địa giới hành chính</span>
           </ul>
           <ul>
-            <li>Hệ sinh thái</li>
+            <span>Hệ sinh thái</span>
           </ul>
           <ul>
-            <li>Giá trị loài</li>
+            <span>Giá trị loài</span>
           </ul>
           <ul>
-            <li>Sách đỏ</li>
+            <span>Sách đỏ</span>
           </ul>
           <ul>
-            <li>IUCN</li>
+            <span>IUCN</span>
           </ul>
           <ul>
-            <li>Nghị định & Cites</li>
+            <span>Nghị định & Cites</span>
           </ul>
           <ul>
-            <li>Phụ lục Cites</li>
+            <span>Phụ lục Cites</span>
           </ul>
           <ul>
-            <li>Chế độ quản lý</li>
+            <span>Chế độ quản lý</span>
           </ul>
           <ul>
-            <li>Loài đặc hữu</li>
+            <span>Loài đặc hữu</span>
           </ul>
         </div>
       </div>

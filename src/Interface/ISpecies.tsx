@@ -1,31 +1,31 @@
 export default interface Specie {
-  id: "";
+  id: string;
   attachments: [
     {
-      path: "";
-      ten: "";
+      path: string;
+      ten: string;
     }
   ];
-  loai_hien_trang: { code: ""; ten: "" };
-  ten: "";
-  kingdom: { ten: "" };
-  phylumn: { ten: "" };
-  ten_khoa_hoc: "";
+  loai_hien_trang: { code: string; ten: string };
+  ten: string;
+  kingdom: { ten: string };
+  phylumn: { ten: string };
+  ten_khoa_hoc: string;
   sach_dos: [
     {
-      mo_ta: "";
-      ma_danh_muc: "";
+      mo_ta: string;
+      ma_danh_muc: string;
       pivot: {
-        nam: 0;
+        nam: number;
       };
     }
   ];
   iucns: [
     {
-      mo_ta: "";
-      ma_danh_muc: "";
+      mo_ta: string;
+      ma_danh_muc: string;
       pivot: {
-        nam: 0;
+        nam: number;
       };
     }
   ];

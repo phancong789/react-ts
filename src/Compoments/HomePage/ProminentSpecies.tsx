@@ -27,7 +27,9 @@ export default function ProminentSpecies() {
     <div className="ProminentSpeciesWapper">
       <p>LOÀI NỔI BẬT</p>
       <ProminentSpeciesRow>
-        <SpeciesCard Specie={data} />
+        {data?.map((x) => {
+          return <SpeciesCard Specie={x} hasImg={true} />;
+        })}
       </ProminentSpeciesRow>
     </div>
   );

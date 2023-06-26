@@ -5,6 +5,10 @@ import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Specie from "../../Interface/ISpecies";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
+import img1 from "./assets/img/image1.png";
+import img2 from "./assets/img/image2.png";
+import img6 from "./assets/img/image6.png";
+import img7 from "./assets/img/image7.png";
 
 const QrWapper = Styled.div`
   heigth:100px;
@@ -13,122 +17,126 @@ const QrWapper = Styled.div`
 `;
 
 interface SpecieData {
-  Specie: Specie[] | undefined;
+  Specie: Specie | undefined;
+  hasImg: boolean;
 }
 
-export default function SpeciesCard({ Specie }: SpecieData) {
-  return (
-    <>
-      {Specie?.map((x) => {
-        let checkNull: string = "";
-        let hientrang = [];
+export default function SpeciesCard({ Specie, hasImg }: SpecieData) {
+  if (Specie == null || Specie === undefined) return;
+  let checkNull: string = "";
+  let hientrang = [];
+  let randomImgList: string[] = [img1, img2, img6, img7];
 
-        if (x.loai_hien_trang) {
-          checkNull = x.loai_hien_trang.code;
-        } else {
-          checkNull = "";
-        }
-        switch (checkNull) {
-          case "decreasing":
-            hientrang.push(
-              <p className="hientrang">
-                <FontAwesomeIcon
-                  icon={solid("arrow-down")}
-                  style={{ color: "#ff0000" }}
-                />
-                Giảm dần
-              </p>
-            );
-            break;
-          case "increasing":
-            hientrang.push(
-              <p className="hientrang">
-                <FontAwesomeIcon
-                  icon={solid("arrow-up")}
-                  style={{ color: "#04ff00" }}
-                />
-                Tăng mạnh
-              </p>
-            );
-            break;
-          default:
-            hientrang.push(
-              <p className="hientrang">
-                <FontAwesomeIcon
-                  icon={regular("circle-question")}
-                  style={{ color: "#b2b4b8" }}
-                />
-                chưa xác định
-              </p>
-            );
-            break;
-        }
-        return (
-          <div className="ProminentSpecieCard">
-            <div className="imgWapper">
-              <img
-                src={
-                  x.attachments[0] ? env.hostName + x.attachments[0].path : ""
-                }
-                alt={x.attachments[0] ? x.attachments[0].ten : ""}
-              />
-            </div>
-            <div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div className="Cardinfo">
-                  <p>{x.kingdom.ten + " - " + x.phylumn.ten}</p>
-                  <h3>{x.ten}</h3>
-                  <p>{x.ten_khoa_hoc}</p>
-                </div>
-                <QrWapper>
-                  <QRCode
-                    style={{ width: "100%" }}
-                    size={60}
-                    value={env.hostName + "species/" + x.id}
-                  />
-                </QrWapper>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>{hientrang}</div>
-                <div>
-                  {x.sach_dos[0] ? (
-                    <button className="sachDoBtn">
-                      <p>
-                        <abbr
-                          title={
-                            `theo sách đỏ năm ${x.sach_dos[0].pivot.nam}:` +
-                            x.sach_dos[0].mo_ta
-                          }
-                        >
-                          {x.sach_dos[0].ma_danh_muc}
-                        </abbr>
-                      </p>
-                    </button>
-                  ) : (
-                    ""
-                  )}
-                  {x.iucns[0] ? (
-                    <button className="iucnsBtn">
-                      <p>
-                        <abbr
-                          title={
-                            `theo IUCN năm ${x.iucns[0].pivot.nam}:` +
-                            x.iucns[0].mo_ta
-                          }
-                        >
-                          {x.iucns[0].ma_danh_muc}
-                        </abbr>
-                      </p>
-                    </button>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-            </div>
+  let randomImgIndex = Math.floor(Math.random() * randomImgList.length);
+  if (Specie.loai_hien_trang) {
+    checkNull = Specie.loai_hien_trang.code;
+  } else {
+    checkNull = "";
+  }
+  switch (checkNull) {
+    case "decreasing":
+      hientrang.push(
+        <p className="hientrang">
+          <FontAwesomeIcon
+            icon={solid("arrow-down")}
+            style={{ color: "#ff0000" }}
+          />
+          Giảm dần
+        </p>
+      );
+      break;
+    case "increasing":
+      hientrang.push(
+        <p className="hientrang">
+          <FontAwesomeIcon
+            icon={solid("arrow-up")}
+            style={{ color: "#04ff00" }}
+          />
+          Tăng mạnh
+        </p>
+      );
+      break;
+    default:
+      hientrang.push(
+        <p className="hientrang">
+          <FontAwesomeIcon
+            icon={regular("circle-question")}
+            style={{ color: "#b2b4b8" }}
+          />
+          chưa xác định
+        </p>
+      );
+      break;
+  }
+  return (
+    <div className="ProminentSpecieCard">
+      {hasImg ? (
+        <div className="imgWapper">
+          <img
+            src={
+              Specie.attachments[0]
+                ? env.hostName + Specie.attachments[0].path
+                : randomImgList[randomImgIndex]
+            }
+            alt={Specie.attachments[0] ? Specie.attachments[0].ten : ""}
+          />
+        </div>
+      ) : (
+        <div></div>
+      )}
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="Cardinfo">
+            <p>{Specie.kingdom.ten + " - " + Specie.phylumn.ten}</p>
+            <h3>{Specie.ten}</h3>
+            <p>{Specie.ten_khoa_hoc}</p>
           </div>
-        );
-      })}
-    </>
+          <QrWapper>
+            <QRCode
+              style={{ width: "100%" }}
+              size={60}
+              value={env.hostName + "species/" + Specie.id}
+            />
+          </QrWapper>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>{hientrang}</div>
+          <div>
+            {Specie.sach_dos[0] ? (
+              <button className="sachDoBtn">
+                <p>
+                  <abbr
+                    title={
+                      `theo sách đỏ năm ${Specie.sach_dos[0].pivot.nam}:` +
+                      Specie.sach_dos[0].mo_ta
+                    }
+                  >
+                    {Specie.sach_dos[0].ma_danh_muc}
+                  </abbr>
+                </p>
+              </button>
+            ) : (
+              ""
+            )}
+            {Specie.iucns[0] ? (
+              <button className="iucnsBtn">
+                <p>
+                  <abbr
+                    title={
+                      `theo IUCN năm ${Specie.iucns[0].pivot.nam}:` +
+                      Specie.iucns[0].mo_ta
+                    }
+                  >
+                    {Specie.iucns[0].ma_danh_muc}
+                  </abbr>
+                </p>
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

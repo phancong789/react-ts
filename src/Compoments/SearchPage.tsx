@@ -21,6 +21,16 @@ const Titles = styled.p`
   font-weight: bold;
   margin-left: 1rem;
 `;
+
+const ResultsWapper = styled.div`
+  display: grid;
+  grid-template-columns: auto auto auto;
+`;
+
+const ContentSide = styled.div`
+  max-width: 90%;
+`;
+
 export default function SearchPage() {
   const [cardData, setCardData] = React.useState<loaicongbo>();
   React.useEffect(() => {
@@ -36,31 +46,29 @@ export default function SearchPage() {
 
   const searchResults: JSX.Element[] = [];
   const moreSearchResults: JSX.Element[] = [];
-  try {
-    if (cardData?.list)
-      cardData?.list.forEach((x, index) => {
-        if (index < 6) {
-          searchResults.push(<SpeciesCard Specie={cardData.list} />);
-        } else {
-          moreSearchResults.push(<SpeciesCard Specie={cardData.list} />);
-        }
-      });
-  } catch {}
+  if (cardData?.list)
+    cardData?.list.forEach((x, index) => {
+      if (index < 6) {
+        searchResults.push(<SpeciesCard Specie={x} hasImg={true} />);
+      } else {
+        moreSearchResults.push(<SpeciesCard Specie={x} hasImg={false} />);
+      }
+    });
   return (
     <>
       <TopBar />
       <div style={{ display: "flex" }}>
         <SideBar />
-        <div>
+        <ContentSide className="contentSide">
           <div>
             <Titles>Kết quả {`(${cardData?.pagination.total})`}</Titles>
           </div>
-          {searchResults}
+          <ResultsWapper>{searchResults}</ResultsWapper>
           <div>
             <Titles>Kết quả khác</Titles>
           </div>
-          {moreSearchResults}
-        </div>
+          <ResultsWapper>{moreSearchResults}</ResultsWapper>
+        </ContentSide>
       </div>
     </>
   );

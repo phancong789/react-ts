@@ -1,7 +1,6 @@
 import React from "react";
 import * as env from "../../env";
 import "./assets/scss/ExtinctionRate.scss";
-import { log } from "console";
 
 export default function ExtinctionRate() {
   const classIndex = [11, 25, 17, 12];
