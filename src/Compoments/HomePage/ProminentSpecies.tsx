@@ -9,6 +9,7 @@ import "./assets/scss/ProminentSpecies.scss";
 const ProminentSpeciesRow = Styled.div`
  display:flex;
  justify-content: space-between;
+ flex-wrap:wrap;
 `;
 
 export default function ProminentSpecies() {

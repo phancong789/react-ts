@@ -1,11 +1,13 @@
 import React from "react";
+import styled from "styled-components";
 import TopBar from "./SearchPage/TopBar";
 import SideBar from "./SearchPage/SideBar";
 import * as env from "../env";
 import Specie from "../Interface/ISpecies";
+import SpeciesCard from "./Shared/SpeciesCard";
 
 interface loaicongbo {
-  list: Specie[];
+  list: Specie[] | undefined;
   pagination: {
     count: 0;
     hasMoreItems: false;
@@ -15,6 +17,10 @@ interface loaicongbo {
   };
 }
 
+const Titles = styled.p`
+  font-weight: bold;
+  margin-left: 1rem;
+`;
 export default function SearchPage() {
   const [cardData, setCardData] = React.useState<loaicongbo>();
   React.useEffect(() => {
@@ -28,6 +34,18 @@ export default function SearchPage() {
     fetchData();
   }, []);
 
+  const searchResults: JSX.Element[] = [];
+  const moreSearchResults: JSX.Element[] = [];
+  try {
+    if (cardData?.list)
+      cardData?.list.forEach((x, index) => {
+        if (index < 6) {
+          searchResults.push(<SpeciesCard Specie={cardData.list} />);
+        } else {
+          moreSearchResults.push(<SpeciesCard Specie={cardData.list} />);
+        }
+      });
+  } catch {}
   return (
     <>
       <TopBar />
@@ -35,13 +53,13 @@ export default function SearchPage() {
         <SideBar />
         <div>
           <div>
-            <p>Kết quả {cardData?.pagination.total}</p>
+            <Titles>Kết quả {`(${cardData?.pagination.total})`}</Titles>
           </div>
-          {}
+          {searchResults}
           <div>
-            <p>Kết quả khác</p>
+            <Titles>Kết quả khác</Titles>
           </div>
-          {}
+          {moreSearchResults}
         </div>
       </div>
     </>

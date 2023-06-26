@@ -70,7 +70,9 @@ export default function NavBar() {
               ƯU TIÊN BẢO VỆ
             </Title>
           ) : (
-            <SearchBar isHome={false} />
+            <div className="NavbarSearchWapper">
+              <SearchBar isHome={false} />
+            </div>
           )}
         </div>
 

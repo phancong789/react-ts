@@ -65,15 +65,12 @@ export default function SpeciesCard({ Specie }: SpecieData) {
         }
         return (
           <div className="ProminentSpecieCard">
-            <div>
+            <div className="imgWapper">
               <img
-                style={{
-                  width: "33rem",
-                  height: "16rem",
-                  aspectRatio: "4 /3",
-                }}
-                src={env.hostName + x.attachments[0].path}
-                alt={x.attachments[0].ten}
+                src={
+                  x.attachments[0] ? env.hostName + x.attachments[0].path : ""
+                }
+                alt={x.attachments[0] ? x.attachments[0].ten : ""}
               />
             </div>
             <div>
