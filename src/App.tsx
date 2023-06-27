@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import NavBar from "./Compoments/Shared/Navbar";
 import HomePage from "./Compoments/HomePage";
-import SearchPage from "./Compoments/SearchPage";
-import Footer from "./Compoments/Shared/Footer";
+import LoginPage from "./Compoments/LoginPage";
 import { Routes, Route } from "react-router-dom";
 
 const Wapper = styled.div`
@@ -30,12 +28,10 @@ const BodyFake = styled.div`
 function App() {
   return (
     <BodyFake>
-      <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/dang-nhap" element={<LoginPage />} />
       </Routes>
-      <Footer />
     </BodyFake>
   );
 }

@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import "./assets/scss/SearchBar.scss";
 import React from "react";
-import { link } from "fs";
 
 const Partition = styled.div`
   margin: 0 40px;
@@ -36,9 +35,11 @@ const SearchBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
           </Link>
         </>
       ) : (
-        <Link to="/search">
-          <p className="advanceBtnPress">Nâng Cao</p>
-        </Link>
+        <div>
+          <Link to="/search">
+            <p className="advanceBtnPress">Nâng Cao</p>
+          </Link>
+        </div>
       )}
     </div>
   );

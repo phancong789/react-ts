@@ -1,17 +1,17 @@
 .searchContainer {
   width: 100%;
   margin: 0 auto;
-  height: 2.8em;
+  height: 12em;
   display: flex;
   justify-content: center !important;
-  padding: 4em;
+  padding: 4em 10rem;
   button {
     cursor: pointer;
     border: 0;
-    height: 114%;
+    height: 100%;
     &:first-of-type {
       background-color: #404f5a;
-      width: 10%;
+      padding: 20px;
       box-sizing: border-box;
     }
   }
@@ -19,7 +19,7 @@
     width: 9em;
     height: 3.2em;
     p {
-      margin: 0.5em 0;
+      margin: 0.6em 0;
     }
     text-align: center;
     border: 3px solid rgba(255, 255, 255, 0.212);
@@ -50,11 +50,4 @@
 
 a {
   text-decoration: none;
-}
-
-@media screen and (max-width: 1280px) {
-  .searchContainer {
-    width: 100%;
-    padding: 4em;
-  }
 }

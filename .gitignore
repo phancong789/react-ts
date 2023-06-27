@@ -1436,3 +1436,7 @@ yarn-error.log*
 .yarn/cache/uncontrollable-npm-7.2.1-85b30af5c9-3345c0c191.zip
 .yarn/cache/uncontrollable-npm-8.0.2-081bf98724-d6097c7846.zip
 .yarn/cache/warning-npm-4.0.3-291e921d6d-4f2cb6a957.zip
+.yarn/cache/@remix-run-router-npm-1.7.0-55a762045e-80cab2fda9.zip
+.yarn/cache/@types-node-npm-20.3.2-e93bcb71b8-5929ce2b9b.zip
+.yarn/cache/react-router-dom-npm-6.14.0-df7e601d24-66800b8779.zip
+.yarn/cache/react-router-npm-6.14.0-e0c88e90fa-50a941746d.zip

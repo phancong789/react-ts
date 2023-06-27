@@ -15,20 +15,23 @@ const LoginBtn = styled.button`
   &:hover {
     background-color: #b32a20;
   }
+  a {
+    color: inherit;
+  }
 `;
 
 const SecHeader = styled.div`
   background-color: #da2a1c;
   display: flex;
-  max-height: 9rem;
+  height: 9rem;
   div {
     align-items: center;
   }
-  justify-content: space-between;
 `;
 
 const Title = styled.h1`
   color: white;
+  width: 100%;
   font-size: 1.3rem;
 `;
 
@@ -51,10 +54,12 @@ export default function NavBar() {
   return (
     <div className="NavBarStyle">
       <div>
-        <LoginBtn type="button">Đăng Nhập</LoginBtn>
+        <LoginBtn type="button">
+          <Link to="/dang-nhap">Đăng Nhập</Link>
+        </LoginBtn>
       </div>
       <SecHeader>
-        <div>
+        <div className="firstWapper">
           <Link to="/">
             <Logowaper>
               <img

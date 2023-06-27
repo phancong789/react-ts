@@ -1,0 +1,20 @@
+@media screen and (min-width: 1280px) {
+  .ResultsWapper {
+    display: grid;
+    grid-template-columns: auto;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .ResultsWapper {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .ResultsWapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+}

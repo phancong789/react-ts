@@ -5,6 +5,8 @@ import SideBar from "./SearchPage/SideBar";
 import * as env from "../env";
 import Specie from "../Interface/ISpecies";
 import SpeciesCard from "./Shared/SpeciesCard";
+import "./SearchPage.scss";
+import Button from "react-bootstrap/Button";
 
 interface loaicongbo {
   list: Specie[] | undefined;
@@ -19,16 +21,12 @@ interface loaicongbo {
 
 const Titles = styled.p`
   font-weight: bold;
+  font-size: 1.4rem;
   margin-left: 1rem;
 `;
 
-const ResultsWapper = styled.div`
-  display: grid;
-  grid-template-columns: auto auto auto;
-`;
-
 const ContentSide = styled.div`
-  max-width: 90%;
+  max-width: 70%;
 `;
 
 export default function SearchPage() {
@@ -61,13 +59,20 @@ export default function SearchPage() {
         <SideBar />
         <ContentSide className="contentSide">
           <div>
-            <Titles>Kết quả {`(${cardData?.pagination.total})`}</Titles>
+            <Titles style={{ marginTop: "1rem" }}>
+              Kết quả {`(${cardData?.pagination.total})`}
+            </Titles>
           </div>
-          <ResultsWapper>{searchResults}</ResultsWapper>
+          <div className="ResultsWapper">{searchResults}</div>
           <div>
-            <Titles>Kết quả khác</Titles>
+            <Titles style={{ borderTop: "2px solid black", paddingTop: 5 }}>
+              Kết quả khác
+            </Titles>
           </div>
-          <ResultsWapper>{moreSearchResults}</ResultsWapper>
+          <div className="ResultsWapper">{moreSearchResults}</div>
+          <div className="mb-2 d-flex justify-content-center">
+            <Button variant="none border-bottom fs-4 border-2">tải thêm</Button>
+          </div>
         </ContentSide>
       </div>
     </>

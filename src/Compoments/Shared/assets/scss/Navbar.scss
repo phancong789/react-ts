@@ -5,6 +5,11 @@
     display: flex;
     justify-content: flex-end;
   }
+  .firstWapper {
+    display: flex;
+    justify-content: flex-start !important;
+    flex-grow: 1;
+  }
 }
 .btnlistWapper {
   button {
@@ -52,4 +57,7 @@
   background-repeat: no-repeat;
   background-size: 20% auto;
   background-position: 100%;
+}
+.NavbarSearchWapper {
+  width: 100%;
 }

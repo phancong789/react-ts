@@ -2,8 +2,15 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
 import "./assets/scss/SideBar.scss";
+import GeneralFilterData from "../../Interface/IGeneralFilterData";
+
+interface kinddata {
+  data: GeneralFilterData[] | undefined;
+}
 
 export default function SideBar() {
+  const [kindData, setKindData] = React.useState<kinddata>();
+
   return (
     <div className="Sidebar">
       <div className="wapper">
@@ -15,11 +22,11 @@ export default function SideBar() {
         </div>
         <div>
           <div>
-            <input id="kindInput" type="radio" checked />
+            <input id="kindInput" name="loai" type="radio" defaultChecked />
             <label htmlFor="kindInput">Loài</label>
           </div>
           <div>
-            <input id="documentInput" type="radio" />
+            <input id="documentInput" name="loai" type="radio" />
             <label htmlFor="documentInput">Văn bản tài liệu</label>
           </div>
         </div>
