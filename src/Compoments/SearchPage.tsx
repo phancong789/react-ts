@@ -7,6 +7,8 @@ import Specie from "../Interface/ISpecies";
 import SpeciesCard from "./Shared/SpeciesCard";
 import "./SearchPage.scss";
 import Button from "react-bootstrap/Button";
+import NavBar from "./Shared/Navbar";
+import Footer from "./Shared/Footer";
 
 interface loaicongbo {
   list: Specie[] | undefined;
@@ -54,6 +56,7 @@ export default function SearchPage() {
     });
   return (
     <>
+      <NavBar />
       <TopBar />
       <div style={{ display: "flex" }}>
         <SideBar />
@@ -75,6 +78,7 @@ export default function SearchPage() {
           </div>
         </ContentSide>
       </div>
+      <Footer />
     </>
   );
 }

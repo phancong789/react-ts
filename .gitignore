@@ -1440,3 +1440,6 @@ yarn-error.log*
 .yarn/cache/@types-node-npm-20.3.2-e93bcb71b8-5929ce2b9b.zip
 .yarn/cache/react-router-dom-npm-6.14.0-df7e601d24-66800b8779.zip
 .yarn/cache/react-router-npm-6.14.0-e0c88e90fa-50a941746d.zip
+.yarn/cache/axios-npm-1.4.0-4d7ce8ca3e-7fb6a4313b.zip
+.yarn/cache/form-data-npm-4.0.0-916facec2d-01135bf867.zip
+.yarn/cache/proxy-from-env-npm-1.1.0-c13d07f26b-ed7fcc2ba0.zip

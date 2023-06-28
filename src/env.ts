@@ -6,7 +6,9 @@ let param = new URLSearchParams({
 });
 
 let apiRoute = {
+  me: "api/me",
   loainoibat: "api/loainoibat",
+  webAuthenticate: "api/web-authenticate",
   News: "api/home-post",
   tyleloai: "api/tyleloai",
   loaicongbo: "api/loaicongbo",

@@ -11,19 +11,9 @@ export default function HomePage() {
   return (
     <>
       <NavBar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <ProminentSpecies />
-              <ExtinctionRate />
-              <NewsZone />
-            </>
-          }
-        />
-        <Route path="/search" element={<SearchPage />} />
-      </Routes>
+      <ProminentSpecies />
+      <ExtinctionRate />
+      <NewsZone />
       <Footer />
     </>
   );

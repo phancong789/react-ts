@@ -3,7 +3,8 @@ import styled from "styled-components";
 import HomePage from "./Compoments/HomePage";
 import LoginPage from "./Compoments/LoginPage";
 import { Routes, Route } from "react-router-dom";
-
+import SearchPage from "./Compoments/SearchPage";
+import ControlPanelPage from "./Compoments/ControlPanelPage";
 const Wapper = styled.div`
   background-color: #282c34;
   min-height: 100vh;
@@ -30,7 +31,9 @@ function App() {
     <BodyFake>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/dang-nhap" element={<LoginPage />} />
+        <Route path="/bang-dieu-khien" element={<ControlPanelPage />} />
       </Routes>
     </BodyFake>
   );
