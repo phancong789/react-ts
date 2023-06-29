@@ -8,11 +8,11 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+import Alert from "react-bootstrap/Alert";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { regular, solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import * as env from "../env";
-import { err } from "react-native-svg/lib/typescript/xml";
 import IToken from "../Interface/IToken";
 
 const SecHeader = styled.div`
@@ -38,8 +38,16 @@ const Logowaper = styled.div`
   padding: 20px 10px;
 `;
 
+interface IError {
+  errors?: {
+    password?: [string];
+  };
+  message: string;
+}
 export default function LoginPage() {
   const [validated, setValidated] = React.useState(false);
+  const [errorData, setErrorData] = React.useState<IError>();
+  const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
   const handleSubmit = (event: any) => {
     const form = event.currentTarget;
@@ -51,18 +59,33 @@ export default function LoginPage() {
       axios
         .post<IToken>(env.hostName + env.apiRoute.webAuthenticate, formdata)
         .then((x) => {
+          console.log(x.data);
           sessionStorage.setItem("token", JSON.stringify(x.data));
           if (x.status === 200) {
             return navigate("/bang-dieu-khien");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((error) => {
+          setErrorData(error.response.data);
+          setShow(true);
+        });
     }
     setValidated(true);
   };
 
   return (
     <div>
+      {show && (
+        <Alert
+          variant="danger"
+          className="position-fixed"
+          style={{ top: "1rem", right: "1rem" }}
+          onClose={() => setShow(false)}
+          dismissible
+        >
+          {errorData?.message}
+        </Alert>
+      )}
       <Container
         fluid
         className="p-0"
@@ -135,6 +158,9 @@ export default function LoginPage() {
                             <FontAwesomeIcon icon={regular("user")} />
                           </InputGroup.Text>
                           <Form.Control
+                            className={
+                              errorData?.message ? "border-danger" : ""
+                            }
                             required
                             type="text"
                             name="username"
@@ -153,13 +179,28 @@ export default function LoginPage() {
                             <FontAwesomeIcon icon={solid("lock")} />
                           </InputGroup.Text>
                           <Form.Control
+                            className={
+                              errorData?.errors?.password || errorData?.message
+                                ? "border-danger"
+                                : ""
+                            }
                             type="password"
                             name="password"
                             required
                             placeholder="Password"
                           />
                           <Form.Control.Feedback type="invalid">
-                            Trường mật khẩu không được bỏ trống.
+                            {errorData?.errors?.password
+                              ? errorData?.errors?.password[0]
+                              : "Trường mật khẩu không được bỏ trống."}
+                          </Form.Control.Feedback>
+                          <Form.Control.Feedback
+                            type="valid"
+                            className="text-danger"
+                          >
+                            {errorData?.errors?.password
+                              ? errorData?.errors?.password[0]
+                              : ""}
                           </Form.Control.Feedback>
                         </InputGroup>
                       </Form.Group>
