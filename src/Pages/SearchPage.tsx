@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import TopBar from "./SearchPage/TopBar";
-import SideBar from "./SearchPage/SideBar";
+import TopBar from "../Compoments/SearchPage/TopBar";
+import SideBar from "../Compoments/SearchPage/SideBar";
 import * as env from "../env";
 import Specie from "../Interface/ISpecies";
-import SpeciesCard from "./Shared/SpeciesCard";
+import SpeciesCard from "../Compoments/Shared/SpeciesCard";
 import "./SearchPage.scss";
 import Button from "react-bootstrap/Button";
-import NavBar from "./Shared/Navbar";
-import Footer from "./Shared/Footer";
+import NavBar from "../Compoments/Shared/Navbar";
+import Footer from "../Compoments/Shared/Footer";
 
 interface loaicongbo {
   list: Specie[] | undefined;

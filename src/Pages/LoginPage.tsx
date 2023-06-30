@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { regular, solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import * as env from "../env";
 import IToken from "../Interface/IToken";
+import { UserContext } from "../Context/UserContext";
 
 const SecHeader = styled.div`
   background-color: #da2a1c;
@@ -49,6 +50,8 @@ export default function LoginPage() {
   const [errorData, setErrorData] = React.useState<IError>();
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
+  const usercontext = React.useContext(UserContext);
+
   const handleSubmit = (event: any) => {
     const form = event.currentTarget;
     event.stopPropagation();
@@ -56,19 +59,6 @@ export default function LoginPage() {
     event.nativeEvent.stopImmediatePropagation();
     if (form.checkValidity() === true) {
       const formdata = new FormData(form);
-      axios
-        .post<IToken>(env.hostName + env.apiRoute.webAuthenticate, formdata)
-        .then((x) => {
-          console.log(x.data);
-          sessionStorage.setItem("token", JSON.stringify(x.data));
-          if (x.status === 200) {
-            return navigate("/bang-dieu-khien");
-          }
-        })
-        .catch((error) => {
-          setErrorData(error.response.data);
-          setShow(true);
-        });
     }
     setValidated(true);
   };
