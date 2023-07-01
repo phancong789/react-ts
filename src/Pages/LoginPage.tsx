@@ -46,10 +46,6 @@ interface IError {
   message: string;
 }
 export default function LoginPage() {
-  const [validated, setValidated] = React.useState(false);
-  const [errorData, setErrorData] = React.useState<IError>();
-  const [show, setShow] = React.useState(false);
-  const navigate = useNavigate();
   const usercontext = React.useContext(UserContext);
 
   const handleSubmit = (event: any) => {
@@ -59,21 +55,22 @@ export default function LoginPage() {
     event.nativeEvent.stopImmediatePropagation();
     if (form.checkValidity() === true) {
       const formdata = new FormData(form);
+      usercontext?.Login();
     }
-    setValidated(true);
+    usercontext?.setValidated(true);
   };
 
   return (
     <div>
-      {show && (
+      {usercontext?.show && (
         <Alert
           variant="danger"
           className="position-fixed"
           style={{ top: "1rem", right: "1rem" }}
-          onClose={() => setShow(false)}
+          onClose={() => usercontext?.setShow(false)}
           dismissible
         >
-          {errorData?.message}
+          {usercontext?.errorData?.message}
         </Alert>
       )}
       <Container
@@ -138,7 +135,7 @@ export default function LoginPage() {
                     </div>
                     <Form
                       noValidate
-                      validated={validated}
+                      validated={usercontext?.validated}
                       onSubmit={(e) => handleSubmit(e)}
                     >
                       <Form.Group className="mb-3">
@@ -149,7 +146,9 @@ export default function LoginPage() {
                           </InputGroup.Text>
                           <Form.Control
                             className={
-                              errorData?.message ? "border-danger" : ""
+                              usercontext?.errorData?.message
+                                ? "border-danger"
+                                : ""
                             }
                             required
                             type="text"
@@ -170,7 +169,8 @@ export default function LoginPage() {
                           </InputGroup.Text>
                           <Form.Control
                             className={
-                              errorData?.errors?.password || errorData?.message
+                              usercontext?.errorData?.errors?.password ||
+                              usercontext?.errorData?.message
                                 ? "border-danger"
                                 : ""
                             }
@@ -180,16 +180,16 @@ export default function LoginPage() {
                             placeholder="Password"
                           />
                           <Form.Control.Feedback type="invalid">
-                            {errorData?.errors?.password
-                              ? errorData?.errors?.password[0]
+                            {usercontext?.errorData?.errors?.password
+                              ? usercontext?.errorData?.errors?.password[0]
                               : "Trường mật khẩu không được bỏ trống."}
                           </Form.Control.Feedback>
                           <Form.Control.Feedback
                             type="valid"
                             className="text-danger"
                           >
-                            {errorData?.errors?.password
-                              ? errorData?.errors?.password[0]
+                            {usercontext?.errorData?.errors?.password
+                              ? usercontext?.errorData?.errors?.password[0]
                               : ""}
                           </Form.Control.Feedback>
                         </InputGroup>

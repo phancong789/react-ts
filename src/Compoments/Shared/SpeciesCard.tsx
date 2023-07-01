@@ -5,10 +5,6 @@ import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Specie from "../../Interface/ISpecies";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
-import img1 from "./assets/img/image1.png";
-import img2 from "./assets/img/image2.png";
-import img6 from "./assets/img/image6.png";
-import img7 from "./assets/img/image7.png";
 
 const QrWapper = Styled.div`
   heigth:100px;
@@ -25,7 +21,12 @@ export default function SpeciesCard({ Specie, hasImg }: SpecieData) {
   if (Specie == null || Specie === undefined) return;
   let checkNull: string = "";
   let hientrang = [];
-  let randomImgList: string[] = [img1, img2, img6, img7];
+  let randomImgList: string[] = [
+    process.env.PUBLIC_URL + "/image1.png",
+    process.env.PUBLIC_URL + "/image2.png",
+    process.env.PUBLIC_URL + "/image6.png",
+    process.env.PUBLIC_URL + "/image7.png",
+  ];
 
   let randomImgIndex = Math.floor(Math.random() * randomImgList.length);
   if (Specie.loai_hien_trang) {
