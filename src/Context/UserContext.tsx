@@ -3,19 +3,14 @@ import IToken from "../Interface/IToken";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as env from "../env";
-
-export interface AutherUser {
-  username: string;
-  password: string;
-}
+import IUserData from "../Interface/IUserData";
 
 export interface UserContextType {
-  User: AutherUser | null;
-  setUser: React.Dispatch<React.SetStateAction<AutherUser | null>>;
-  useToken(): IToken;
-  Login(data?: any): object;
+  getToken(): IToken;
+  Login(data?: any): void;
   errorData: IError | undefined;
   show: boolean;
+  CheckLogin(navigateToLogin?: boolean): IUserData | void;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   validated: boolean;
   setValidated: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,7 +28,7 @@ const setToken = (data: object) => {
   sessionStorage.setItem("token", JSON.stringify(data));
 };
 
-const useToken = (): IToken => {
+const getToken = (): IToken => {
   const tokenData: IToken = JSON.parse(
     sessionStorage.getItem("token") || `{"Error":"chưa có token"}`
   );
@@ -50,13 +45,12 @@ interface IError {
 export default function UserContextProvider({
   children,
 }: UserContextProviderProps) {
-  const [User, setUser] = React.useState<AutherUser | null>({} as AutherUser);
   const [validated, setValidated] = React.useState(false);
   const [errorData, setErrorData] = React.useState<IError>();
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
 
-  const Login = (data?: any): object => {
+  const Login = (data?: any) => {
     axios
       .post<IToken>(env.hostName + env.apiRoute.webAuthenticate, data)
       .then((x) => {
@@ -69,20 +63,41 @@ export default function UserContextProvider({
         setErrorData(error.response.data);
         setShow(true);
       });
-    return { validated, setValidated, errorData, show };
+  };
+
+  const CheckLogin = (navigateToLogin?: boolean): IUserData | void => {
+    const [userdata, setUserData] = React.useState<IUserData>();
+    const navigate = useNavigate();
+    React.useEffect(() => {
+      if (getToken().Error && navigateToLogin) {
+        return navigate("/dang-nhap");
+      } else {
+        axios
+          .get<IUserData>(env.hostName + env.apiRoute.me, {
+            headers: {
+              Authorization: getToken().token_type + getToken().access_token,
+            },
+          })
+          .then((x) => {
+            if (x.statusText !== "OK" && navigateToLogin)
+              return navigate("/dang-nhap");
+            setUserData(x.data);
+          });
+      }
+    }, []);
+    return userdata;
   };
 
   return (
     <UserContext.Provider
       value={{
-        User,
-        setUser,
         validated,
-        useToken,
+        getToken,
         Login,
         errorData,
         show,
         setShow,
+        CheckLogin,
         setValidated,
       }}
     >

@@ -13,7 +13,6 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { regular, solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import * as env from "../env";
-import IToken from "../Interface/IToken";
 import { UserContext } from "../Context/UserContext";
 
 const SecHeader = styled.div`
@@ -55,7 +54,7 @@ export default function LoginPage() {
     event.nativeEvent.stopImmediatePropagation();
     if (form.checkValidity() === true) {
       const formdata = new FormData(form);
-      usercontext?.Login();
+      console.log(usercontext?.Login(formdata));
     }
     usercontext?.setValidated(true);
   };
