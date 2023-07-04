@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+import UserInfoPopDown from "./UserPopDown";
 
 const SecHeader = styled.div`
   background-color: white;
@@ -55,6 +56,8 @@ export default function TopBar() {
               HỆ THỐNG BÁO CÁO VỀ HIỆN TRẠNG LOÀI NGUY CẤP QUÝ HIẾM ĐƯỢC ƯU TIÊN
               BẢO VỆ
             </Title>
+
+            <UserInfoPopDown />
           </div>
         </SecHeader>
       </Row>

@@ -26,7 +26,7 @@ export default function NewsZone() {
     <div className="NewsWapper">
       <p>BẢN TIN</p>
       <div className="NewsRow">
-        {data.map((x) => {
+        {data.map((x, index) => {
           let newDate = x.ngay_viet
             .replaceAll("-", "/")
             .substring(0, 10)
@@ -41,7 +41,7 @@ export default function NewsZone() {
             .reverse()
             .join("/");
           return (
-            <div className="new">
+            <div className="new" key={index}>
               <div className="newHead">
                 <div className="imgWapper">
                   <img src={env.hostName + x.anh_dai_dien} alt="" />

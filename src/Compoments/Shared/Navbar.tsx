@@ -59,9 +59,9 @@ export default function NavBar() {
   return (
     <div className="NavBarStyle">
       <div>
-        {usedata ? (
+        {usedata?.user ? (
           <LoginBtn type="button">
-            <Link to="/bang-dieu-khien">{usedata.user.username}</Link>
+            <Link to="/bang-dieu-khien">{usedata.user?.username}</Link>
           </LoginBtn>
         ) : (
           <LoginBtn type="button">

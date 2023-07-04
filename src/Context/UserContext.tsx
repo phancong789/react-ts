@@ -10,7 +10,9 @@ export interface UserContextType {
   Login(data?: any): void;
   errorData: IError | undefined;
   show: boolean;
+  Logout(): void;
   CheckLogin(navigateToLogin?: boolean): IUserData | void;
+  userdata: IUserData | undefined;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   validated: boolean;
   setValidated: React.Dispatch<React.SetStateAction<boolean>>;
@@ -46,9 +48,11 @@ export default function UserContextProvider({
   children,
 }: UserContextProviderProps) {
   const [validated, setValidated] = React.useState(false);
+  const [login, setLogin] = React.useState(false);
   const [errorData, setErrorData] = React.useState<IError>();
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
+  const [userdata, setUserData] = React.useState<IUserData>();
 
   const Login = (data?: any) => {
     axios
@@ -56,6 +60,7 @@ export default function UserContextProvider({
       .then((x) => {
         if (x.status === 200) {
           setToken(x.data);
+          setLogin(true);
           navigate("/bang-dieu-khien");
         }
       })
@@ -65,12 +70,32 @@ export default function UserContextProvider({
       });
   };
 
+  const Logout = () => {
+    axios
+      .post<IToken>(env.hostName + env.apiRoute.logout, {
+        headers: {
+          Authorization: getToken().token_type + getToken().access_token,
+        },
+      })
+      .then((x) => {
+        sessionStorage.removeItem("token");
+        setLogin(false);
+        setUserData({} as IUserData);
+        navigate("/");
+      })
+      .catch((error) => {
+        sessionStorage.removeItem("token");
+        setLogin(false);
+        setUserData({} as IUserData);
+        navigate("/");
+      });
+  };
+
   const CheckLogin = (navigateToLogin?: boolean): IUserData | void => {
-    const [userdata, setUserData] = React.useState<IUserData>();
     const navigate = useNavigate();
     React.useEffect(() => {
-      if (getToken().Error && navigateToLogin) {
-        return navigate("/dang-nhap");
+      if (getToken().Error) {
+        if (navigateToLogin) return navigate("/dang-nhap");
       } else {
         axios
           .get<IUserData>(env.hostName + env.apiRoute.me, {
@@ -82,9 +107,10 @@ export default function UserContextProvider({
             if (x.statusText !== "OK" && navigateToLogin)
               return navigate("/dang-nhap");
             setUserData(x.data);
-          });
+          })
+          .catch((error) => console.error(error));
       }
-    }, []);
+    }, [login]);
     return userdata;
   };
 
@@ -96,6 +122,8 @@ export default function UserContextProvider({
         Login,
         errorData,
         show,
+        userdata,
+        Logout,
         setShow,
         CheckLogin,
         setValidated,

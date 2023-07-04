@@ -54,7 +54,7 @@ export default function LoginPage() {
     event.nativeEvent.stopImmediatePropagation();
     if (form.checkValidity() === true) {
       const formdata = new FormData(form);
-      console.log(usercontext?.Login(formdata));
+      usercontext?.Login(formdata);
     }
     usercontext?.setValidated(true);
   };

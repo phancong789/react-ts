@@ -1,5 +1,5 @@
 export default interface IUserData {
-  user: {
+  user?: {
     avatar_url?: string;
     email: string;
     id: string;
@@ -13,7 +13,7 @@ export default interface IUserData {
       code: string;
       name: string;
       meta: {
-        code: string;
+        color: string;
         "text-color": string;
       };
       roles: [
@@ -21,7 +21,7 @@ export default interface IUserData {
           code: string;
           name: string;
           meta: {
-            code: string;
+            color: string;
             "text-color": string;
           };
         }

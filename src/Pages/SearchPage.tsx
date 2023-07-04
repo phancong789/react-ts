@@ -49,9 +49,13 @@ export default function SearchPage() {
   if (cardData?.list)
     cardData?.list.forEach((x, index) => {
       if (index < 6) {
-        searchResults.push(<SpeciesCard Specie={x} hasImg={true} />);
+        searchResults.push(
+          <SpeciesCard key={index} Specie={x} hasImg={true} />
+        );
       } else {
-        moreSearchResults.push(<SpeciesCard Specie={x} hasImg={false} />);
+        moreSearchResults.push(
+          <SpeciesCard key={index} Specie={x} hasImg={false} />
+        );
       }
     });
   return (
