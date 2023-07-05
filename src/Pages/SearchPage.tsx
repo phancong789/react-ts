@@ -35,9 +35,12 @@ export default function SearchPage() {
   const [cardData, setCardData] = React.useState<loaicongbo>();
   React.useEffect(() => {
     const fetchData = async () => {
-      env.param.set("perpage", "18");
+      env.HomePageParam.set("perpage", "18");
 
-      await fetch(env.hostName + env.apiRoute.loaicongbo + "?" + env.param, {})
+      await fetch(
+        env.hostName + env.apiRoute.loaicongbo + "?" + env.HomePageParam,
+        {}
+      )
         .then((x) => x.json())
         .then((x) => setCardData(x));
     };

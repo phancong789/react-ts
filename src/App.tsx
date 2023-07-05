@@ -6,20 +6,8 @@ import { Routes, Route } from "react-router-dom";
 import SearchPage from "./Pages/SearchPage";
 import ControlPanelPage from "./Pages/ControlPanelPage";
 import UserContextProvider from "./Context/UserContext";
-const Wapper = styled.div`
-  background-color: #282c34;
-  min-height: 100vh;
-`;
-
-const TopTitle = styled.div`
-  padding: 10px;
-  margin: 0 10px;
-  border-bottom: 2px solid white;
-  color: white;
-  font-size: 2.3rem;
-  text-align: center;
-`;
-
+import ControlPanelContextProvider from "./Context/ControlPanelContext";
+import UserManagePage from "./Pages/UserManagePage";
 const BodyFake = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,8 +23,16 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/dang-nhap" element={<LoginPage />} />
-          <Route path="/bang-dieu-khien" element={<ControlPanelPage />} />
         </Routes>
+        <ControlPanelContextProvider>
+          <Routes>
+            <Route path="/bang-dieu-khien" element={<ControlPanelPage />} />
+            <Route path="/he-thong/nguoi-dung" element={<UserManagePage />} />
+            <Route path="/phan-loai-hoc" element={<ControlPanelPage />} />
+            <Route path="/loai" element={<ControlPanelPage />} />
+            <Route path="/bai-viet" element={<ControlPanelPage />} />
+          </Routes>
+        </ControlPanelContextProvider>
       </UserContextProvider>
     </BodyFake>
   );

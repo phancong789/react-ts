@@ -1,0 +1,41 @@
+.ControlPanelSidebar {
+  max-width: 20%;
+  height: 100%;
+  overflow: hidden;
+  box-shadow: -8px 0px 14px black;
+  a {
+    padding: 25px;
+    margin: 10px;
+    display: flex;
+    text-decoration: none;
+    color: black;
+    p {
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin: 0;
+    }
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
+    &:hover {
+      background-color: #d9dbdd;
+    }
+  }
+  ul {
+    padding: 20px;
+    margin: 10px;
+    list-style: none;
+    &:hover {
+      background-color: #d9dbdd;
+    }
+    span {
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+  }
+
+  .active {
+    background-color: #d9e7f3 !important;
+  }
+}

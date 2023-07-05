@@ -1,13 +1,24 @@
 const hostName: string = "http://wlp.howizbiz.com/";
-let param = new URLSearchParams({
+let HomePageParam = new URLSearchParams({
   paginate: "true",
   page: "1",
   perpage: "3",
 });
 
+let getUserParam = new URLSearchParams({
+  paginate: "true",
+  page: "1",
+  perpage: "10",
+  with: "roles,createdBy,provinces",
+  search: "",
+});
+
 let apiRoute = {
   me: "api/me",
+  role: "api/roles",
+  users: "api/users",
   logout: "api/logout",
+  khubaoton: "api/khubaoton",
   loainoibat: "api/loainoibat",
   webAuthenticate: "api/web-authenticate",
   News: "api/home-post",
@@ -24,4 +35,4 @@ let apiRoute = {
   danhmuccha: "api/danhmuccha",
 };
 
-export { hostName, param, apiRoute };
+export { hostName, HomePageParam, apiRoute, getUserParam };

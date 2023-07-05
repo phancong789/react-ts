@@ -1,6 +1,6 @@
 import React from "react";
 import IToken from "../Interface/IToken";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import * as env from "../env";
 import IUserData from "../Interface/IUserData";
@@ -64,8 +64,8 @@ export default function UserContextProvider({
           navigate("/bang-dieu-khien");
         }
       })
-      .catch((error) => {
-        setErrorData(error.response.data);
+      .catch((error: AxiosError) => {
+        setErrorData(error.response?.data as IError);
         setShow(true);
       });
   };
@@ -83,7 +83,7 @@ export default function UserContextProvider({
         setUserData({} as IUserData);
         navigate("/");
       })
-      .catch((error) => {
+      .catch(() => {
         sessionStorage.removeItem("token");
         setLogin(false);
         setUserData({} as IUserData);

@@ -9499,6 +9499,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdi-react@npm:^9.2.0":
+  version: 9.2.0
+  resolution: "mdi-react@npm:9.2.0"
+  peerDependencies:
+    react: ">=0.14.0"
+  checksum: 6ae33ba778499f7a3b8af71b25c94e02ea13a8648ce5a3c29dac200bb87ed3c8441417fc54b1e25000bdc5f7e5684232c8e3715c184bd5d4fba2b90f8bb303c9
+  languageName: node
+  linkType: hard
+
 "mdn-data@npm:2.0.14":
   version: 2.0.14
   resolution: "mdn-data@npm:2.0.14"
@@ -11933,6 +11942,7 @@ __metadata:
     axios: ^1.4.0
     babel-plugin-macros: ^3.1.0
     bootstrap: 5.3.0
+    mdi-react: ^9.2.0
     node-sass: ^9.0.0
     react: ^18.2.0
     react-bootstrap: ^2.8.0
@@ -11942,7 +11952,7 @@ __metadata:
     react-router-dom: ^6.14.1
     react-scripts: 5.0.1
     sass: ^1.63.6
-    styled-components: 6.0.2
+    styled-components: ^6.0.2
     typescript: ^5.1.6
     web-vitals: ^3.3.2
   languageName: unknown
@@ -13194,7 +13204,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"styled-components@npm:6.0.2":
+"styled-components@npm:^6.0.2":
   version: 6.0.2
   resolution: "styled-components@npm:6.0.2"
   dependencies:

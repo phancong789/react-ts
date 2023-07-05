@@ -13,9 +13,9 @@ export default function NewsZone() {
   ]);
   React.useEffect(() => {
     const getfetchData = async () => {
-      env.param.set("perpage", "3");
+      env.HomePageParam.set("perpage", "3");
 
-      await fetch(env.hostName + env.apiRoute.News + "?" + env.param)
+      await fetch(env.hostName + env.apiRoute.News + "?" + env.HomePageParam)
         .then((x) => x.json())
         .then((x) => setData(x.list));
     };

@@ -2,9 +2,9 @@ import React from "react";
 import TopBar from "../Compoments/ControlPanelPage/TopBar";
 import SideBar from "../Compoments/ControlPanelPage/SideBar";
 import { UserContext } from "../Context/UserContext";
-import ControlPanelContent from "../Compoments/ControlPanelPage/ControlPanelContent";
+import UserManageContent from "../Compoments/ControlPanelPage/UserManageContent";
 
-export default function ControlPanelPage() {
+export default function UserManagePage() {
   const usechecklogin = React.useContext(UserContext);
   usechecklogin?.CheckLogin(true);
   return (
@@ -12,7 +12,7 @@ export default function ControlPanelPage() {
       <TopBar />
       <div className="d-flex" style={{ height: "100%" }}>
         <SideBar />
-        <ControlPanelContent />
+        <UserManageContent />
       </div>
     </>
   );
