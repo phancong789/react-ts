@@ -68,7 +68,14 @@ export default function UserFilter() {
         <SreachWapper>
           <MagnifyIcon />
           <input
+            onKeyUp={(e) => {
+              controlpanelcontext?.Filter(
+                e.currentTarget.name,
+                e.currentTarget.value
+              );
+            }}
             placeholder="Tìm kiếm theo tên hoặc số điện thoại"
+            name="search"
             type="text"
           />
         </SreachWapper>
@@ -80,15 +87,33 @@ export default function UserFilter() {
       <FiltersWapper>
         <FilterWapper>
           <label htmlFor={activeSelectId}>Trạng thái</label>
-          <select name="inactive" id={activeSelectId}>
+          <select
+            onClick={(e) =>
+              controlpanelcontext?.Filter(
+                e.currentTarget.name,
+                e.currentTarget.value
+              )
+            }
+            name="inactive"
+            id={activeSelectId}
+          >
             <option value="">Tất cả</option>
-            <option value="true">Hoạt động</option>
-            <option value="false">Vô hiệu hóa</option>
+            <option value="false">Hoạt động</option>
+            <option value="true">Vô hiệu hóa</option>
           </select>
         </FilterWapper>
         <FilterWapper>
           <label htmlFor={roleSelectId}>Quyền</label>
-          <select name="role_id" id={roleSelectId}>
+          <select
+            onClick={(e) =>
+              controlpanelcontext?.Filter(
+                e.currentTarget.name,
+                e.currentTarget.value
+              )
+            }
+            name="role_id"
+            id={roleSelectId}
+          >
             <option value="">Quyền</option>
             {roledata?.map((data) => {
               return <option value={data.id}>{data.name}</option>;
@@ -97,12 +122,32 @@ export default function UserFilter() {
         </FilterWapper>
         <FilterWapper>
           <label htmlFor={dateStartId}>Ngày bắt đầu</label>
-          <input type="date" name="date_start" id={dateStartId} />
+          <input
+            onChange={(e) => {
+              controlpanelcontext?.Filter(
+                e.currentTarget.name,
+                e.currentTarget.value.split("-").reverse().join("/")
+              );
+            }}
+            type="date"
+            name="date_start"
+            id={dateStartId}
+          />
           <p>Dạng dd/mm/yyyy</p>
         </FilterWapper>
         <FilterWapper>
           <label htmlFor={dateEndId}>Ngày kết thúc</label>
-          <input type="date" name="date_end" id={dateEndId} />
+          <input
+            onChange={(e) => {
+              controlpanelcontext?.Filter(
+                e.currentTarget.name,
+                e.currentTarget.value.split("-").reverse().join("/")
+              );
+            }}
+            type="date"
+            name="date_end"
+            id={dateEndId}
+          />
           <p>Dạng dd/mm/yyyy</p>
         </FilterWapper>
       </FiltersWapper>

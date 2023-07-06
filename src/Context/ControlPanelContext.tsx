@@ -4,6 +4,9 @@ import * as env from "../env";
 import IUserData from "../Interface/IUserData";
 import IToken from "../Interface/IToken";
 import IRole from "../Interface/IRole";
+import { error } from "console";
+import IListDataUser from "../Interface/IListDataUser";
+import { strict } from "assert";
 
 export interface ControlPanelContextType {
   sidebarActive: boolean;
@@ -11,6 +14,12 @@ export interface ControlPanelContextType {
   sideBarState: string;
   setSideBarState: React.Dispatch<React.SetStateAction<string>>;
   GetRole(token: IToken): IRole[] | undefined;
+  GetUserData(): IListDataUser | undefined;
+  listUser: IListDataUser | undefined;
+  ChangePerPage(value: string): void;
+  ChangePage(value: string): void;
+  MinusOrPlusPage(value: number): void;
+  Filter(inputName: string, value: string): void;
 }
 
 export interface ControlPanelContextProviderProps {
@@ -24,13 +33,31 @@ const ControlPanelContext = React.createContext<ControlPanelContextType | null>(
 export default function ControlPanelContextProvider({
   children,
 }: ControlPanelContextProviderProps) {
+  let defaulturl = window.location.pathname
+    .substring(1, window.location.pathname.length)
+    .replaceAll("/", "-");
   const [sidebarActive, setSidebarActive] = React.useState(true);
-  const [sideBarState, setSideBarState] = React.useState("bang-dieu-khien");
+  const [sideBarState, setSideBarState] = React.useState(defaulturl);
   const [roleData, setRoleData] = React.useState<IRole[]>();
+  const [listUser, setListUser] = React.useState<IListDataUser>();
   const CreateNewUser = () => {};
   const EditUser = () => {};
   const DeleteUser = () => {};
-  const GetUserData = () => {};
+  const GetUserData = () => {
+    React.useEffect(() => {
+      axios
+        .get<IListDataUser>(
+          env.hostName + env.apiRoute.users + "?" + env.getUserParam
+        )
+        .then((data) => {
+          setListUser(data.data);
+        })
+        .catch((error: AxiosError) => {
+          console.error(error.response);
+        });
+    }, []);
+    return listUser;
+  };
   const GetRole = (token: IToken) => {
     React.useEffect(() => {
       axios
@@ -48,6 +75,81 @@ export default function ControlPanelContextProvider({
     }, []);
     return roleData;
   };
+  const ChangePerPage = (value: string) => {
+    env.getUserParam.set("perpage", value);
+
+    axios
+      .get<IListDataUser>(
+        env.hostName + env.apiRoute.users + "?" + env.getUserParam
+      )
+      .then((data) => {
+        setListUser(data.data);
+      })
+      .catch((error: AxiosError) => {
+        console.error(error.response);
+      });
+  };
+
+  const ChangePage = (value: string) => {
+    env.getUserParam.set("page", value);
+
+    axios
+      .get<IListDataUser>(
+        env.hostName + env.apiRoute.users + "?" + env.getUserParam
+      )
+      .then((data) => {
+        setListUser(data.data);
+      })
+      .catch((error: AxiosError) => {
+        console.error(error.response);
+      });
+  };
+
+  const MinusOrPlusPage = (value: number) => {
+    env.getUserParam.set(
+      "page",
+      String(Number(env.getUserParam.get("page")) + value)
+    );
+
+    axios
+      .get<IListDataUser>(
+        env.hostName + env.apiRoute.users + "?" + env.getUserParam
+      )
+      .then((data) => {
+        setListUser(data.data);
+      })
+      .catch((error: AxiosError) => {
+        console.error(error.response);
+      });
+  };
+
+  const Filter = (inputName: string, value: string) => {
+    if (value === "") {
+      env.getUserParam.delete(inputName);
+      axios
+        .get<IListDataUser>(
+          env.hostName + env.apiRoute.users + "?" + env.getUserParam
+        )
+        .then((data) => {
+          setListUser(data.data);
+        })
+        .catch((error: AxiosError) => {
+          console.error(error.response);
+        });
+    } else {
+      env.getUserParam.set(inputName, value);
+      axios
+        .get<IListDataUser>(
+          env.hostName + env.apiRoute.users + "?" + env.getUserParam
+        )
+        .then((data) => {
+          setListUser(data.data);
+        })
+        .catch((error: AxiosError) => {
+          console.error(error.response);
+        });
+    }
+  };
 
   return (
     <ControlPanelContext.Provider
@@ -56,7 +158,13 @@ export default function ControlPanelContextProvider({
         setSidebarActive,
         sideBarState,
         setSideBarState,
+        Filter,
         GetRole,
+        listUser,
+        GetUserData,
+        ChangePerPage,
+        MinusOrPlusPage,
+        ChangePage,
       }}
     >
       {children}

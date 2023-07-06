@@ -3,6 +3,8 @@ import TopBar from "../Compoments/ControlPanelPage/TopBar";
 import SideBar from "../Compoments/ControlPanelPage/SideBar";
 import { UserContext } from "../Context/UserContext";
 import UserManageContent from "../Compoments/ControlPanelPage/UserManageContent";
+import Pagination from "../Compoments/Shared/Pagination";
+import CreateNewUserForm from "../Compoments/ControlPanelPage/UserManageCompoment/CreateNewUserForm";
 
 export default function UserManagePage() {
   const usechecklogin = React.useContext(UserContext);
@@ -12,8 +14,12 @@ export default function UserManagePage() {
       <TopBar />
       <div className="d-flex" style={{ height: "100%" }}>
         <SideBar />
-        <UserManageContent />
+        <div style={{ flexGrow: 2 }}>
+          <UserManageContent />
+          <Pagination />
+        </div>
       </div>
+      <CreateNewUserForm />
     </>
   );
 }
