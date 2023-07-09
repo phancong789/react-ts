@@ -21,7 +21,11 @@ export default function UserInfoPopDown() {
     <div ref={wrapperRef} className="position-relative">
       <div className="UserInfoAtConner" onClick={(e) => openPopDownHanlde(e)}>
         {usercontext?.userdata?.user?.avatar_url ? (
-          <img src={usercontext?.userdata?.user.avatar_url} alt="" />
+          <img
+            style={{ height: "2.7rem", width: "2.7rem", margin: 10 }}
+            src={usercontext?.userdata?.user.avatar_url}
+            alt=""
+          />
         ) : (
           <div className="avatarAlternative">
             <h4>{usercontext?.userdata?.user?.name.charAt(0)}</h4>

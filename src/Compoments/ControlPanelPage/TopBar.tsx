@@ -22,12 +22,16 @@ const SecHeader = styled.div`
 const Title = styled.h1`
   width: 100%;
   margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
   font-size: 1.3rem;
 `;
 
 const Logowaper = styled.div`
   max-width: 70px;
   max-height: 70px;
+  min-height: 50px;
+  min-width: 50px;
 `;
 
 export default function TopBar() {

@@ -4,9 +4,14 @@ import PencilIcon from "mdi-react/PencilIcon";
 import DeleteOutlineIcon from "mdi-react/DeleteOutlineIcon";
 import LockResetIcon from "mdi-react/LockResetIcon";
 import { styled } from "styled-components";
+import ArrowUpIcon from "mdi-react/ArrowUpIcon";
+import { openEditModal } from "./EditUserForm";
+import { openDeleteModal } from "./DeleteUserForm";
+import "../Assets/Scss/UserTable.scss";
 
 const TableData = styled.td`
   padding: 0 10px;
+  margin: 10px 0;
   button {
     border: none;
     background-color: inherit;
@@ -24,19 +29,202 @@ const TableData = styled.td`
 
 export default function UserTable() {
   const controlpanelcontext = React.useContext(ControlPanelContext);
+  const [show, setShow] = React.useState([false, false, false, false]);
+  const [pressCount, setPressCount] = React.useState([0, 0, 0, 0]);
+  let count = React.useRef<number>(0);
+  let countArr = React.useRef<number[]>([0, 0, 0, 0]);
   let userListdata = controlpanelcontext?.GetUserData();
+  let SortPara = React.useRef<string[]>([]);
+  const clickHandle = (index: number, sortName: string) => {
+    if (count.current > 4) {
+      count.current = 4;
+    }
+    switch (pressCount[index]) {
+      case 0:
+        const newPressCount1 = pressCount.map((value, i) => {
+          if (i === index) {
+            return ++value;
+          } else {
+            return value;
+          }
+        });
+        const changeShow = show.map((bool, i) => {
+          if (i === index) {
+            countArr.current[index] = ++count.current;
+            return true;
+          } else return bool;
+        });
+        setPressCount(newPressCount1);
+        console.log(countArr.current);
+        setShow(changeShow);
+        SortPara.current[index] = sortName;
+        controlpanelcontext?.SortTable(SortPara.current.join());
+        return;
+
+      case 1:
+        const newPressCount2 = pressCount.map((value, i) => {
+          if (i === index) {
+            return ++value;
+          } else {
+            return value;
+          }
+        });
+        console.log(countArr.current);
+        setPressCount(newPressCount2);
+        SortPara.current[index] = "-" + sortName;
+        controlpanelcontext?.SortTable(SortPara.current.join());
+        return;
+
+      case 2:
+        const newPressCount3 = pressCount.map((value, i) => {
+          if (i === index) {
+            return 0;
+          } else {
+            return value;
+          }
+        });
+        const changeShow2 = show.map((bool, i) => {
+          if (i === index) {
+            countArr.current = countArr.current.map((x, i) => {
+              if (i !== index && x !== 1) {
+                return --x;
+              } else if (i !== index) {
+                return x--;
+              } else {
+                return (x = 0);
+              }
+            }) as number[];
+            SortPara.current = SortPara.current.filter(
+              (item) => item !== "-" + sortName
+            );
+            --count.current;
+            return false;
+          } else return bool;
+        });
+        console.log(countArr.current);
+        setPressCount(newPressCount3);
+        setShow(changeShow2);
+        controlpanelcontext?.SortTable(SortPara.current.join());
+        return;
+
+      default:
+        return;
+    }
+  };
   return (
-    <div>
+    <div className="tableWaper">
       <table>
         <thead>
-          <tr>
-            <th>Tên hiển thị</th>
-            <th>Tên đăng nhập</th>
-            <th>Số điện thoại</th>
-            <th>Trạng thái</th>
-            <th>Quyền</th>
-            <th>Ngày tạo</th>
-            <th>Hàng Động</th>
+          <tr style={{ borderBottom: "1px solid black" }}>
+            <th>
+              <div className="d-flex align-items-center">
+                <button
+                  className="thbtn"
+                  onClick={() => {
+                    clickHandle(0, "name");
+                  }}
+                >
+                  Tên hiển thị
+                </button>
+                <ArrowUpIcon
+                  className={
+                    show[0]
+                      ? "arrowIcon show " +
+                        (pressCount[0] === 2 && "upsidedown")
+                      : "arrowIcon"
+                  }
+                  size={20}
+                  opacity={0.6}
+                />
+                <div className={show[0] ? "indexCount show" : "indexCount"}>
+                  <p>{countArr.current[0]}</p>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div className="d-flex align-items-center">
+                <button
+                  onClick={() => {
+                    clickHandle(1, "username");
+                  }}
+                  className="thbtn"
+                >
+                  Tên đăng nhập
+                </button>
+                <ArrowUpIcon
+                  className={
+                    show[1]
+                      ? "arrowIcon show " +
+                        (pressCount[1] === 2 && "upsidedown")
+                      : "arrowIcon"
+                  }
+                  size={20}
+                  opacity={0.6}
+                />
+                <div className={show[1] ? "indexCount show" : "indexCount"}>
+                  <p>{countArr.current[1]}</p>
+                </div>
+              </div>
+            </th>
+            <th>
+              <button className="thbtn">Số điện thoại</button>
+            </th>
+            <th>
+              <div className="d-flex align-items-center">
+                <button
+                  onClick={() => {
+                    clickHandle(2, "inactive");
+                  }}
+                  className="thbtn"
+                >
+                  Trạng thái
+                </button>
+                <ArrowUpIcon
+                  className={
+                    show[2]
+                      ? "arrowIcon show " +
+                        (pressCount[2] === 2 && "upsidedown")
+                      : "arrowIcon"
+                  }
+                  size={20}
+                  opacity={0.6}
+                />
+                <div className={show[2] ? "indexCount show" : "indexCount"}>
+                  <p>{countArr.current[2]}</p>
+                </div>
+              </div>
+            </th>
+            <th>
+              <button className="thbtn">Quyền</button>
+            </th>
+            <th>
+              <div className="d-flex align-items-center">
+                <button
+                  onClick={() => {
+                    clickHandle(3, "created_at");
+                  }}
+                  className="thbtn"
+                >
+                  Ngày tạo
+                </button>
+                <ArrowUpIcon
+                  className={
+                    show[3]
+                      ? "arrowIcon show " +
+                        (pressCount[3] === 2 && "upsidedown")
+                      : "arrowIcon"
+                  }
+                  size={20}
+                  opacity={0.6}
+                />
+                <div className={show[3] ? "indexCount show" : "indexCount"}>
+                  <p>{countArr.current[3]}</p>
+                </div>
+              </div>
+            </th>
+            <th>
+              <button className="thbtn">Hàng Động</button>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -45,7 +233,7 @@ export default function UserTable() {
               <tr>
                 <TableData>{user.name}</TableData>
                 <TableData>{user.username}</TableData>
-                <TableData>{user.mobile}</TableData>
+                <TableData>{user.phone}</TableData>
                 <TableData>{!user.inactive ? "true" : "false"}</TableData>
                 <TableData style={{ display: "flex", flexWrap: "wrap" }}>
                   {user.roles.map((role) => {
@@ -71,10 +259,20 @@ export default function UserTable() {
                   <button>
                     <LockResetIcon />
                   </button>
-                  <button>
+                  <button
+                    onClick={() => {
+                      controlpanelcontext?.setUserData(user);
+                      openEditModal();
+                    }}
+                  >
                     <PencilIcon />
                   </button>
-                  <button>
+                  <button
+                    onClick={() => {
+                      controlpanelcontext?.setUserData(user);
+                      openDeleteModal();
+                    }}
+                  >
                     <DeleteOutlineIcon />
                   </button>
                 </TableData>

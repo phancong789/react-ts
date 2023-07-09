@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { UserContext } from "../../../Context/UserContext";
 import { ControlPanelContext } from "../../../Context/ControlPanelContext";
 import IToken from "../../../Interface/IToken";
+import { openCreateNewModal } from "./CreateNewUserForm";
 const SreachWapper = styled.div`
   border: 2px solid rgba(193, 193, 193, 0.8);
   display: flex;
@@ -63,7 +64,7 @@ export default function UserFilter() {
     usercontext?.getToken() as IToken
   );
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <div className="d-flex justify-content-between">
         <SreachWapper>
           <MagnifyIcon />
@@ -79,7 +80,7 @@ export default function UserFilter() {
             type="text"
           />
         </SreachWapper>
-        <AddNewUserButton>
+        <AddNewUserButton onClick={openCreateNewModal}>
           <PlusIcon />
           Thêm mới
         </AddNewUserButton>

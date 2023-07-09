@@ -1,4 +1,4 @@
-interface GeneralFilterData {
+interface IGeneralFilterData {
   ten: string;
   ten_khoa_hoc?: string;
   type?: string;
@@ -9,4 +9,4 @@ interface GeneralFilterData {
   ma_danh_muc?: string;
 }
 
-export default GeneralFilterData;
+export default IGeneralFilterData;

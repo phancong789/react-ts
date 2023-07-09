@@ -4,6 +4,7 @@ import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import * as env from "../env";
 import IUserData from "../Interface/IUserData";
+import IError from "../Interface/IError";
 
 export interface UserContextType {
   getToken(): IToken;
@@ -37,13 +38,6 @@ const getToken = (): IToken => {
   return tokenData;
 };
 
-interface IError {
-  errors?: {
-    password?: [string];
-  };
-  message: string;
-}
-
 export default function UserContextProvider({
   children,
 }: UserContextProviderProps) {
@@ -64,8 +58,8 @@ export default function UserContextProvider({
           navigate("/bang-dieu-khien");
         }
       })
-      .catch((error: AxiosError) => {
-        setErrorData(error.response?.data as IError);
+      .catch((error: AxiosError<IError>) => {
+        setErrorData(error.response?.data);
         setShow(true);
       });
   };

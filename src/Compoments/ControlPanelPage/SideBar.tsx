@@ -16,9 +16,9 @@ export default function SideBar() {
   return (
     <div className="ControlPanelSidebar">
       <Link
-        id="bang-dieu-khien"
+        id="/bang-dieu-khien"
         className={
-          controlpanelcontext?.sideBarState === "bang-dieu-khien"
+          controlpanelcontext?.sideBarState === "/bang-dieu-khien"
             ? "active"
             : ""
         }
@@ -31,9 +31,9 @@ export default function SideBar() {
         <p>{controlpanelcontext?.sidebarActive ? "Bảng điều khiển" : ""}</p>
       </Link>
       <Link
-        id="he-thong-nguoi-dung"
+        id="/he-thong/nguoi-dung"
         className={
-          controlpanelcontext?.sideBarState === "he-thong-nguoi-dung"
+          controlpanelcontext?.sideBarState === "/he-thong/nguoi-dung"
             ? "active"
             : ""
         }
@@ -46,9 +46,9 @@ export default function SideBar() {
         <p>{controlpanelcontext?.sidebarActive ? "Quản lý người dùng" : ""}</p>
       </Link>
       <Link
-        id="phan-loai-hoc"
+        id="/phan-loai-hoc"
         className={
-          controlpanelcontext?.sideBarState === "phan-loai-hoc" ? "active" : ""
+          controlpanelcontext?.sideBarState === "/phan-loai-hoc" ? "active" : ""
         }
         onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
           controlpanelcontext?.setSideBarState(event.currentTarget.id)
@@ -59,11 +59,13 @@ export default function SideBar() {
         <p>{controlpanelcontext?.sidebarActive ? "Phân loại học" : ""}</p>
       </Link>
       <Link
-        id="loai"
+        id="/loai"
         onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
           controlpanelcontext?.setSideBarState(event.currentTarget.id)
         }
-        className={controlpanelcontext?.sideBarState === "loai" ? "active" : ""}
+        className={
+          controlpanelcontext?.sideBarState === "/loai" ? "active" : ""
+        }
         to={"/loai"}
       >
         <SheepIcon />
@@ -72,9 +74,9 @@ export default function SideBar() {
         </p>
       </Link>
       <Link
-        id="bai-viet"
+        id="/bai-viet"
         className={
-          controlpanelcontext?.sideBarState === "bai-viet" ? "active" : ""
+          controlpanelcontext?.sideBarState === "/bai-viet" ? "active" : ""
         }
         to={"/bai-viet"}
         onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
