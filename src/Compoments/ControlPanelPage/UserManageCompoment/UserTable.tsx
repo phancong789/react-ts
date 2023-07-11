@@ -3,6 +3,7 @@ import { ControlPanelContext } from "../../../Context/ControlPanelContext";
 import PencilIcon from "mdi-react/PencilIcon";
 import DeleteOutlineIcon from "mdi-react/DeleteOutlineIcon";
 import LockResetIcon from "mdi-react/LockResetIcon";
+import Switch from "react-switch";
 import { styled } from "styled-components";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import { openEditModal } from "./EditUserForm";
@@ -234,7 +235,16 @@ export default function UserTable() {
                 <TableData>{user.name}</TableData>
                 <TableData>{user.username}</TableData>
                 <TableData>{user.phone}</TableData>
-                <TableData>{!user.inactive ? "true" : "false"}</TableData>
+                <TableData>
+                  <Switch
+                    onChange={() => {}}
+                    checked={!user.inactive}
+                    onColor="#e7a7a3"
+                    onHandleColor="#e27870"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                  ></Switch>
+                </TableData>
                 <TableData style={{ display: "flex", flexWrap: "wrap" }}>
                   {user.roles.map((role) => {
                     return (
