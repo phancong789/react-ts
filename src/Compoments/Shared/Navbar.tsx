@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import "./assets/scss/Navbar.scss";
-import { UserContext } from "../../Context/UserContext";
 
 const LoginBtn = styled.button`
   background-color: inherit;
@@ -46,28 +45,17 @@ const Logowaper = styled.div`
 export default function NavBar() {
   const [IsHome, setIsHome] = React.useState(true);
   const location = useLocation();
-  const usechecklogin = React.useContext(UserContext);
-  const usedata = usechecklogin?.CheckLogin(false);
-  React.useEffect(() => {
-    if (location.pathname === "/") {
-      setIsHome(true);
-    } else {
-      setIsHome(false);
-    }
-  });
 
   return (
     <div className="NavBarStyle">
       <div>
-        {usedata?.user ? (
-          <LoginBtn type="button">
+        {/* <LoginBtn type="button">
             <Link to="/bang-dieu-khien">{usedata.user?.username}</Link>
-          </LoginBtn>
-        ) : (
-          <LoginBtn type="button">
-            <Link to="/dang-nhap">Đăng Nhập</Link>
-          </LoginBtn>
-        )}
+          </LoginBtn> */}
+
+        <LoginBtn type="button">
+          <Link to="/dang-nhap">Đăng Nhập</Link>
+        </LoginBtn>
       </div>
       <SecHeader>
         <div className="firstWapper">

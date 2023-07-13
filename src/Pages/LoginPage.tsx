@@ -1,24 +1,23 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import styled from "styled-components";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import AccountOutlineIcon from "mdi-react/AccountOutlineIcon";
+import LockOutlineIcon from "mdi-react/LockOutlineIcon";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
 import InputGroup from "react-bootstrap/InputGroup";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { regular, solid } from "@fortawesome/fontawesome-svg-core/import.macro";
-import * as env from "../env";
-import { UserContext } from "../Context/UserContext";
+import { useLoginMutation } from "../service/autherApi";
 
 const SecHeader = styled.div`
   background-color: #da2a1c;
   display: flex;
   height: 6rem;
+  padding: 0;
   div {
     align-items: center;
   }
@@ -33,9 +32,9 @@ const Title = styled.h1`
 `;
 
 const Logowaper = styled.div`
-  max-width: 90px;
-  max-height: 90px;
-  padding: 20px 10px;
+  max-width: 80px;
+  max-height: 80px;
+  padding: 5px 15px;
 `;
 
 interface IError {
@@ -44,39 +43,51 @@ interface IError {
   };
   message: string;
 }
-export default function LoginPage() {
-  const usercontext = React.useContext(UserContext);
 
-  const handleSubmit = (event: any) => {
+export default function LoginPage() {
+  const [login] = useLoginMutation();
+  const [errorData, setErrorData] = React.useState<{
+    data: IError;
+  }>();
+  const [validate, setValidate] = React.useState<boolean>(false);
+  const navigate = useNavigate();
+  const handleSubmit = async (event: any) => {
     const form = event.currentTarget;
     event.stopPropagation();
     event.preventDefault();
     event.nativeEvent.stopImmediatePropagation();
     if (form.checkValidity() === true) {
       const formdata = new FormData(form);
-      usercontext?.Login(formdata);
+      try {
+        const token = await login(formdata).unwrap();
+        console.log("", token);
+        navigate("/");
+      } catch (error) {
+        setErrorData(error as { data: IError });
+      }
+      setValidate(true);
     }
-    usercontext?.setValidated(true);
   };
 
   return (
     <div>
-      {usercontext?.show && (
+      {errorData?.data.message && (
         <Alert
           variant="danger"
           className="position-fixed"
-          style={{ top: "1rem", right: "1rem" }}
-          onClose={() => usercontext?.setShow(false)}
+          style={{ zIndex: 3, top: "1rem", right: "1rem" }}
           dismissible
         >
-          {usercontext?.errorData?.message}
+          {errorData?.data.message}
         </Alert>
       )}
+
       <Container
         fluid
         className="p-0"
         style={{
-          height: "100vh",
+          minHeight: "100%",
+          position: "absolute",
           backgroundImage:
             "url(http://wlp.howizbiz.com/static/img/footerLogin.cf032540.svg)",
           backgroundSize: "100% auto",
@@ -86,7 +97,7 @@ export default function LoginPage() {
           backgroundPositionY: "bottom",
         }}
       >
-        <Row>
+        <Row className="m-0">
           <SecHeader>
             <div
               style={{
@@ -111,12 +122,12 @@ export default function LoginPage() {
             </div>
           </SecHeader>
         </Row>
-        <Row>
-          <Container className="mt-5 pt-5">
-            <Row>
-              <Col />
-              <Col />
-              <Col>
+        <Row className="m-0">
+          <Container className="mt-5 p-0 pt-5">
+            <Row className="m-0">
+              <Col xxl={2} className="p-0" />
+              <Col xxl={3} className="p-0" />
+              <Col xxl={2} className="p-0">
                 <Card>
                   <Card.Body>
                     <div
@@ -134,23 +145,21 @@ export default function LoginPage() {
                     </div>
                     <Form
                       noValidate
-                      validated={usercontext?.validated}
+                      validated={validate}
                       onSubmit={(e) => handleSubmit(e)}
                     >
                       <Form.Group className="mb-3">
                         <Form.Label>Tên đăng nhập</Form.Label>
                         <InputGroup hasValidation>
                           <InputGroup.Text>
-                            <FontAwesomeIcon icon={regular("user")} />
+                            <AccountOutlineIcon />
                           </InputGroup.Text>
                           <Form.Control
-                            className={
-                              usercontext?.errorData?.message
-                                ? "border-danger"
-                                : ""
-                            }
                             required
                             type="text"
+                            className={
+                              errorData?.data.message ? "border-danger" : ""
+                            }
                             name="username"
                             placeholder="Điền tên đăng nhập"
                           />
@@ -164,31 +173,31 @@ export default function LoginPage() {
                         <Form.Label>Password</Form.Label>
                         <InputGroup hasValidation>
                           <InputGroup.Text>
-                            <FontAwesomeIcon icon={solid("lock")} />
+                            <LockOutlineIcon />
                           </InputGroup.Text>
                           <Form.Control
+                            type="password"
+                            name="password"
                             className={
-                              usercontext?.errorData?.errors?.password ||
-                              usercontext?.errorData?.message
+                              errorData?.data.errors?.password ||
+                              errorData?.data.message
                                 ? "border-danger"
                                 : ""
                             }
-                            type="password"
-                            name="password"
                             required
                             placeholder="Password"
                           />
                           <Form.Control.Feedback type="invalid">
-                            {usercontext?.errorData?.errors?.password
-                              ? usercontext?.errorData?.errors?.password[0]
+                            {errorData?.data.errors?.password
+                              ? errorData?.data.errors?.password[0]
                               : "Trường mật khẩu không được bỏ trống."}
                           </Form.Control.Feedback>
                           <Form.Control.Feedback
                             type="valid"
                             className="text-danger"
                           >
-                            {usercontext?.errorData?.errors?.password
-                              ? usercontext?.errorData?.errors?.password[0]
+                            {errorData?.data.errors?.password
+                              ? errorData?.data.errors?.password[0]
                               : ""}
                           </Form.Control.Feedback>
                         </InputGroup>
@@ -212,8 +221,8 @@ export default function LoginPage() {
                   </Card.Body>
                 </Card>
               </Col>
-              <Col />
-              <Col />
+              <Col xxl={3} className="p-0" />
+              <Col xxl={2} className="p-0" />
             </Row>
           </Container>
         </Row>
