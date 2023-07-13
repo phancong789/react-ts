@@ -1,5 +1,4 @@
 import React from "react";
-import { ControlPanelContext } from "../../../Context/ControlPanelContext";
 import PencilIcon from "mdi-react/PencilIcon";
 import DeleteOutlineIcon from "mdi-react/DeleteOutlineIcon";
 import LockResetIcon from "mdi-react/LockResetIcon";
@@ -29,12 +28,11 @@ const TableData = styled.td`
 `;
 
 export default function UserTable() {
-  const controlpanelcontext = React.useContext(ControlPanelContext);
   const [show, setShow] = React.useState([false, false, false, false]);
   const [pressCount, setPressCount] = React.useState([0, 0, 0, 0]);
   let count = React.useRef<number>(0);
   let countArr = React.useRef<number[]>([0, 0, 0, 0]);
-  let userListdata = controlpanelcontext?.GetUserData();
+
   let SortPara = React.useRef<string[]>([]);
   const clickHandle = (index: number, sortName: string) => {
     if (count.current > 4) {
@@ -59,7 +57,7 @@ export default function UserTable() {
         console.log(countArr.current);
         setShow(changeShow);
         SortPara.current[index] = sortName;
-        controlpanelcontext?.SortTable(SortPara.current.join());
+
         return;
 
       case 1:
@@ -73,7 +71,7 @@ export default function UserTable() {
         console.log(countArr.current);
         setPressCount(newPressCount2);
         SortPara.current[index] = "-" + sortName;
-        controlpanelcontext?.SortTable(SortPara.current.join());
+
         return;
 
       case 2:
@@ -105,7 +103,7 @@ export default function UserTable() {
         console.log(countArr.current);
         setPressCount(newPressCount3);
         setShow(changeShow2);
-        controlpanelcontext?.SortTable(SortPara.current.join());
+
         return;
 
       default:
@@ -229,7 +227,7 @@ export default function UserTable() {
           </tr>
         </thead>
         <tbody>
-          {userListdata?.list.map((user) => {
+          {/* {userListdata?.list.map((user) => {
             return (
               <tr>
                 <TableData>{user.name}</TableData>
@@ -288,7 +286,7 @@ export default function UserTable() {
                 </TableData>
               </tr>
             );
-          })}
+          })} */}
         </tbody>
       </table>
     </div>

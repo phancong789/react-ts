@@ -1,11 +1,9 @@
 import React from "react";
 import Styled from "styled-components";
-// @ts-ignore
 import * as env from "../../env";
 import Specie from "../../Interface/ISpecies";
 import SpeciesCard from "../Shared/SpeciesCard";
 import "./assets/scss/ProminentSpecies.scss";
-import { IndexKind } from "typescript";
 
 const ProminentSpeciesRow = Styled.div`
  display:flex;

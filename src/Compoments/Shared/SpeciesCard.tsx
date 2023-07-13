@@ -1,7 +1,5 @@
 import Styled from "styled-components";
 import QRCode from "react-qr-code";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
 import Specie from "../../Interface/ISpecies";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
@@ -36,37 +34,13 @@ export default function SpeciesCard({ Specie, hasImg }: SpecieData) {
   }
   switch (checkNull) {
     case "decreasing":
-      hientrang.push(
-        <p className="hientrang">
-          <FontAwesomeIcon
-            icon={solid("arrow-down")}
-            style={{ color: "#ff0000" }}
-          />
-          Giảm dần
-        </p>
-      );
+      hientrang.push(<p className="hientrang">Giảm dần</p>);
       break;
     case "increasing":
-      hientrang.push(
-        <p className="hientrang">
-          <FontAwesomeIcon
-            icon={solid("arrow-up")}
-            style={{ color: "#04ff00" }}
-          />
-          Tăng mạnh
-        </p>
-      );
+      hientrang.push(<p className="hientrang">Tăng mạnh</p>);
       break;
     default:
-      hientrang.push(
-        <p className="hientrang">
-          <FontAwesomeIcon
-            icon={regular("circle-question")}
-            style={{ color: "#b2b4b8" }}
-          />
-          chưa xác định
-        </p>
-      );
+      hientrang.push(<p className="hientrang">chưa xác định</p>);
       break;
   }
   return (

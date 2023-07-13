@@ -2,7 +2,6 @@ import CloseIcon from "mdi-react/CloseIcon";
 import React from "react";
 import Button from "react-bootstrap/esm/Button";
 import styled from "styled-components";
-import { ControlPanelContext } from "../../../Context/ControlPanelContext";
 
 const Dialog = styled.dialog`
   z-index: 2;
@@ -23,8 +22,6 @@ const openDeleteModal = () => {
 };
 
 export default function DeleteUserForm() {
-  const controlpanelcontext = React.useContext(ControlPanelContext);
-
   const CloseModal = () => {
     const parent =
       document.querySelector<HTMLDialogElement>(".deleteUser-modal");
@@ -32,7 +29,6 @@ export default function DeleteUserForm() {
   };
 
   const clickHanlde = () => {
-    controlpanelcontext?.DeleteUser();
     CloseModal();
   };
   return (
@@ -45,11 +41,8 @@ export default function DeleteUserForm() {
       </div>
       <div>
         <p className="mt-4 me-3 mb-2 ms-3">
-          Bạn có chắc muốn xóa{" "}
-          <span className="text-danger">
-            {controlpanelcontext?.userdata?.username}
-          </span>
-          . Điều này hoàn toàn không thế hoàn tác!
+          Bạn có chắc muốn xóa <span className="text-danger"></span>. Điều này
+          hoàn toàn không thế hoàn tác!
         </p>
       </div>
       <div className="m-3 d-flex justify-content-end">

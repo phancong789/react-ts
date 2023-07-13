@@ -1,6 +1,4 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
 import "./assets/scss/SideBar.scss";
 import GeneralFilterData from "../../Interface/IGeneralFilterData";
 
@@ -15,10 +13,7 @@ export default function SideBar() {
     <div className="Sidebar">
       <div className="wapper">
         <div>
-          <p className="SiderbarFilterTilter">
-            LOẠI
-            <FontAwesomeIcon icon={solid("circle-question")} />
-          </p>
+          <p className="SiderbarFilterTilter">LOẠI</p>
         </div>
         <div>
           <div>
@@ -33,9 +28,7 @@ export default function SideBar() {
       </div>
       <div className="wapper">
         <div>
-          <p className="SiderbarFilterTilter">
-            BỘ LỌC <FontAwesomeIcon icon={solid("circle-question")} />
-          </p>
+          <p className="SiderbarFilterTilter">BỘ LỌC</p>
         </div>
         <div>
           <ul>

@@ -4,11 +4,8 @@ import Row from "react-bootstrap/esm/Row";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import UserInfoPopDown from "./UserPopDown";
 import "./Assets/Scss/ControlPanelTopBar.scss";
-import { ControlPanelContext } from "../../Context/ControlPanelContext";
 
 const SecHeader = styled.div`
   background-color: white;
@@ -35,8 +32,6 @@ const Logowaper = styled.div`
 `;
 
 export default function TopBar() {
-  const controlpanelcontext = React.useContext(ControlPanelContext);
-
   return (
     <Container fluid className="ControlPanelTopBar">
       <Row>
@@ -48,17 +43,7 @@ export default function TopBar() {
               justifyContent: "center",
             }}
           >
-            <Button
-              variant="light"
-              onClick={() => {
-                controlpanelcontext?.setSidebarActive(
-                  !controlpanelcontext.sidebarActive
-                );
-              }}
-              className="rounded-circle"
-            >
-              <FontAwesomeIcon icon={solid("bars")} />
-            </Button>
+            <Button variant="light" className="rounded-circle"></Button>
             <Link to="/">
               <Logowaper>
                 <img

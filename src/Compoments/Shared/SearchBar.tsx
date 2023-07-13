@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import "./assets/scss/SearchBar.scss";
 import React from "react";
 
@@ -14,13 +12,7 @@ const SearchBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
   return (
     <div className="searchContainer">
       <input placeholder="Tìm Kiếm" className="searchInput" type="text" />
-      <button>
-        <FontAwesomeIcon
-          icon={solid("magnifying-glass")}
-          size="2x"
-          style={{ color: "#ffffff" }}
-        />
-      </button>
+      <button></button>
       {isHome ? (
         <>
           <Partition />
@@ -29,9 +21,7 @@ const SearchBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
             className="advanceBtn"
             style={{ color: "white", fontSize: "1.2rem" }}
           >
-            <p>
-              Nâng Cao <FontAwesomeIcon icon={solid("circle-question")} />
-            </p>
+            <p>Nâng Cao</p>
           </Link>
         </>
       ) : (

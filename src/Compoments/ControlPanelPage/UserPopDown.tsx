@@ -2,11 +2,9 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import useOutsideAlerter from "../../CustomHook/useOutsideAlerter";
-import { UserContext } from "../../Context/UserContext";
 import "./Assets/Scss/UserInfoAtConner.scss";
 
 export default function UserInfoPopDown() {
-  const usercontext = React.useContext(UserContext);
   const wrapperRef = React.useRef(null);
   const customhook = useOutsideAlerter(wrapperRef);
   const navigate = useNavigate();
@@ -19,7 +17,7 @@ export default function UserInfoPopDown() {
 
   return (
     <div ref={wrapperRef} className="position-relative">
-      <div className="UserInfoAtConner" onClick={(e) => openPopDownHanlde(e)}>
+      {/* <div className="UserInfoAtConner" onClick={(e) => openPopDownHanlde(e)}>
         {usercontext?.userdata?.user?.avatar_url ? (
           <img
             style={{ height: "2.7rem", width: "2.7rem", margin: 10 }}
@@ -73,7 +71,7 @@ export default function UserInfoPopDown() {
             Đăng xuát
           </Button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

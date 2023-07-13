@@ -53,38 +53,18 @@ export default function Pagination() {
   return (
     <div className="Pagination m-4">
       <div>
-        <p>
-          {controlpanelcontext?.listUser?.pagination.total
-            ? min +
-              "-" +
-              max +
-              " / " +
-              controlpanelcontext?.listUser?.pagination.total
-            : "đang tính"}
-        </p>
+        <p></p>
       </div>
       <div>
         <ul>
           <li>
-            <button
-              onClick={() => {}}
-              className={
-                Number(env.getUserParam.get("page")) === 1 ? "d-none" : ""
-              }
-            >
+            <button onClick={() => {}}>
               <ChevronLeftIcon />
             </button>
           </li>
           {}
           <li>
-            <button
-              onClick={() => {}}
-              className={
-                Number(env.getUserParam.get("page")) === pagecount
-                  ? "d-none"
-                  : ""
-              }
-            >
+            <button onClick={() => {}}>
               <ChevronRightIcon />
             </button>
           </li>
