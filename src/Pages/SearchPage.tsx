@@ -9,17 +9,7 @@ import "./SearchPage.scss";
 import Button from "react-bootstrap/Button";
 import NavBar from "../Compoments/Shared/Navbar";
 import Footer from "../Compoments/Shared/Footer";
-
-interface loaicongbo {
-  list: Specie[] | undefined;
-  pagination: {
-    count: 0;
-    hasMoreItems: false;
-    itemsPerPage: 0;
-    page: 0;
-    total: 367;
-  };
-}
+import { useGetSpeciesQuery } from "../service/HomeAndSearchApi";
 
 const Titles = styled.p`
   font-weight: bold;
@@ -32,25 +22,17 @@ const ContentSide = styled.div`
 `;
 
 export default function SearchPage() {
-  const [cardData, setCardData] = React.useState<loaicongbo>();
-  React.useEffect(() => {
-    const fetchData = async () => {
-      env.HomePageParam.set("perpage", "18");
-
-      await fetch(
-        env.hostName + env.apiRoute.loaicongbo + "?" + env.HomePageParam,
-        {}
-      )
-        .then((x) => x.json())
-        .then((x) => setCardData(x));
-    };
-    fetchData();
-  }, []);
+  const { data, isLoading, isError } = useGetSpeciesQuery({
+    paginate: true,
+    page: 1,
+    perpage: 18,
+    search: "",
+  });
 
   const searchResults: JSX.Element[] = [];
   const moreSearchResults: JSX.Element[] = [];
-  if (cardData?.list)
-    cardData?.list.forEach((x, index) => {
+  if (data?.list)
+    data?.list.forEach((x, index) => {
       if (index < 6) {
         searchResults.push(
           <SpeciesCard key={index} Specie={x} hasImg={true} />
@@ -70,7 +52,7 @@ export default function SearchPage() {
         <ContentSide className="contentSide">
           <div>
             <Titles style={{ marginTop: "1rem" }}>
-              Kết quả {`(${cardData?.pagination.total})`}
+              Kết quả {`(${data?.pagination.total})`}
             </Titles>
           </div>
           <div className="ResultsWapper">{searchResults}</div>

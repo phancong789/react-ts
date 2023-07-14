@@ -1,7 +1,9 @@
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import MagnifyIcon from "mdi-react/MagnifyIcon";
+import HelpCircleIcon from "mdi-react/HelpCircleIcon";
 import "./assets/scss/SearchBar.scss";
-import React from "react";
 
 const Partition = styled.div`
   margin: 0 40px;
@@ -12,7 +14,9 @@ const SearchBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
   return (
     <div className="searchContainer">
       <input placeholder="Tìm Kiếm" className="searchInput" type="text" />
-      <button></button>
+      <button>
+        <MagnifyIcon color="#fff" size={30} />
+      </button>
       {isHome ? (
         <>
           <Partition />
@@ -21,7 +25,9 @@ const SearchBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
             className="advanceBtn"
             style={{ color: "white", fontSize: "1.2rem" }}
           >
-            <p>Nâng Cao</p>
+            <p>
+              Nâng Cao <HelpCircleIcon color="#000" />
+            </p>
           </Link>
         </>
       ) : (

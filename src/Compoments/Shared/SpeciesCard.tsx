@@ -1,6 +1,10 @@
 import Styled from "styled-components";
 import QRCode from "react-qr-code";
 import Specie from "../../Interface/ISpecies";
+import HelpCircleOutlineIcon from "mdi-react/HelpCircleOutlineIcon";
+import ArrowDownIcon from "mdi-react/ArrowDownIcon";
+import ArrowUpIcon from "mdi-react/ArrowUpIcon";
+import { Col } from "react-bootstrap";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
 
@@ -34,17 +38,30 @@ export default function SpeciesCard({ Specie, hasImg }: SpecieData) {
   }
   switch (checkNull) {
     case "decreasing":
-      hientrang.push(<p className="hientrang">Giảm dần</p>);
+      hientrang.push(
+        <p className="hientrang">
+          <ArrowDownIcon color="#Ff0000" size={50} /> Giảm dần
+        </p>
+      );
       break;
     case "increasing":
-      hientrang.push(<p className="hientrang">Tăng mạnh</p>);
+      hientrang.push(
+        <p className="hientrang">
+          <ArrowUpIcon color="#00ff22" size={50} />
+          Tăng mạnh
+        </p>
+      );
       break;
     default:
-      hientrang.push(<p className="hientrang">chưa xác định</p>);
+      hientrang.push(
+        <p className="hientrang">
+          <HelpCircleOutlineIcon size={50} /> chưa xác định
+        </p>
+      );
       break;
   }
   return (
-    <div className="ProminentSpecieCard">
+    <Col className="ProminentSpecieCard">
       {hasImg ? (
         <div className="imgWapper">
           <img
@@ -112,6 +129,6 @@ export default function SpeciesCard({ Specie, hasImg }: SpecieData) {
           </div>
         </div>
       </div>
-    </div>
+    </Col>
   );
 }

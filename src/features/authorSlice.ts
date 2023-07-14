@@ -1,11 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthApi } from "../../service/autherApi";
-import { RootState } from "../../app/store";
-
-export interface IToken {
-  access_token: string;
-  token_type: string;
-}
+import { AuthApi } from "../service/autherApi";
+import { RootState } from "../app/store";
+import IToken from "../Interface/IToken";
 
 export interface tokenState {
   token: IToken | null;
@@ -17,7 +13,7 @@ const initialState: tokenState = {
   status: "idle",
 };
 
-const AuthorSilce = createSlice({
+const authorSilce = createSlice({
   name: "authorSilce",
   initialState,
   reducers: {
@@ -30,14 +26,20 @@ const AuthorSilce = createSlice({
       AuthApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         state.token = payload;
+        state.status = "idle";
         localStorage.setItem("token", JSON.stringify(state.token));
       }
     );
+    builder.addMatcher(AuthApi.endpoints.logout.matchFulfilled, (state) => {
+      state.token = null;
+      state.status = "idle";
+      localStorage.removeItem("token");
+    });
   },
 });
 
-export const { setTokenFormStogare } = AuthorSilce.actions;
+export const { setTokenFormStogare } = authorSilce.actions;
 
 export const selectToken = (state: RootState) => state.authorSlice.token;
 
-export default AuthorSilce.reducer;
+export default authorSilce.reducer;

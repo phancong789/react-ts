@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../app/store";
 import * as env from "../env";
+import ISpecies from "../Interface/ISpecies";
+import { INew } from "../features/HomeAndSearchSlice";
+import IListData from "../Interface/IListData";
 
 export const HomeAndSearchApi = createApi({
   reducerPath: "HomeAndSearchApi",
@@ -17,16 +20,38 @@ export const HomeAndSearchApi = createApi({
   }),
   tagTypes: ["HomeAndSearchApi"],
   endpoints: (builder) => ({
-    getProminentSpecies: builder.query({
+    getProminentSpecies: builder.query<ISpecies[], any>({
       query: () => env.apiRoute.loainoibat,
+      providesTags: [{ type: "HomeAndSearchApi" }],
+    }),
+
+    getSpecies: builder.query<
+      IListData<ISpecies[]>,
+      {
+        paginate: true;
+        page: number;
+        perpage: number;
+        search: string;
+      }
+    >({
+      query: (arg) => ({
+        url: env.apiRoute.loaicongbo,
+        params: arg,
+      }),
+      providesTags: [{ type: "HomeAndSearchApi" }],
     }),
 
     getExtinctionRate: builder.query({
       query: () => env.apiRoute.tyleloai,
+      providesTags: [{ type: "HomeAndSearchApi" }],
     }),
 
-    getNews: builder.query({
-      query: () => env.apiRoute.News + env.HomePageParam,
+    getNews: builder.query<INew, any>({
+      query: () => ({
+        url: env.apiRoute.News,
+        params: env.HomePageParam,
+      }),
+      providesTags: [{ type: "HomeAndSearchApi" }],
     }),
   }),
 });
@@ -34,5 +59,6 @@ export const HomeAndSearchApi = createApi({
 export const {
   useGetExtinctionRateQuery,
   useGetNewsQuery,
+  useGetSpeciesQuery,
   useGetProminentSpeciesQuery,
 } = HomeAndSearchApi;

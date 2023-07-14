@@ -1,6 +1,5 @@
-import IRowUserData from "./IRowUserData";
-export default interface IListDataUser {
-  list: IRowUserData[];
+export default interface IListData<T> {
+  list: T;
   pagination: {
     count: number;
     hasMoreItems: boolean;

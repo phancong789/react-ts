@@ -1,32 +1,19 @@
 import React from "react";
 import "./assets/scss/NewsZone.scss";
 import * as env from "../../env";
+import { useGetNewsQuery } from "../../service/HomeAndSearchApi";
 
 export default function NewsZone() {
-  const [data, setData] = React.useState([
-    {
-      ngay_viet: "",
-      anh_dai_dien: "",
-      tieu_de: "",
-      tom_tat: "",
-    },
-  ]);
-  React.useEffect(() => {
-    const getfetchData = async () => {
-      env.HomePageParam.set("perpage", "3");
+  const { data, isLoading, isError } = useGetNewsQuery(undefined);
 
-      await fetch(env.hostName + env.apiRoute.News + "?" + env.HomePageParam)
-        .then((x) => x.json())
-        .then((x) => setData(x.list));
-    };
-
-    getfetchData();
-  }, []);
+  if (isLoading) return <h1 style={{ textAlign: "center" }}>Is Loading</h1>;
+  if (isError) return <h1 style={{ textAlign: "center" }}>Error</h1>;
+  console.log(data);
   return (
     <div className="NewsWapper">
       <p>BẢN TIN</p>
       <div className="NewsRow">
-        {data.map((x, index) => {
+        {data?.list.map((x, index) => {
           let newDate = x.ngay_viet
             .replaceAll("-", "/")
             .substring(0, 10)

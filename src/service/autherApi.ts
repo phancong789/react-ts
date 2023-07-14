@@ -27,13 +27,11 @@ export const AuthApi = createApi({
       },
       invalidatesTags: [{ type: "AuthApi" }],
     }),
-    me: builder.query({
-      query: () => env.apiRoute.me,
-    }),
     logout: builder.query({
       query: () => env.apiRoute.logout,
+      providesTags: [{ type: "AuthApi" }],
     }),
   }),
 });
 
-export const { useLoginMutation, useMeQuery } = AuthApi;
+export const { useLoginMutation, useLogoutQuery } = AuthApi;

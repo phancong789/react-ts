@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../app/store";
 import * as env from "../env";
+import { url } from "inspector";
 
 export const UserApi = createApi({
   reducerPath: "UserApi",
@@ -16,7 +17,19 @@ export const UserApi = createApi({
     },
   }),
   tagTypes: ["UserApi"],
-  endpoints: (builder) => ({}),
+  endpoints: (builder) => ({
+    me: builder.query({
+      query: () => env.apiRoute.me,
+      providesTags: [{ type: "UserApi" }],
+    }),
+    getUserList: builder.query({
+      query: () => ({
+        url: env.apiRoute.users,
+        params: {},
+      }),
+      providesTags: [{ type: "UserApi" }],
+    }),
+  }),
 });
 
-export const {} = UserApi;
+export const { useMeQuery } = UserApi;

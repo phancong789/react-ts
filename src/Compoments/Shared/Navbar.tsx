@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
@@ -24,7 +24,7 @@ const LoginBtn = styled.button`
 const SecHeader = styled.div`
   background-color: #da2a1c;
   display: flex;
-  height: 9rem;
+  height: 7rem;
   div {
     align-items: center;
   }
@@ -45,6 +45,9 @@ const Logowaper = styled.div`
 export default function NavBar() {
   const [IsHome, setIsHome] = React.useState(true);
   const location = useLocation();
+  useEffect(() => {
+    if (location.pathname !== "/") setIsHome(false);
+  }, [IsHome]);
 
   return (
     <div className="NavBarStyle">
