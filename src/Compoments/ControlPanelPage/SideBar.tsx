@@ -17,7 +17,7 @@ export default function SideBar() {
         <ViewDashboardIcon />
         <p></p>
       </Link>
-      <Link id="/he-thong/nguoi-dung" to={"/he-thong/nguoi-dung"}>
+      <Link id="/he-thong-nguoi-dung" to={"/he-thong-nguoi-dung"}>
         <AccountIcon />
         <p></p>
       </Link>

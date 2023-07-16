@@ -13,7 +13,7 @@ export default function UserManagePage() {
       <TopBar />
       <div className="d-flex" style={{ height: "100%" }}>
         <SideBar />
-        <div style={{ flexGrow: 2, overflow: "scroll" }}>
+        <div style={{ flexGrow: 2 }}>
           <UserManageContent />
           <Pagination />
         </div>

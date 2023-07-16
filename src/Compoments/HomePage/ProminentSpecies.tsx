@@ -22,7 +22,7 @@ export default function ProminentSpecies() {
       <p>LOÀI NỔI BẬT</p>
       <ProminentSpeciesRow>
         {data?.map((x, index) => {
-          return <SpeciesCard key={index} Specie={x} hasImg={true} />;
+          return <SpeciesCard key={index + 1} Specie={x} hasImg={true} />;
         })}
       </ProminentSpeciesRow>
     </div>

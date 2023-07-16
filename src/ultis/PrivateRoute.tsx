@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hook";
+import { useAppDispatch, useAppSelector } from "../CustomHook/hook";
 import { selectToken, setTokenFormStogare } from "../features/authorSlice";
 
 export function PrivateRoute() {

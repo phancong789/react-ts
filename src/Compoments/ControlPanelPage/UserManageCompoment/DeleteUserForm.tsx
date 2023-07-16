@@ -10,7 +10,8 @@ const Dialog = styled.dialog`
   min-width: 35rem;
   max-width: 35rem;
   padding: 0;
-  top: 20%;
+  top: 50%;
+  transform: translateY(-50%);
   outline: none;
   &::backdrop {
     background-color: #00000078;

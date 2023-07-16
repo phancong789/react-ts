@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import TopBar from "../Compoments/SearchPage/TopBar";
-import SideBar from "../Compoments/SearchPage/SideBar";
+import Button from "react-bootstrap/Button";
 import * as env from "../env";
 import Specie from "../Interface/ISpecies";
-import SpeciesCard from "../Compoments/Shared/SpeciesCard";
-import "./SearchPage.scss";
-import Button from "react-bootstrap/Button";
-import NavBar from "../Compoments/Shared/Navbar";
 import Footer from "../Compoments/Shared/Footer";
+import NavBar from "../Compoments/Shared/Navbar";
+import TopBar from "../Compoments/SearchPage/TopBar";
+import SideBar from "../Compoments/SearchPage/SideBar";
+import SpeciesCard from "../Compoments/Shared/SpeciesCard";
+import { useAppSelector, useAppDispatch } from "../CustomHook/hook";
 import { useGetSpeciesQuery } from "../service/HomeAndSearchApi";
+import "./SearchPage.scss";
+import { selectSpecies, setSpeciesData } from "../features/HomeAndSearchSlice";
 
 const Titles = styled.p`
   font-weight: bold;
@@ -22,27 +24,59 @@ const ContentSide = styled.div`
 `;
 
 export default function SearchPage() {
+  const [showMore, setShowMore] = React.useState(0);
   const { data, isLoading, isError } = useGetSpeciesQuery({
     paginate: true,
-    page: 1,
+    page: showMore,
     perpage: 18,
     search: "",
   });
+  const dispatch = useAppDispatch();
+  const speciesData = useAppSelector(selectSpecies);
+
+  React.useEffect(() => {
+    if (data) {
+      dispatch(setSpeciesData(data));
+      console.log("hello");
+    }
+  }, [data]);
 
   const searchResults: JSX.Element[] = [];
   const moreSearchResults: JSX.Element[] = [];
-  if (data?.list)
-    data?.list.forEach((x, index) => {
+  if (speciesData) {
+    speciesData?.list?.forEach((x, index) => {
       if (index < 6) {
-        searchResults.push(
-          <SpeciesCard key={index} Specie={x} hasImg={true} />
-        );
+        if (isLoading) {
+          return searchResults.push(
+            <h1 style={{ textAlign: "center" }}>Is Loading</h1>
+          );
+        } else if (isError) {
+          return searchResults.push(
+            <h1 style={{ textAlign: "center" }}>Error</h1>
+          );
+        } else {
+          searchResults.push(
+            <SpeciesCard key={x.id} Specie={x} hasImg={true} />
+          );
+        }
       } else {
-        moreSearchResults.push(
-          <SpeciesCard key={index} Specie={x} hasImg={false} />
-        );
+        if (isLoading) {
+          return searchResults.push(
+            <h1 style={{ textAlign: "center" }}>Is Loading</h1>
+          );
+        } else if (isError) {
+          return searchResults.push(
+            <h1 style={{ textAlign: "center" }}>Error</h1>
+          );
+        } else {
+          moreSearchResults.push(
+            <SpeciesCard key={x.id} Specie={x} hasImg={false} />
+          );
+        }
       }
     });
+  }
+
   return (
     <>
       <NavBar />

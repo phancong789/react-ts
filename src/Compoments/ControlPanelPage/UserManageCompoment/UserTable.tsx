@@ -8,6 +8,10 @@ import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import { openEditModal } from "./EditUserForm";
 import { openDeleteModal } from "./DeleteUserForm";
 import "../Assets/Scss/UserTable.scss";
+import { useGetUserListQuery } from "../../../service/UserApi";
+import { useAppSelector } from "../../../CustomHook/hook";
+import { selectListUsers } from "../../../features/UserSlice";
+import { Table } from "react-bootstrap";
 
 const TableData = styled.td`
   padding: 0 10px;
@@ -28,12 +32,13 @@ const TableData = styled.td`
 `;
 
 export default function UserTable() {
+  const userListdata = useAppSelector(selectListUsers);
   const [show, setShow] = React.useState([false, false, false, false]);
   const [pressCount, setPressCount] = React.useState([0, 0, 0, 0]);
   let count = React.useRef<number>(0);
   let countArr = React.useRef<number[]>([0, 0, 0, 0]);
-
   let SortPara = React.useRef<string[]>([]);
+
   const clickHandle = (index: number, sortName: string) => {
     if (count.current > 4) {
       count.current = 4;
@@ -112,7 +117,7 @@ export default function UserTable() {
   };
   return (
     <div className="tableWaper">
-      <table>
+      <Table responsive="md">
         <thead>
           <tr style={{ borderBottom: "1px solid black" }}>
             <th>
@@ -222,17 +227,17 @@ export default function UserTable() {
               </div>
             </th>
             <th>
-              <button className="thbtn">Hàng Động</button>
+              <button className="thbtn">Hành Động</button>
             </th>
           </tr>
         </thead>
         <tbody>
-          {/* {userListdata?.list.map((user) => {
+          {userListdata?.list?.map((user) => {
             return (
               <tr>
                 <TableData>{user.name}</TableData>
                 <TableData>{user.username}</TableData>
-                <TableData>{user.phone}</TableData>
+                <TableData>{user.mobile}</TableData>
                 <TableData>
                   <Switch
                     onChange={() => {}}
@@ -269,7 +274,6 @@ export default function UserTable() {
                   </button>
                   <button
                     onClick={() => {
-                      controlpanelcontext?.setUserData(user);
                       openEditModal();
                     }}
                   >
@@ -277,7 +281,6 @@ export default function UserTable() {
                   </button>
                   <button
                     onClick={() => {
-                      controlpanelcontext?.setUserData(user);
                       openDeleteModal();
                     }}
                   >
@@ -286,9 +289,9 @@ export default function UserTable() {
                 </TableData>
               </tr>
             );
-          })} */}
+          })}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Row from "react-bootstrap/esm/Row";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import MenuIcon from "mdi-react/MenuIcon";
 import UserInfoPopDown from "./UserPopDown";
 import "./Assets/Scss/ControlPanelTopBar.scss";
 
@@ -43,7 +44,9 @@ export default function TopBar() {
               justifyContent: "center",
             }}
           >
-            <Button variant="light" className="rounded-circle"></Button>
+            <Button variant="light" className="rounded-circle">
+              <MenuIcon />
+            </Button>
             <Link to="/">
               <Logowaper>
                 <img

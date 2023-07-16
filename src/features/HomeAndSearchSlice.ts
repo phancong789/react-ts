@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 import { HomeAndSearchApi } from "../service/HomeAndSearchApi";
 import ISpecies from "../Interface/ISpecies";
+import IListData from "../Interface/IListData";
 
 export interface INew {
   list: {
@@ -25,20 +26,16 @@ export interface IExtinctionRate {
 }
 
 export interface tokenState {
-  ProminentSpecies: ISpecies[] | null;
   News: INew | null;
-  ExtinctionRate: IExtinctionRate | null;
   SearchResult: ISpecies[] | null;
-  Species: ISpecies[] | null;
+  Species: IListData<ISpecies[]> | null;
   status: "idle" | "loading" | "failed";
 }
 
 const initialState: tokenState = {
   Species: null,
   News: null,
-  ExtinctionRate: null,
   SearchResult: null,
-  ProminentSpecies: null,
   status: "idle",
 };
 
@@ -46,16 +43,22 @@ const HomeAndSearchSlice = createSlice({
   name: "HomeAndSearchSlice",
   initialState,
   reducers: {
-    setSearchResult: (state, action: PayloadAction<ISpecies[]>) => {},
+    setSpeciesData: (state, action: PayloadAction<IListData<ISpecies[]>>) => {
+      state.Species = action.payload;
+      state.status = "idle";
+    },
+
+    addSpeciesData: (state, action: PayloadAction<IListData<ISpecies[]>>) => {
+      state.Species = { ...state.Species, ...action.payload };
+      state.status = "idle";
+    },
+
+    setSearchResult: (state, action: PayloadAction<ISpecies[]>) => {
+      state.SearchResult = action.payload;
+      state.status = "idle";
+    },
   },
   extraReducers(builder) {
-    builder.addMatcher(
-      HomeAndSearchApi.endpoints.getProminentSpecies.matchFulfilled,
-      (state, { payload }) => {
-        state.Species = payload;
-        state.status = "idle";
-      }
-    );
     builder.addMatcher(
       HomeAndSearchApi.endpoints.getNews.matchFulfilled,
       (state, { payload }) => {
@@ -63,16 +66,15 @@ const HomeAndSearchSlice = createSlice({
         state.status = "idle";
       }
     );
-    builder.addMatcher(
-      HomeAndSearchApi.endpoints.getExtinctionRate.matchFulfilled,
-      (state, { payload }) => {
-        state.ExtinctionRate = payload;
-        state.status = "idle";
-      }
-    );
   },
 });
 
-export const { setSearchResult } = HomeAndSearchSlice.actions;
+export const { setSearchResult, setSpeciesData } = HomeAndSearchSlice.actions;
+
+export const selectSearch = (state: RootState) =>
+  state.HomeAndSearchSlice.SearchResult;
+
+export const selectSpecies = (state: RootState) =>
+  state.HomeAndSearchSlice.Species;
 
 export default HomeAndSearchSlice.reducer;

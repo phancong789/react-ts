@@ -60,8 +60,7 @@ export default function LoginPage() {
       const formdata = new FormData(form);
       try {
         const token = await login(formdata).unwrap();
-        console.log("", token);
-        navigate("/");
+        navigate("/bang-dieu-khien");
       } catch (error) {
         setErrorData(error as { data: IError });
       }

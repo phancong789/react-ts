@@ -4,7 +4,7 @@ export default interface IRowUserData {
   id: string;
   gender: number;
   inactive: boolean;
-  phone: string;
+  mobile: string;
   name: string;
   role_id: number;
   username: string;

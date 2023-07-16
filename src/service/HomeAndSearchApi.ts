@@ -13,7 +13,10 @@ export const HomeAndSearchApi = createApi({
       const RootState = getState() as RootState;
       const token = RootState.authorSlice.token;
       if (token)
-        headers.set("authortization", token.token_type + token.access_token);
+        headers.set(
+          "Authorization",
+          token.token_type + " " + token.access_token
+        );
 
       return headers;
     },
@@ -28,7 +31,7 @@ export const HomeAndSearchApi = createApi({
     getSpecies: builder.query<
       IListData<ISpecies[]>,
       {
-        paginate: true;
+        paginate: boolean;
         page: number;
         perpage: number;
         search: string;
@@ -41,7 +44,7 @@ export const HomeAndSearchApi = createApi({
       providesTags: [{ type: "HomeAndSearchApi" }],
     }),
 
-    getExtinctionRate: builder.query({
+    getExtinctionRate: builder.query<{ tong_loai: string }, any>({
       query: () => env.apiRoute.tyleloai,
       providesTags: [{ type: "HomeAndSearchApi" }],
     }),

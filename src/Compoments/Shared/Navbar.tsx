@@ -3,6 +3,13 @@ import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import "./assets/scss/Navbar.scss";
+import {
+  selectCurrentUser,
+  selectToken,
+  setTokenFormStogare,
+} from "../../features/authorSlice";
+import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
+import { useMeQuery } from "../../service/autherApi";
 
 const LoginBtn = styled.button`
   background-color: inherit;
@@ -43,8 +50,18 @@ const Logowaper = styled.div`
 `;
 
 export default function NavBar() {
+  const selecttoken = useAppSelector(selectToken);
+  const { data } = useMeQuery(0);
+  const dispatch = useAppDispatch();
   const [IsHome, setIsHome] = React.useState(true);
+  const selectMe = useAppSelector(selectCurrentUser);
   const location = useLocation();
+  if (!selecttoken) {
+    dispatch(
+      setTokenFormStogare(JSON.parse(localStorage.getItem("token") as string))
+    );
+  }
+
   useEffect(() => {
     if (location.pathname !== "/") setIsHome(false);
   }, [IsHome]);
@@ -52,13 +69,15 @@ export default function NavBar() {
   return (
     <div className="NavBarStyle">
       <div>
-        {/* <LoginBtn type="button">
-            <Link to="/bang-dieu-khien">{usedata.user?.username}</Link>
-          </LoginBtn> */}
-
-        <LoginBtn type="button">
-          <Link to="/dang-nhap">Đăng Nhập</Link>
-        </LoginBtn>
+        {selectMe ? (
+          <LoginBtn type="button">
+            <Link to="/bang-dieu-khien">{selectMe?.user?.username}</Link>
+          </LoginBtn>
+        ) : (
+          <LoginBtn type="button">
+            <Link to="/dang-nhap">Đăng Nhập</Link>
+          </LoginBtn>
+        )}
       </div>
       <SecHeader>
         <div className="firstWapper">

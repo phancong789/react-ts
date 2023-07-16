@@ -1,16 +1,15 @@
-const hostName: string = "http://wlp.howizbiz.com/";
+const hostName = "http://wlp.howizbiz.com/";
 let HomePageParam = new URLSearchParams({
   paginate: "true",
   page: "1",
   perpage: "3",
 });
 
-let getUserParam = new URLSearchParams({
+export let getUserParams = new URLSearchParams({
   paginate: "true",
   page: "1",
-  perpage: "10",
   with: "roles,createdBy,provinces",
-  search: "",
+  perpage: "10",
 });
 
 let apiRoute = {
@@ -35,4 +34,4 @@ let apiRoute = {
   danhmuccha: "api/danhmuccha",
 };
 
-export { hostName, HomePageParam, apiRoute, getUserParam };
+export { hostName, HomePageParam, apiRoute };

@@ -40,8 +40,16 @@
   transform: rotate(180deg);
 }
 
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 2048px) {
   .tableWaper {
     overflow: auto;
+    max-height: 30rem;
+  }
+}
+@media screen and (max-width: 1700px) {
+  .tableWaper {
+    overflow: auto;
+    max-height: 20rem;
+    max-width: 73rem;
   }
 }

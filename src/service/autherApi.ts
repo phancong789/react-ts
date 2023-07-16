@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../app/store";
 import * as env from "../env";
+import IUserData from "../Interface/IUserData";
+import IToken from "../Interface/IToken";
 
 export const AuthApi = createApi({
   reducerPath: "AuthApi",
@@ -10,7 +12,10 @@ export const AuthApi = createApi({
       const RootState = getState() as RootState;
       const token = RootState.authorSlice.token;
       if (token)
-        headers.set("authortization", token.token_type + token.access_token);
+        headers.set(
+          "Authorization",
+          token.token_type + " " + token.access_token
+        );
 
       return headers;
     },
@@ -27,11 +32,19 @@ export const AuthApi = createApi({
       },
       invalidatesTags: [{ type: "AuthApi" }],
     }),
-    logout: builder.query({
-      query: () => env.apiRoute.logout,
-      providesTags: [{ type: "AuthApi" }],
+    me: builder.query<IUserData, any>({
+      query: () => ({
+        url: env.apiRoute.me,
+      }),
+    }),
+    logout: builder.mutation<any, { token: string }>({
+      query: (token) => ({
+        url: env.apiRoute.logout,
+        method: "post",
+        body: token,
+      }),
     }),
   }),
 });
 
-export const { useLoginMutation, useLogoutQuery } = AuthApi;
+export const { useMeQuery, useLoginMutation, useLogoutMutation } = AuthApi;

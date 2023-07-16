@@ -4,6 +4,13 @@ import PlusIcon from "mdi-react/PlusIcon";
 import styled from "styled-components";
 import IToken from "../../../Interface/IToken";
 import { openCreateNewModal } from "./CreateNewUserForm";
+import {
+  useGetRolesListQuery,
+  useGetUserListQuery,
+} from "../../../service/UserApi";
+import { useAppSelector } from "../../../CustomHook/hook";
+import { selectListRoles } from "../../../features/UserSlice";
+import { useLocation } from "react-router-dom";
 const SreachWapper = styled.div`
   border: 2px solid rgba(193, 193, 193, 0.8);
   display: flex;
@@ -52,10 +59,13 @@ const AddNewUserButton = styled.button`
 `;
 
 export default function UserFilter() {
+  useGetRolesListQuery(0);
+  const rolesData = useAppSelector(selectListRoles);
   const activeSelectId = React.useId();
   const roleSelectId = React.useId();
   const dateStartId = React.useId();
   const dateEndId = React.useId();
+
   return (
     <div style={{ width: "100%" }}>
       <div className="d-flex justify-content-between">
@@ -85,6 +95,9 @@ export default function UserFilter() {
           <label htmlFor={roleSelectId}>Quyền</label>
           <select name="role_id" id={roleSelectId}>
             <option value="">Quyền</option>
+            {rolesData?.map((x) => {
+              return <option value={x.id}>{x.name}</option>;
+            })}
           </select>
         </FilterWapper>
         <FilterWapper>

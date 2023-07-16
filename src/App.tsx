@@ -7,6 +7,7 @@ import SearchPage from "./Pages/SearchPage";
 import ControlPanelPage from "./Pages/ControlPanelPage";
 import UserManagePage from "./Pages/UserManagePage";
 import PrivateRoute from "./ultis/PrivateRoute";
+
 const BodyFake = styled.div`
   display: flex;
   flex-direction: column;

@@ -13,7 +13,9 @@ const Dialog = styled.dialog`
   min-width: 35rem;
   max-width: 35rem;
   padding: 0;
-  top: 20%;
+  align-self: center;
+  top: 50%;
+  transform: translateY(-50%);
   outline: none;
   &::backdrop {
     background-color: #00000078;
@@ -101,7 +103,12 @@ export default function CreateNewUserForm() {
 
   return (
     <Dialog className="addNew-modal">
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form
+        noValidate
+        style={{ overflow: "auto" }}
+        validated={validated}
+        onSubmit={handleSubmit}
+      >
         <div className="d-flex p-3 mb-2 justify-content-between text-light bg-danger">
           <h5 className="pt-2 pb-2 ps-2 m-0">Thêm mới người dùng</h5>
           <Button onClick={CloseForm} variant="none" className="p-1 m-1">

@@ -17,11 +17,11 @@ export const store = configureStore({
     authorSlice: authorReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([
+    getDefaultMiddleware().concat(
       AuthApi.middleware,
       HomeAndSearchApi.middleware,
-      UserApi.middleware,
-    ]),
+      UserApi.middleware
+    ),
   devTools: true,
 });
 

@@ -8,7 +8,6 @@ export default function NewsZone() {
 
   if (isLoading) return <h1 style={{ textAlign: "center" }}>Is Loading</h1>;
   if (isError) return <h1 style={{ textAlign: "center" }}>Error</h1>;
-  console.log(data);
   return (
     <div className="NewsWapper">
       <p>BẢN TIN</p>
@@ -28,7 +27,7 @@ export default function NewsZone() {
             .reverse()
             .join("/");
           return (
-            <div className="new" key={index}>
+            <div className="new" key={index + 1}>
               <div className="newHead">
                 <div className="imgWapper">
                   <img src={env.hostName + x.anh_dai_dien} alt="" />
