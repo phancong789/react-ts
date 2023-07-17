@@ -1,10 +1,25 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, FormGroup } from "react-bootstrap";
 import { styled } from "styled-components";
 import CloseIcon from "mdi-react/CloseIcon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import IToken from "../../../Interface/IToken";
+import { useAppSelector } from "../../../CustomHook/hook";
+import { selectListRoles } from "../../../features/UserSlice";
+import {
+  useGetKhuBaotonQuery,
+  useGetProvinceQuery,
+} from "../../../service/HomeAndSearchApi";
+import {
+  selectProvinces,
+  selectkhubaotons,
+} from "../../../features/HomeAndSearchSlice";
+import { toast } from "react-toastify";
+import {
+  useAddNewUserMutation,
+  useGetUserListQuery,
+} from "../../../service/UserApi";
+import IError from "../../../Interface/IError";
 
 const Dialog = styled.dialog`
   z-index: 3;
@@ -29,6 +44,14 @@ const openCreateNewModal = () => {
 };
 
 export default function CreateNewUserForm() {
+  const rolesData = useAppSelector(selectListRoles);
+  const provinceData = useAppSelector(selectProvinces);
+  const khubaotonData = useAppSelector(selectkhubaotons);
+  const [addNewUser, { error }] = useAddNewUserMutation();
+  const { refetch } = useGetUserListQuery(0);
+  useGetProvinceQuery(0);
+  useGetKhuBaotonQuery(0);
+  const [errorData, setErrorData] = React.useState<IError>();
   const [validated, setValidated] = React.useState(false);
   const [checkPass, setCheckPass] = React.useState(false);
   const [selectRoleValue, setSelectRoleValue] = React.useState<
@@ -42,19 +65,43 @@ export default function CreateNewUserForm() {
   >(null);
   const [selectProvinceValue, setSelectProvinceValue] = React.useState<
     | {
-        value: number;
-        label: string;
+        value: number | string | undefined;
+        label: string | undefined;
       }[]
     | null
   >(null);
   const [selectKhubaotonValue, setSelectKhubaotonValue] = React.useState<
     | {
-        value: number;
-        loai_khu: string;
-        label: string;
+        value: number | string | undefined;
+        loai_khu: string | undefined;
+        label: string | undefined;
       }[]
     | null
   >(null);
+
+  let Rolesoptions = rolesData?.map((x) => {
+    return {
+      value: x.id,
+      color: x.meta["text-color"],
+      backgroundColor: x.meta.color,
+      label: x.name,
+    };
+  });
+
+  let Provinceoptions = provinceData?.map((x) => {
+    return {
+      value: x.id,
+      label: x.name,
+    };
+  });
+
+  let khubaotonoptions = khubaotonData?.map((x) => {
+    return {
+      value: x.id,
+      label: x.ten,
+      loai_khu: x.loai_khu,
+    };
+  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
@@ -74,7 +121,10 @@ export default function CreateNewUserForm() {
 
       let provinceidarr: number[] = [];
       selectProvinceValue?.map((x) => {
-        provinceidarr.push(x.value);
+        if (x.value)
+          provinceidarr.push(
+            typeof x.value === "string" ? Number(x.value) : x.value
+          );
       });
       formDataObj["provinces_ids"] = provinceidarr;
 
@@ -86,8 +136,15 @@ export default function CreateNewUserForm() {
 
       if (formDataObj["password"] === formDataObj["password_confirmation"]) {
         setCheckPass(false);
-
-        CloseForm();
+        addNewUser(formDataObj);
+        if (!error) {
+          refetch();
+          CloseForm();
+          toast("Tạo tài Khoản thành công");
+        } else {
+          setErrorData(error as IError);
+          toast(errorData?.data.message);
+        }
       } else {
         setCheckPass(true);
       }
@@ -99,6 +156,9 @@ export default function CreateNewUserForm() {
     const parent = document.querySelector<HTMLDialogElement>(".addNew-modal");
     parent?.close();
     parent?.querySelector<HTMLFormElement>("form")?.reset();
+    setSelectRoleValue(null);
+    setSelectKhubaotonValue(null);
+    setSelectProvinceValue(null);
   };
 
   return (
@@ -121,49 +181,69 @@ export default function CreateNewUserForm() {
             <Form.Control
               placeholder="vui lòng điền tên bạn mong muốn"
               type="text"
+              className={errorData?.data.errors?.name ? "border-danger" : ""}
               name="name"
               required
             />
-            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-            <Form.Control.Feedback
-              type="valid"
-              className="text-danger"
-            ></Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errorData?.data.errors?.name
+                ? errorData?.data.errors?.name[0]
+                : "Trường mật khẩu không được bỏ trống."}
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid" className="text-danger">
+              {errorData?.data.errors?.name
+                ? errorData?.data.errors?.name[0]
+                : ""}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mt-3 mb-3 ms-4 me-4" controlId="usernameGroup">
             <Form.Label>Tên đăng nhập</Form.Label>
             <Form.Control
               placeholder="vui lòng điền Tên đăng nhập bạn mong muốn"
               type="text"
+              className={
+                errorData?.data.errors?.username ? "border-danger" : ""
+              }
               name="username"
               required
             />
-            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-            <Form.Control.Feedback
-              type="valid"
-              className="text-danger"
-            ></Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errorData?.data.errors?.username
+                ? errorData?.data.errors?.username[0]
+                : "Trường mật khẩu không được bỏ trống."}
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid" className="text-danger">
+              {errorData?.data.errors?.username
+                ? errorData?.data.errors?.username[0]
+                : ""}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mt-3 mb-3 ms-4 me-4" controlId="EmailGroup">
             <Form.Label>Email</Form.Label>
             <Form.Control
               placeholder="vui lòng điền Email bạn mong muốn"
               type="email"
+              className={errorData?.data.errors?.email ? "border-danger" : ""}
               name="email"
               required
             />
-            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-            <Form.Control.Feedback
-              type="valid"
-              className="text-danger"
-            ></Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errorData?.data.errors?.email
+                ? errorData?.data.errors?.email[0]
+                : "Trường email không được bỏ trống."}
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid" className="text-danger">
+              {errorData?.data.errors?.email
+                ? errorData?.data.errors?.email[0]
+                : ""}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mt-3 mb-3 ms-4 me-4" controlId="phoneGroup">
             <Form.Label>Điện thoại</Form.Label>
             <Form.Control
               placeholder="vui lòng điền số Điện thoại bạn mong muốn"
               type="number"
-              name="phone"
+              name="mobile"
             />
           </Form.Group>
           <Form.Group className="mt-3 mb-3 ms-4 me-4" controlId="passwordGroup">
@@ -171,14 +251,22 @@ export default function CreateNewUserForm() {
             <Form.Control
               placeholder="vui lòng điền Mật khẩu bạn mong muốn"
               type="password"
+              className={
+                errorData?.data.errors?.password ? "border-danger" : ""
+              }
               name="password"
               required
             />
-            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-            <Form.Control.Feedback
-              type="valid"
-              className="text-danger"
-            ></Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errorData?.data.errors?.password
+                ? errorData?.data.errors?.password[0]
+                : "Trường mật khẩu không được bỏ trống."}
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid" className="text-danger">
+              {errorData?.data.errors?.password
+                ? errorData?.data.errors?.password[0]
+                : ""}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group
             className="mt-3 mb-3 ms-4 me-4"
@@ -193,22 +281,91 @@ export default function CreateNewUserForm() {
             />
             {checkPass && <p className="text-danger">Mật khẩu Không khớp</p>}
           </Form.Group>
-          <div className="mt-3 mb-3 ms-4 me-4">
+          <FormGroup className="mt-3 mb-3 ms-4 me-4">
             <label htmlFor="roleSelect">Quyền</label>
-          </div>
+            <Select
+              options={Rolesoptions}
+              styles={{
+                multiValue: (styles, { data }) => {
+                  return {
+                    ...styles,
+                    backgroundColor: data.backgroundColor,
+                    color: data.color,
+                  };
+                },
+              }}
+              value={selectRoleValue}
+              components={animatedComponents}
+              onChange={(e) => {
+                setSelectRoleValue(
+                  e.map((x) => {
+                    return {
+                      value: x.value,
+                      color: x.color,
+                      backgroundColor: x.backgroundColor,
+                      label: x.label,
+                    };
+                  })
+                );
+              }}
+              isMulti
+            />
+            <Form.Control.Feedback type="invalid">
+              {!selectRoleValue && "Trường này không được phết để trống"}
+            </Form.Control.Feedback>
+          </FormGroup>
           {selectRoleValue?.some((x) => {
             return x.value === 4;
           }) && (
-            <div className="mt-3 mb-3 ms-4 me-4">
+            <FormGroup className="mt-3 mb-3 ms-4 me-4">
               <label htmlFor="roleSelect">Tinh thành quản lý</label>
-            </div>
+              <Select
+                options={Provinceoptions}
+                value={selectProvinceValue}
+                components={animatedComponents}
+                onChange={(e) => {
+                  setSelectProvinceValue(
+                    e.map((x) => {
+                      return {
+                        value: x.value,
+                        label: x.label,
+                      };
+                    })
+                  );
+                }}
+                isMulti
+              />
+              <Form.Control.Feedback type="invalid">
+                {!selectProvinceValue && "Trường này không được phết để trống"}
+              </Form.Control.Feedback>
+            </FormGroup>
           )}
           {selectRoleValue?.some((x) => {
             return x.value === 5;
           }) && (
-            <div className="mt-3 mb-3 ms-4 me-4">
+            <FormGroup className="mt-3 mb-3 ms-4 me-4">
               <label htmlFor="roleSelect">KBT/VQG quản lý</label>
-            </div>
+              <Select
+                options={khubaotonoptions}
+                value={selectKhubaotonValue}
+                components={animatedComponents}
+                onChange={(e) => {
+                  setSelectKhubaotonValue(
+                    e.map((x) => {
+                      return {
+                        value: x.value,
+                        loai_khu: x.loai_khu,
+                        label: x.label,
+                      };
+                    })
+                  );
+                }}
+                isMulti
+              />
+              <Form.Control.Feedback type="invalid">
+                {!selectKhubaotonValue && "Trường này không được phết để trống"}
+              </Form.Control.Feedback>
+            </FormGroup>
           )}
           <div className="m-3 d-flex justify-content-end">
             <Button className="me-2" variant="light" type="button">

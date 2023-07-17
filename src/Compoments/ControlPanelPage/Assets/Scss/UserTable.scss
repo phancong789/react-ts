@@ -36,6 +36,11 @@
   }
 }
 
+.tableWaper {
+  overflow: auto;
+  max-height: 60rem;
+}
+
 .upsidedown {
   transform: rotate(180deg);
 }

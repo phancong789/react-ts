@@ -1,5 +1,6 @@
 import React from "react";
 import ChevronLeftIcon from "mdi-react/ChevronLeftIcon";
+import DotsHorizontalIcon from "mdi-react/DotsHorizontalIcon";
 import ChevronRightIcon from "mdi-react/ChevronRightIcon";
 import * as env from "../../env";
 import "./assets/scss/Pagination.scss";
@@ -28,6 +29,9 @@ export default function Pagination() {
     Number(env.getUserParams.get("perpage")) +
     1;
   max = currentpage * Number(env.getUserParams.get("perpage"));
+  if (min > (userListdata?.pagination.total as number)) {
+    min = 0;
+  }
   if (max > (userListdata?.pagination.total as number)) {
     max = userListdata?.pagination.total as number;
   }
@@ -73,7 +77,47 @@ export default function Pagination() {
               </button>
             </li>
           ) : undefined}
+          {currentpage > 2 ? (
+            <li>
+              <button
+                onClick={() => {
+                  env.getUserParams.set("page", "1");
+                  setReCall(!recall);
+                  refetch();
+                }}
+              >
+                1
+              </button>
+            </li>
+          ) : undefined}
+          {currentpage > 3 ? (
+            <li>
+              <button>
+                <DotsHorizontalIcon />
+              </button>
+            </li>
+          ) : undefined}
           {listLi}
+          {currentpage < pagecount - 2 ? (
+            <li>
+              <button>
+                <DotsHorizontalIcon />
+              </button>
+            </li>
+          ) : undefined}
+          {currentpage < pagecount - 1 ? (
+            <li>
+              <button
+                onClick={() => {
+                  env.getUserParams.set("page", pagecount.toString());
+                  setReCall(!recall);
+                  refetch();
+                }}
+              >
+                {pagecount}
+              </button>
+            </li>
+          ) : undefined}
           {currentpage < pagecount ? (
             <li>
               <button

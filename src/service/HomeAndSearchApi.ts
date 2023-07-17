@@ -4,6 +4,7 @@ import * as env from "../env";
 import ISpecies from "../Interface/ISpecies";
 import { INew } from "../features/HomeAndSearchSlice";
 import IListData from "../Interface/IListData";
+import IGeneralFilterData from "../Interface/IGeneralFilterData";
 
 export const HomeAndSearchApi = createApi({
   reducerPath: "HomeAndSearchApi",
@@ -56,6 +57,14 @@ export const HomeAndSearchApi = createApi({
       }),
       providesTags: [{ type: "HomeAndSearchApi" }],
     }),
+
+    getProvince: builder.query<IGeneralFilterData[], any>({
+      query: () => env.apiRoute.provinces,
+    }),
+
+    getKhuBaoton: builder.query<IGeneralFilterData[], any>({
+      query: () => env.apiRoute.khubaoton,
+    }),
   }),
 });
 
@@ -64,4 +73,6 @@ export const {
   useGetNewsQuery,
   useGetSpeciesQuery,
   useGetProminentSpeciesQuery,
+  useGetKhuBaotonQuery,
+  useGetProvinceQuery,
 } = HomeAndSearchApi;

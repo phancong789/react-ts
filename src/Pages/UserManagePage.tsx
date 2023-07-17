@@ -6,10 +6,12 @@ import Pagination from "../Compoments/Shared/Pagination";
 import CreateNewUserForm from "../Compoments/ControlPanelPage/UserManageCompoment/CreateNewUserForm";
 import EditUserForm from "../Compoments/ControlPanelPage/UserManageCompoment/EditUserForm";
 import DeleteUserForm from "../Compoments/ControlPanelPage/UserManageCompoment/DeleteUserForm";
+import { ToastContainer } from "react-toastify";
 
 export default function UserManagePage() {
   return (
     <>
+      <ToastContainer />
       <TopBar />
       <div className="d-flex" style={{ height: "100%" }}>
         <SideBar />

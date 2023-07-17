@@ -12,6 +12,8 @@ import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useLoginMutation } from "../service/autherApi";
+import IError from "../Interface/IError";
+import { ToastContainer, toast } from "react-toastify";
 
 const SecHeader = styled.div`
   background-color: #da2a1c;
@@ -37,18 +39,9 @@ const Logowaper = styled.div`
   padding: 5px 15px;
 `;
 
-interface IError {
-  errors?: {
-    password?: [string];
-  };
-  message: string;
-}
-
 export default function LoginPage() {
   const [login] = useLoginMutation();
-  const [errorData, setErrorData] = React.useState<{
-    data: IError;
-  }>();
+  const [errorData, setErrorData] = React.useState<IError>();
   const [validate, setValidate] = React.useState<boolean>(false);
   const navigate = useNavigate();
   const handleSubmit = async (event: any) => {
@@ -62,7 +55,8 @@ export default function LoginPage() {
         const token = await login(formdata).unwrap();
         navigate("/bang-dieu-khien");
       } catch (error) {
-        setErrorData(error as { data: IError });
+        setErrorData(error as IError);
+        toast.error(errorData?.data.message);
       }
       setValidate(true);
     }
@@ -70,16 +64,7 @@ export default function LoginPage() {
 
   return (
     <div>
-      {errorData?.data.message && (
-        <Alert
-          variant="danger"
-          className="position-fixed"
-          style={{ zIndex: 3, top: "1rem", right: "1rem" }}
-          dismissible
-        >
-          {errorData?.data.message}
-        </Alert>
-      )}
+      <ToastContainer />
 
       <Container
         fluid

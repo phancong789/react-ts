@@ -1,10 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  createApi,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { RootState } from "../app/store";
 import * as env from "../env";
 import { URLSearchParams } from "url";
 import IListData from "../Interface/IListData";
 import IRowUserData from "../Interface/IRowUserData";
 import IRole from "../Interface/IRole";
+import IError from "../Interface/IError";
 
 export const UserApi = createApi({
   reducerPath: "UserApi",
@@ -21,7 +27,7 @@ export const UserApi = createApi({
       }
       return headers;
     },
-  }),
+  }) as BaseQueryFn<string | FetchArgs, unknown, IError, {}>,
   tagTypes: ["UserApi"],
   endpoints: (builder) => ({
     getUserList: builder.query<IListData<IRowUserData[]>, any>({
@@ -38,23 +44,26 @@ export const UserApi = createApi({
       }),
     }),
     addNewUser: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: env.apiRoute.users,
-        params: {},
+        method: "POST",
+        body: data,
       }),
       invalidatesTags: [{ type: "UserApi" }],
     }),
     editUser: builder.mutation({
-      query: () => ({
-        url: env.apiRoute.users,
-        params: {},
+      query: (data) => ({
+        url: env.apiRoute.users + "/" + data.id,
+        method: "PUT",
+        body: data,
       }),
       invalidatesTags: [{ type: "UserApi" }],
     }),
     deleteUser: builder.mutation({
-      query: () => ({
-        url: env.apiRoute.users,
-        params: {},
+      query: (data) => ({
+        url: env.apiRoute.users + "/" + data.id,
+        method: "DELETE",
+        body: data,
       }),
       invalidatesTags: [{ type: "UserApi" }],
     }),

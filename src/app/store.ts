@@ -6,6 +6,7 @@ import usersReducer from "../features/UserSlice";
 import authorReducer from "../features/authorSlice";
 import HomeAndSearchReducer from "../features/HomeAndSearchSlice";
 import { setupListeners } from "@reduxjs/toolkit/dist/query/react";
+import UiReducer from "../features/UiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     usersSilce: usersReducer,
     HomeAndSearchSlice: HomeAndSearchReducer,
     authorSlice: authorReducer,
+    uiSilce: UiReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

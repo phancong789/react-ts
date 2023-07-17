@@ -3,6 +3,7 @@ import { RootState } from "../app/store";
 import { HomeAndSearchApi } from "../service/HomeAndSearchApi";
 import ISpecies from "../Interface/ISpecies";
 import IListData from "../Interface/IListData";
+import IGeneralFilterData from "../Interface/IGeneralFilterData";
 
 export interface INew {
   list: {
@@ -27,6 +28,8 @@ export interface IExtinctionRate {
 
 export interface tokenState {
   News: INew | null;
+  Province: IGeneralFilterData[] | null;
+  khubaoton: IGeneralFilterData[] | null;
   SearchResult: ISpecies[] | null;
   Species: IListData<ISpecies[]> | null;
   status: "idle" | "loading" | "failed";
@@ -35,6 +38,8 @@ export interface tokenState {
 const initialState: tokenState = {
   Species: null,
   News: null,
+  Province: null,
+  khubaoton: null,
   SearchResult: null,
   status: "idle",
 };
@@ -66,6 +71,20 @@ const HomeAndSearchSlice = createSlice({
         state.status = "idle";
       }
     );
+    builder.addMatcher(
+      HomeAndSearchApi.endpoints.getProvince.matchFulfilled,
+      (state, { payload }) => {
+        state.Province = payload;
+        state.status = "idle";
+      }
+    );
+    builder.addMatcher(
+      HomeAndSearchApi.endpoints.getKhuBaoton.matchFulfilled,
+      (state, { payload }) => {
+        state.khubaoton = payload;
+        state.status = "idle";
+      }
+    );
   },
 });
 
@@ -76,5 +95,11 @@ export const selectSearch = (state: RootState) =>
 
 export const selectSpecies = (state: RootState) =>
   state.HomeAndSearchSlice.Species;
+
+export const selectProvinces = (state: RootState) =>
+  state.HomeAndSearchSlice.Province;
+
+export const selectkhubaotons = (state: RootState) =>
+  state.HomeAndSearchSlice.khubaoton;
 
 export default HomeAndSearchSlice.reducer;

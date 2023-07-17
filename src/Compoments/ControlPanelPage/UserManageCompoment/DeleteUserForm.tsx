@@ -2,14 +2,21 @@ import CloseIcon from "mdi-react/CloseIcon";
 import React from "react";
 import Button from "react-bootstrap/esm/Button";
 import styled from "styled-components";
+import {
+  useDeleteUserMutation,
+  useGetUserListQuery,
+} from "../../../service/UserApi";
+import { useAppSelector } from "../../../CustomHook/hook";
+import { selectSelectedUser } from "../../../features/UserSlice";
 
 const Dialog = styled.dialog`
-  z-index: 2;
+  z-index: 3;
   border: 0;
   margin: 0 auto;
   min-width: 35rem;
   max-width: 35rem;
   padding: 0;
+  align-self: center;
   top: 50%;
   transform: translateY(-50%);
   outline: none;
@@ -23,14 +30,19 @@ const openDeleteModal = () => {
 };
 
 export default function DeleteUserForm() {
+  const [deleteUser] = useDeleteUserMutation();
+  const userdata = useAppSelector(selectSelectedUser);
+  const { refetch } = useGetUserListQuery(0);
+  const clickHanlde = () => {
+    deleteUser(userdata);
+    refetch();
+    CloseModal();
+  };
+
   const CloseModal = () => {
     const parent =
       document.querySelector<HTMLDialogElement>(".deleteUser-modal");
     parent?.close();
-  };
-
-  const clickHanlde = () => {
-    CloseModal();
   };
   return (
     <Dialog className="deleteUser-modal">
@@ -42,7 +54,8 @@ export default function DeleteUserForm() {
       </div>
       <div>
         <p className="mt-4 me-3 mb-2 ms-3">
-          Bạn có chắc muốn xóa <span className="text-danger"></span>. Điều này
+          Bạn có chắc muốn xóa{" "}
+          <span className="text-danger">{userdata?.username}</span>. Điều này
           hoàn toàn không thế hoàn tác!
         </p>
       </div>

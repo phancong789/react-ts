@@ -9,19 +9,26 @@ import IRole from "../Interface/IRole";
 export interface UsersState {
   ListUsers: IListDataUser<IRowUserData[]> | null;
   roleList: IRole[] | null;
+  selectUser: IRowUserData | null;
   status: "idle" | "loading" | "failed";
 }
 
 const initialState: UsersState = {
   ListUsers: null,
   roleList: null,
+  selectUser: null,
   status: "idle",
 };
 
 const usersSilce = createSlice({
   name: "usersSilce",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectUser: (state, action: PayloadAction<IRowUserData>) => {
+      state.selectUser = action.payload;
+      state.status = "idle";
+    },
+  },
   extraReducers(builder) {
     builder.addMatcher(
       UserApi.endpoints.getUserList.matchFulfilled,
@@ -40,9 +47,11 @@ const usersSilce = createSlice({
   },
 });
 
-export const {} = usersSilce.actions;
+export const { setSelectUser } = usersSilce.actions;
 
 export const selectListUsers = (state: RootState) => state.usersSilce.ListUsers;
 export const selectListRoles = (state: RootState) => state.usersSilce.roleList;
+export const selectSelectedUser = (state: RootState) =>
+  state.usersSilce.selectUser;
 
 export default usersSilce.reducer;

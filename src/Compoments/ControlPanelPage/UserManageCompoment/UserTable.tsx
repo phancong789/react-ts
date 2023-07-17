@@ -9,8 +9,8 @@ import { openEditModal } from "./EditUserForm";
 import { openDeleteModal } from "./DeleteUserForm";
 import "../Assets/Scss/UserTable.scss";
 import { useGetUserListQuery } from "../../../service/UserApi";
-import { useAppSelector } from "../../../CustomHook/hook";
-import { selectListUsers } from "../../../features/UserSlice";
+import { useAppDispatch, useAppSelector } from "../../../CustomHook/hook";
+import { selectListUsers, setSelectUser } from "../../../features/UserSlice";
 import { Table } from "react-bootstrap";
 
 const TableData = styled.td`
@@ -32,7 +32,9 @@ const TableData = styled.td`
 `;
 
 export default function UserTable() {
+  const { isLoading, isFetching, refetch } = useGetUserListQuery(0);
   const userListdata = useAppSelector(selectListUsers);
+  const dispatch = useAppDispatch();
   const [show, setShow] = React.useState([false, false, false, false]);
   const [pressCount, setPressCount] = React.useState([0, 0, 0, 0]);
   let count = React.useRef<number>(0);
@@ -232,64 +234,70 @@ export default function UserTable() {
           </tr>
         </thead>
         <tbody>
-          {userListdata?.list?.map((user) => {
-            return (
-              <tr>
-                <TableData>{user.name}</TableData>
-                <TableData>{user.username}</TableData>
-                <TableData>{user.mobile}</TableData>
-                <TableData>
-                  <Switch
-                    onChange={() => {}}
-                    checked={!user.inactive}
-                    onColor="#e7a7a3"
-                    onHandleColor="#e27870"
-                    uncheckedIcon={false}
-                    checkedIcon={false}
-                  ></Switch>
-                </TableData>
-                <TableData style={{ display: "flex", flexWrap: "wrap" }}>
-                  {user.roles.map((role) => {
-                    return (
-                      <span
-                        style={{
-                          padding: "0.2rem 0.4rem",
-                          margin: "0.2rem 0.2rem",
-                          borderRadius: 5,
-                          fontWeight: "bolder",
-                          whiteSpace: "nowrap",
-                          color: role.meta["text-color"],
-                          backgroundColor: role.meta.color,
-                        }}
-                      >
-                        {role.name}
-                      </span>
-                    );
-                  })}
-                </TableData>
-                <TableData>{user.created_at.substring(0, 10)}</TableData>
-                <TableData style={{ display: "flex", flexWrap: "nowrap" }}>
-                  <button>
-                    <LockResetIcon />
-                  </button>
-                  <button
-                    onClick={() => {
-                      openEditModal();
-                    }}
-                  >
-                    <PencilIcon />
-                  </button>
-                  <button
-                    onClick={() => {
-                      openDeleteModal();
-                    }}
-                  >
-                    <DeleteOutlineIcon />
-                  </button>
-                </TableData>
-              </tr>
-            );
-          })}
+          {isFetching || isLoading ? (
+            <h1 style={{ margin: "1rem" }}>Loading</h1>
+          ) : (
+            userListdata?.list?.map((user) => {
+              return (
+                <tr>
+                  <TableData>{user.name}</TableData>
+                  <TableData>{user.username}</TableData>
+                  <TableData>{user.mobile}</TableData>
+                  <TableData>
+                    <Switch
+                      onChange={() => {}}
+                      checked={!user.inactive}
+                      onColor="#e7a7a3"
+                      onHandleColor="#e27870"
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                    ></Switch>
+                  </TableData>
+                  <TableData style={{ display: "flex", flexWrap: "wrap" }}>
+                    {user.roles.map((role) => {
+                      return (
+                        <span
+                          style={{
+                            padding: "0.2rem 0.4rem",
+                            margin: "0.2rem 0.2rem",
+                            borderRadius: 5,
+                            fontWeight: "bolder",
+                            whiteSpace: "nowrap",
+                            color: role.meta["text-color"],
+                            backgroundColor: role.meta.color,
+                          }}
+                        >
+                          {role.name}
+                        </span>
+                      );
+                    })}
+                  </TableData>
+                  <TableData>{user.created_at.substring(0, 10)}</TableData>
+                  <TableData style={{ display: "flex", flexWrap: "nowrap" }}>
+                    <button>
+                      <LockResetIcon />
+                    </button>
+                    <button
+                      onClick={() => {
+                        dispatch(setSelectUser(user));
+                        openEditModal();
+                      }}
+                    >
+                      <PencilIcon />
+                    </button>
+                    <button
+                      onClick={() => {
+                        dispatch(setSelectUser(user));
+                        openDeleteModal();
+                      }}
+                    >
+                      <DeleteOutlineIcon />
+                    </button>
+                  </TableData>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </Table>
     </div>

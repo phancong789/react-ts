@@ -25,7 +25,7 @@ const ContentSide = styled.div`
 
 export default function SearchPage() {
   const [showMore, setShowMore] = React.useState(0);
-  const { data, isLoading, isError } = useGetSpeciesQuery({
+  const { data, isLoading, isFetching, isError } = useGetSpeciesQuery({
     paginate: true,
     page: showMore,
     perpage: 18,
@@ -46,33 +46,11 @@ export default function SearchPage() {
   if (speciesData) {
     speciesData?.list?.forEach((x, index) => {
       if (index < 6) {
-        if (isLoading) {
-          return searchResults.push(
-            <h1 style={{ textAlign: "center" }}>Is Loading</h1>
-          );
-        } else if (isError) {
-          return searchResults.push(
-            <h1 style={{ textAlign: "center" }}>Error</h1>
-          );
-        } else {
-          searchResults.push(
-            <SpeciesCard key={x.id} Specie={x} hasImg={true} />
-          );
-        }
+        searchResults.push(<SpeciesCard key={x.id} Specie={x} hasImg={true} />);
       } else {
-        if (isLoading) {
-          return searchResults.push(
-            <h1 style={{ textAlign: "center" }}>Is Loading</h1>
-          );
-        } else if (isError) {
-          return searchResults.push(
-            <h1 style={{ textAlign: "center" }}>Error</h1>
-          );
-        } else {
-          moreSearchResults.push(
-            <SpeciesCard key={x.id} Specie={x} hasImg={false} />
-          );
-        }
+        moreSearchResults.push(
+          <SpeciesCard key={x.id} Specie={x} hasImg={false} />
+        );
       }
     });
   }
@@ -89,13 +67,29 @@ export default function SearchPage() {
               Kết quả {`(${data?.pagination.total})`}
             </Titles>
           </div>
-          <div className="ResultsWapper">{searchResults}</div>
+          <div className="ResultsWapper">
+            {isFetching || isLoading ? (
+              <h1>Loading</h1>
+            ) : isError ? (
+              <h1>Error</h1>
+            ) : (
+              searchResults
+            )}
+          </div>
           <div>
             <Titles style={{ borderTop: "2px solid black", paddingTop: 5 }}>
               Kết quả khác
             </Titles>
           </div>
-          <div className="ResultsWapper">{moreSearchResults}</div>
+          <div className="ResultsWapper">
+            {isFetching || isLoading ? (
+              <h1>Loading</h1>
+            ) : isError ? (
+              <h1>Error</h1>
+            ) : (
+              moreSearchResults
+            )}
+          </div>
           <div className="mb-2 d-flex justify-content-center">
             <Button variant="none border-bottom fs-4 border-2">tải thêm</Button>
           </div>

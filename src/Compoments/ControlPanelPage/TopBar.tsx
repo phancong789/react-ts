@@ -7,6 +7,8 @@ import { Button } from "react-bootstrap";
 import MenuIcon from "mdi-react/MenuIcon";
 import UserInfoPopDown from "./UserPopDown";
 import "./Assets/Scss/ControlPanelTopBar.scss";
+import { useAppDispatch } from "../../CustomHook/hook";
+import { setToggleControlPanelSiderBar } from "../../features/UiSlice";
 
 const SecHeader = styled.div`
   background-color: white;
@@ -33,6 +35,7 @@ const Logowaper = styled.div`
 `;
 
 export default function TopBar() {
+  const dispatch = useAppDispatch();
   return (
     <Container fluid className="ControlPanelTopBar">
       <Row>
@@ -44,7 +47,13 @@ export default function TopBar() {
               justifyContent: "center",
             }}
           >
-            <Button variant="light" className="rounded-circle">
+            <Button
+              variant="light"
+              onClick={() => {
+                dispatch(setToggleControlPanelSiderBar());
+              }}
+              className="rounded-circle"
+            >
               <MenuIcon />
             </Button>
             <Link to="/">
@@ -60,7 +69,6 @@ export default function TopBar() {
               HỆ THỐNG BÁO CÁO VỀ HIỆN TRẠNG LOÀI NGUY CẤP QUÝ HIẾM ĐƯỢC ƯU TIÊN
               BẢO VỆ
             </Title>
-
             <UserInfoPopDown />
           </div>
         </SecHeader>
