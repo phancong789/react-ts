@@ -32,6 +32,7 @@ let apiRoute = {
   chedoquanly: "api/chedoquanlys",
   speciesStats: "api/species-stats",
   danhmuccha: "api/danhmuccha",
+  mapinfo: "api/get-map-view",
 };
 
 export { hostName, HomePageParam, apiRoute };

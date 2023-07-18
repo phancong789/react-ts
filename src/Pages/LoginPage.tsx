@@ -9,7 +9,6 @@ import AccountOutlineIcon from "mdi-react/AccountOutlineIcon";
 import LockOutlineIcon from "mdi-react/LockOutlineIcon";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useLoginMutation } from "../service/autherApi";
 import IError from "../Interface/IError";
@@ -52,7 +51,7 @@ export default function LoginPage() {
     if (form.checkValidity() === true) {
       const formdata = new FormData(form);
       try {
-        const token = await login(formdata).unwrap();
+        await login(formdata).unwrap();
         navigate("/bang-dieu-khien");
       } catch (error) {
         setErrorData(error as IError);

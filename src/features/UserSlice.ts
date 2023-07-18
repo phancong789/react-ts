@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserApi } from "../service/UserApi";
 import { RootState } from "../app/store";
-import IUserData from "../Interface/IUserData";
 import IListDataUser from "../Interface/IListData";
 import IRowUserData from "../Interface/IRowUserData";
 import IRole from "../Interface/IRole";

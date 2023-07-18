@@ -1,99 +1,39 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "react-bootstrap/Button";
-import * as env from "../env";
-import Specie from "../Interface/ISpecies";
+import ResultsContent from "../Compoments/SearchPage/ResultsContent";
 import Footer from "../Compoments/Shared/Footer";
 import NavBar from "../Compoments/Shared/Navbar";
 import TopBar from "../Compoments/SearchPage/TopBar";
 import SideBar from "../Compoments/SearchPage/SideBar";
-import SpeciesCard from "../Compoments/Shared/SpeciesCard";
-import { useAppSelector, useAppDispatch } from "../CustomHook/hook";
-import { useGetSpeciesQuery } from "../service/HomeAndSearchApi";
-import "./SearchPage.scss";
-import { selectSpecies, setSpeciesData } from "../features/HomeAndSearchSlice";
-
-const Titles = styled.p`
-  font-weight: bold;
-  font-size: 1.4rem;
-  margin-left: 1rem;
-`;
+import { useAppSelector } from "../CustomHook/hook";
+import { selectSwitchSearchPageContent } from "../features/UiSlice";
+import MapContent from "../Compoments/SearchPage/MapContent";
 
 const ContentSide = styled.div`
-  max-width: 70%;
+  flex-grow: 2;
 `;
 
 export default function SearchPage() {
-  const [showMore, setShowMore] = React.useState(0);
-  const { data, isLoading, isFetching, isError } = useGetSpeciesQuery({
-    paginate: true,
-    page: showMore,
-    perpage: 18,
-    search: "",
-  });
-  const dispatch = useAppDispatch();
-  const speciesData = useAppSelector(selectSpecies);
+  const switchcontent = useAppSelector(selectSwitchSearchPageContent);
 
-  React.useEffect(() => {
-    if (data) {
-      dispatch(setSpeciesData(data));
-      console.log("hello");
-    }
-  }, [data]);
-
-  const searchResults: JSX.Element[] = [];
-  const moreSearchResults: JSX.Element[] = [];
-  if (speciesData) {
-    speciesData?.list?.forEach((x, index) => {
-      if (index < 6) {
-        searchResults.push(<SpeciesCard key={x.id} Specie={x} hasImg={true} />);
-      } else {
-        moreSearchResults.push(
-          <SpeciesCard key={x.id} Specie={x} hasImg={false} />
-        );
-      }
-    });
+  let render = [];
+  switch (switchcontent) {
+    case "grid":
+      render.push(<ResultsContent />);
+      break;
+    case "map":
+      render.push(<MapContent />);
+      break;
+    default:
+      break;
   }
-
   return (
     <>
       <NavBar />
       <TopBar />
       <div style={{ display: "flex" }}>
         <SideBar />
-        <ContentSide className="contentSide">
-          <div>
-            <Titles style={{ marginTop: "1rem" }}>
-              Kết quả {`(${data?.pagination.total})`}
-            </Titles>
-          </div>
-          <div className="ResultsWapper">
-            {isFetching || isLoading ? (
-              <h1>Loading</h1>
-            ) : isError ? (
-              <h1>Error</h1>
-            ) : (
-              searchResults
-            )}
-          </div>
-          <div>
-            <Titles style={{ borderTop: "2px solid black", paddingTop: 5 }}>
-              Kết quả khác
-            </Titles>
-          </div>
-          <div className="ResultsWapper">
-            {isFetching || isLoading ? (
-              <h1>Loading</h1>
-            ) : isError ? (
-              <h1>Error</h1>
-            ) : (
-              moreSearchResults
-            )}
-          </div>
-          <div className="mb-2 d-flex justify-content-center">
-            <Button variant="none border-bottom fs-4 border-2">tải thêm</Button>
-          </div>
-        </ContentSide>
+        <ContentSide className="contentSide">{render}</ContentSide>
       </div>
       <Footer />
     </>

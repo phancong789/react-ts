@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../app/store";
 import * as env from "../env";
 import IUserData from "../Interface/IUserData";
-import IToken from "../Interface/IToken";
 
 export const AuthApi = createApi({
   reducerPath: "AuthApi",

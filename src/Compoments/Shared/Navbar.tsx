@@ -51,7 +51,7 @@ const Logowaper = styled.div`
 
 export default function NavBar() {
   const selecttoken = useAppSelector(selectToken);
-  const { data } = useMeQuery(0);
+  useMeQuery(0);
   const dispatch = useAppDispatch();
   const [IsHome, setIsHome] = React.useState(true);
   const selectMe = useAppSelector(selectCurrentUser);

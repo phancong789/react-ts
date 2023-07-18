@@ -6,7 +6,6 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../app/store";
 import * as env from "../env";
-import { URLSearchParams } from "url";
 import IListData from "../Interface/IListData";
 import IRowUserData from "../Interface/IRowUserData";
 import IRole from "../Interface/IRole";

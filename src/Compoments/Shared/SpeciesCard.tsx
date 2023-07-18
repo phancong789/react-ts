@@ -17,9 +17,24 @@ const QrWapper = Styled.div`
 interface SpecieData {
   Specie: Specie | undefined;
   hasImg: boolean;
+  xxl?: number;
+  xl?: number;
+  lg?: number;
+  md?: number;
+  sm?: number;
+  className?: string;
 }
 
-export default function SpeciesCard({ Specie, hasImg }: SpecieData) {
+export default function SpeciesCard({
+  Specie,
+  hasImg,
+  xxl,
+  xl,
+  lg,
+  md,
+  sm,
+  className,
+}: SpecieData) {
   if (Specie == null || Specie === undefined) return;
   let checkNull: string = "";
   let hientrang = [];
@@ -61,7 +76,14 @@ export default function SpeciesCard({ Specie, hasImg }: SpecieData) {
       break;
   }
   return (
-    <Col className="ProminentSpecieCard">
+    <Col
+      xxl={xxl}
+      xl={xl}
+      lg={lg}
+      md={md}
+      sm={sm}
+      className={"ProminentSpecieCard " + className}
+    >
       {hasImg ? (
         <div className="imgWapper">
           <img

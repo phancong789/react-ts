@@ -50,6 +50,9 @@ export const HomeAndSearchApi = createApi({
       providesTags: [{ type: "HomeAndSearchApi" }],
     }),
 
+    getMapinfo: builder.query({
+      query: (id) => env.apiRoute.mapinfo + "/" + id,
+    }),
     getNews: builder.query<INew, any>({
       query: () => ({
         url: env.apiRoute.News,

@@ -49,12 +49,12 @@ const HomeAndSearchSlice = createSlice({
   initialState,
   reducers: {
     setSpeciesData: (state, action: PayloadAction<IListData<ISpecies[]>>) => {
-      state.Species = action.payload;
-      state.status = "idle";
-    },
+      if (state.Species === null) {
+        state.Species = action.payload;
+      } else if (state.Species) {
+        state.Species.list = [...state.Species.list, ...action.payload.list];
+      }
 
-    addSpeciesData: (state, action: PayloadAction<IListData<ISpecies[]>>) => {
-      state.Species = { ...state.Species, ...action.payload };
       state.status = "idle";
     },
 
