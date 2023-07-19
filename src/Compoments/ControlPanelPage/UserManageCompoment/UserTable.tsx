@@ -3,15 +3,16 @@ import PencilIcon from "mdi-react/PencilIcon";
 import DeleteOutlineIcon from "mdi-react/DeleteOutlineIcon";
 import LockResetIcon from "mdi-react/LockResetIcon";
 import Switch from "react-switch";
+import { Table } from "react-bootstrap";
 import { styled } from "styled-components";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import { openEditModal } from "./EditUserForm";
 import { openDeleteModal } from "./DeleteUserForm";
-import "../Assets/Scss/UserTable.scss";
 import { useGetUserListQuery } from "../../../service/UserApi";
 import { useAppDispatch, useAppSelector } from "../../../CustomHook/hook";
 import { selectListUsers, setSelectUser } from "../../../features/UserSlice";
-import { Table } from "react-bootstrap";
+import * as env from "../../../env";
+import "../Assets/Scss/UserTable.scss";
 
 const TableData = styled.td`
   padding: 0 10px;
@@ -61,10 +62,10 @@ export default function UserTable() {
           } else return bool;
         });
         setPressCount(newPressCount1);
-        console.log(countArr.current);
         setShow(changeShow);
         SortPara.current[index] = sortName;
-
+        env.getUserParams.set("sort", SortPara.current.join());
+        refetch();
         return;
 
       case 1:
@@ -75,10 +76,10 @@ export default function UserTable() {
             return value;
           }
         });
-        console.log(countArr.current);
         setPressCount(newPressCount2);
         SortPara.current[index] = "-" + sortName;
-
+        env.getUserParams.set("sort", SortPara.current.join());
+        refetch();
         return;
 
       case 2:
@@ -107,10 +108,10 @@ export default function UserTable() {
             return false;
           } else return bool;
         });
-        console.log(countArr.current);
         setPressCount(newPressCount3);
         setShow(changeShow2);
-
+        env.getUserParams.set("sort", SortPara.current.join());
+        refetch();
         return;
 
       default:

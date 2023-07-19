@@ -1,10 +1,10 @@
 import Styled from "styled-components";
 import QRCode from "react-qr-code";
+import { Col } from "react-bootstrap";
 import Specie from "../../Interface/ISpecies";
 import HelpCircleOutlineIcon from "mdi-react/HelpCircleOutlineIcon";
 import ArrowDownIcon from "mdi-react/ArrowDownIcon";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
-import { Col } from "react-bootstrap";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
 
@@ -34,15 +34,15 @@ export default function SpeciesCard({
   md,
   sm,
   className,
-}: SpecieData) {
-  if (Specie == null || Specie === undefined) return;
+}: SpecieData): React.JSX.Element {
+  if (Specie == null || Specie === undefined) return <></>;
   let checkNull: string = "";
   let hientrang = [];
   let randomImgList: string[] = [
-    process.env.PUBLIC_URL + "/image1.png",
-    process.env.PUBLIC_URL + "/image2.png",
-    process.env.PUBLIC_URL + "/image6.png",
-    process.env.PUBLIC_URL + "/image7.png",
+    "/image1.png",
+    "/image2.png",
+    "/image6.png",
+    "/image7.png",
   ];
 
   let randomImgIndex = Math.floor(Math.random() * randomImgList.length);
