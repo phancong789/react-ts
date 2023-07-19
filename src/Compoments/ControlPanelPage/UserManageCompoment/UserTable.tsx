@@ -45,6 +45,10 @@ export default function UserTable() {
     if (count.current > 4) {
       count.current = 4;
     }
+    const clickHandle = (index: number, sortName: string) => {
+    if (count.current > 4) {
+      count.current = 4;
+    }
     switch (pressCount[index]) {
       case 0:
         const newPressCount1 = pressCount.map((value, i) => {
@@ -61,10 +65,10 @@ export default function UserTable() {
           } else return bool;
         });
         setPressCount(newPressCount1);
-        console.log(countArr.current);
         setShow(changeShow);
         SortPara.current[index] = sortName;
-
+        env.getUserParams.set("sort", SortPara.current.join());
+        refetch();
         return;
 
       case 1:
@@ -75,10 +79,10 @@ export default function UserTable() {
             return value;
           }
         });
-        console.log(countArr.current);
         setPressCount(newPressCount2);
         SortPara.current[index] = "-" + sortName;
-
+        env.getUserParams.set("sort", SortPara.current.join());
+        refetch();
         return;
 
       case 2:
@@ -107,10 +111,10 @@ export default function UserTable() {
             return false;
           } else return bool;
         });
-        console.log(countArr.current);
         setPressCount(newPressCount3);
         setShow(changeShow2);
-
+        env.getUserParams.set("sort", SortPara.current.join());
+        refetch();
         return;
 
       default:
