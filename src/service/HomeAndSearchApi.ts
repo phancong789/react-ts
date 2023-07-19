@@ -78,4 +78,5 @@ export const {
   useGetProminentSpeciesQuery,
   useGetKhuBaotonQuery,
   useGetProvinceQuery,
+  useLazyGetMapinfoQuery,
 } = HomeAndSearchApi;

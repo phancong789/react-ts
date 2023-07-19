@@ -1,9 +1,11 @@
 .ProminentSpecieCard {
-  margin: 2rem;
+  margin: 1rem 0.5rem;
   box-shadow: 1px 1px 1px rgb(180, 179, 179), -1px -1px 1px rgb(180, 179, 179);
   .Cardinfo {
     padding-left: 1rem;
     padding-top: 1rem;
+    max-height: 152px;
+    min-height: 152px;
     h3 {
       margin: 0.5rem 0;
     }
@@ -48,5 +50,19 @@
 
   abbr {
     text-decoration: none !important;
+  }
+
+  .TakeLocation {
+    display: flex;
+    border-top: 1px groove gray;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    padding: 0.6rem;
+    input {
+      width: 1.4rem;
+      height: 1.4rem;
+      margin-right: 0.5rem;
+    }
   }
 }

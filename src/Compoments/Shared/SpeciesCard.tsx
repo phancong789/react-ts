@@ -7,6 +7,7 @@ import ArrowDownIcon from "mdi-react/ArrowDownIcon";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
+import { useId } from "react";
 
 const QrWapper = Styled.div`
   heigth:100px;
@@ -23,6 +24,7 @@ interface SpecieData {
   md?: number;
   sm?: number;
   className?: string;
+  showOnMap?: boolean;
 }
 
 export default function SpeciesCard({
@@ -34,7 +36,9 @@ export default function SpeciesCard({
   md,
   sm,
   className,
+  showOnMap,
 }: SpecieData): React.JSX.Element {
+  const checkboxid = useId();
   if (Specie == null || Specie === undefined) return <></>;
   let checkNull: string = "";
   let hientrang = [];
@@ -82,7 +86,8 @@ export default function SpeciesCard({
       lg={lg}
       md={md}
       sm={sm}
-      className={"ProminentSpecieCard " + className}
+      style={{ padding: 0, borderRadius: 5 }}
+      className={"ProminentSpecieCard flex-grow-1 " + className}
     >
       {hasImg ? (
         <div className="imgWapper">
@@ -150,6 +155,12 @@ export default function SpeciesCard({
             )}
           </div>
         </div>
+        {showOnMap && (
+          <div className="TakeLocation">
+            <input type="checkbox" name="" id={checkboxid} />
+            <label htmlFor={checkboxid}>Hiện thị trên bản đồ</label>
+          </div>
+        )}
       </div>
     </Col>
   );

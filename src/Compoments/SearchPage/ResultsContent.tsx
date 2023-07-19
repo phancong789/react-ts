@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
+import { Row, Col } from "react-bootstrap";
 import { useAppSelector, useAppDispatch } from "../../CustomHook/hook";
 import { useGetSpeciesQuery } from "../../service/HomeAndSearchApi";
 import {
@@ -8,9 +9,7 @@ import {
   setSpeciesData,
 } from "../../features/HomeAndSearchSlice";
 import SpeciesCard from "../../Compoments/Shared/SpeciesCard";
-import * as env from "../../env";
-import Specie from "../../Interface/ISpecies";
-import { Row, Col } from "react-bootstrap";
+import "./assets/scss/ResultsContent.scss";
 
 const Titles = styled.p`
   font-weight: bold;
@@ -41,10 +40,18 @@ export default function ResultsContent() {
   if (speciesData) {
     speciesData?.list?.forEach((x, index) => {
       if (index < 6) {
-        searchResults.push(<SpeciesCard key={x.id} Specie={x} hasImg={true} />);
+        searchResults.push(
+          <SpeciesCard lg={3} key={x.id} Specie={x} hasImg={true} />
+        );
       } else {
         moreSearchResults.push(
-          <SpeciesCard key={x.id} Specie={x} hasImg={false} />
+          <SpeciesCard
+            lg={4}
+            key={x.id}
+            Specie={x}
+            hasImg={false}
+            showOnMap={true}
+          />
         );
       }
     });
@@ -57,7 +64,7 @@ export default function ResultsContent() {
           Kết quả {`(${data?.pagination.total})`}
         </Titles>
       </div>
-      <Row xxl={4} className="ResultsWapper" style={{ width: "100%" }}>
+      <Row className="ResultsWapper" style={{ width: "100%" }}>
         {isFetching || isLoading ? (
           <h1>Loading</h1>
         ) : isError ? (
