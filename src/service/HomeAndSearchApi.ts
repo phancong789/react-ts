@@ -5,6 +5,7 @@ import ISpecies from "../Interface/ISpecies";
 import { INew } from "../features/HomeAndSearchSlice";
 import IListData from "../Interface/IListData";
 import IGeneralFilterData from "../Interface/IGeneralFilterData";
+import IMapInfo from "../Interface/IMapInfo";
 
 export const HomeAndSearchApi = createApi({
   reducerPath: "HomeAndSearchApi",
@@ -50,7 +51,7 @@ export const HomeAndSearchApi = createApi({
       providesTags: [{ type: "HomeAndSearchApi" }],
     }),
 
-    getMapinfo: builder.query({
+    getMapinfo: builder.query<IMapInfo[], any>({
       query: (id) => env.apiRoute.mapinfo + "/" + id,
     }),
     getNews: builder.query<INew, any>({

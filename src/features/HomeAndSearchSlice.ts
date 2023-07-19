@@ -4,6 +4,7 @@ import { HomeAndSearchApi } from "../service/HomeAndSearchApi";
 import ISpecies from "../Interface/ISpecies";
 import IListData from "../Interface/IListData";
 import IGeneralFilterData from "../Interface/IGeneralFilterData";
+import IMapInfo from "../Interface/IMapInfo";
 
 export interface INew {
   list: {
@@ -32,6 +33,7 @@ export interface tokenState {
   khubaoton: IGeneralFilterData[] | null;
   SearchResult: ISpecies[] | null;
   Species: IListData<ISpecies[]> | null;
+  mapinfo: IMapInfo[] | null;
   status: "idle" | "loading" | "failed";
 }
 
@@ -41,6 +43,7 @@ const initialState: tokenState = {
   Province: null,
   khubaoton: null,
   SearchResult: null,
+  mapinfo: null,
   status: "idle",
 };
 
@@ -85,6 +88,21 @@ const HomeAndSearchSlice = createSlice({
         state.status = "idle";
       }
     );
+    builder
+      // .addMatcher(
+      //   HomeAndSearchApi.endpoints.getMapinfo.matchPending,
+      //   (state) => {
+      //     state.mapinfo = null;
+      //     state.status = "idle";
+      //   }
+      // )
+      .addMatcher(
+        HomeAndSearchApi.endpoints.getMapinfo.matchFulfilled,
+        (state, { payload }) => {
+          state.mapinfo = payload;
+          state.status = "idle";
+        }
+      );
   },
 });
 
@@ -101,5 +119,8 @@ export const selectProvinces = (state: RootState) =>
 
 export const selectkhubaotons = (state: RootState) =>
   state.HomeAndSearchSlice.khubaoton;
+
+export const selectMapInfo = (state: RootState) =>
+  state.HomeAndSearchSlice.mapinfo;
 
 export default HomeAndSearchSlice.reducer;

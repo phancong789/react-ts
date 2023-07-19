@@ -8,6 +8,9 @@ import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
 import { useId } from "react";
+import { useLazyGetMapinfoQuery } from "../../service/HomeAndSearchApi";
+import { useAppSelector } from "../../CustomHook/hook";
+import { selectMapInfo } from "../../features/HomeAndSearchSlice";
 
 const QrWapper = Styled.div`
   heigth:100px;
@@ -39,6 +42,7 @@ export default function SpeciesCard({
   showOnMap,
 }: SpecieData): React.JSX.Element {
   const checkboxid = useId();
+  const [triger, result] = useLazyGetMapinfoQuery();
   if (Specie == null || Specie === undefined) return <></>;
   let checkNull: string = "";
   let hientrang = [];
@@ -79,6 +83,12 @@ export default function SpeciesCard({
       );
       break;
   }
+  const selectmapinfo = useAppSelector(selectMapInfo);
+  const checkedHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      await triger(Number(e.target.name));
+    }
+  };
   return (
     <Col
       xxl={xxl}
@@ -157,7 +167,12 @@ export default function SpeciesCard({
         </div>
         {showOnMap && (
           <div className="TakeLocation">
-            <input type="checkbox" name="" id={checkboxid} />
+            <input
+              onChange={checkedHandle}
+              type="checkbox"
+              name={Specie.id}
+              id={checkboxid}
+            />
             <label htmlFor={checkboxid}>Hiện thị trên bản đồ</label>
           </div>
         )}

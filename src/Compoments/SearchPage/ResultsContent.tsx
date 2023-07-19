@@ -45,13 +45,7 @@ export default function ResultsContent() {
         );
       } else {
         moreSearchResults.push(
-          <SpeciesCard
-            lg={4}
-            key={x.id}
-            Specie={x}
-            hasImg={false}
-            showOnMap={true}
-          />
+          <SpeciesCard lg={4} key={x.id} Specie={x} hasImg={false} />
         );
       }
     });
