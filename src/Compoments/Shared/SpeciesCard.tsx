@@ -9,8 +9,11 @@ import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
 import { useId } from "react";
 import { useLazyGetMapinfoQuery } from "../../service/HomeAndSearchApi";
-import { useAppSelector } from "../../CustomHook/hook";
-import { selectMapInfo } from "../../features/HomeAndSearchSlice";
+import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
+import {
+  deleteMapInfo,
+  selectMapInfo,
+} from "../../features/HomeAndSearchSlice";
 
 const QrWapper = Styled.div`
   heigth:100px;
@@ -43,6 +46,7 @@ export default function SpeciesCard({
 }: SpecieData): React.JSX.Element {
   const checkboxid = useId();
   const [triger, result] = useLazyGetMapinfoQuery();
+  const dispatch = useAppDispatch();
   if (Specie == null || Specie === undefined) return <></>;
   let checkNull: string = "";
   let hientrang = [];
@@ -83,10 +87,11 @@ export default function SpeciesCard({
       );
       break;
   }
-  const selectmapinfo = useAppSelector(selectMapInfo);
   const checkedHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       await triger(Number(e.target.name));
+    } else {
+      dispatch(deleteMapInfo());
     }
   };
   return (

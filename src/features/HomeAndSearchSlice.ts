@@ -65,6 +65,11 @@ const HomeAndSearchSlice = createSlice({
       state.SearchResult = action.payload;
       state.status = "idle";
     },
+
+    deleteMapInfo: (state) => {
+      state.mapinfo = [];
+      state.status = "idle";
+    },
   },
   extraReducers(builder) {
     builder.addMatcher(
@@ -106,7 +111,8 @@ const HomeAndSearchSlice = createSlice({
   },
 });
 
-export const { setSearchResult, setSpeciesData } = HomeAndSearchSlice.actions;
+export const { setSearchResult, setSpeciesData, deleteMapInfo } =
+  HomeAndSearchSlice.actions;
 
 export const selectSearch = (state: RootState) =>
   state.HomeAndSearchSlice.SearchResult;

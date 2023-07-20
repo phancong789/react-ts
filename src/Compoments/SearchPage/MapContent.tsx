@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import Map, {
   NavigationControl,
   Marker,
   GeolocateControl,
+  Source,
+  Layer,
+  FillLayer,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
 import {
+  selectMapInfo,
   selectSpecies,
   setSpeciesData,
 } from "../../features/HomeAndSearchSlice";
@@ -26,6 +30,7 @@ const Titles = styled.p`
 export default function MapContent() {
   const [location, setLocation] = React.useState<GeolocationPosition>();
   const [showMore, setShowMore] = React.useState(1);
+  const [reCall, setReCall] = React.useState(false);
   const { data, isLoading, isFetching, isError } = useGetSpeciesQuery({
     paginate: true,
     page: showMore,
@@ -34,22 +39,41 @@ export default function MapContent() {
   });
   const dispatch = useAppDispatch();
   const speciesData = useAppSelector(selectSpecies);
+  const mapinfo = useAppSelector(selectMapInfo);
+  const layerStyle: FillLayer = {
+    id: "water",
+    type: "fill",
+    source: "water",
+    paint: {
+      "fill-color": "#007cbf",
+    },
+  };
 
-  React.useEffect(() => {
+  var map = useMemo(
+    () =>
+      mapinfo?.flatMap((geodata) => {
+        return geodata.geometry.coordinates.flatMap((data) =>
+          data.map((xdata) => xdata.map((x) => x))
+        );
+      }),
+    [mapinfo]
+  );
+
+  useEffect(() => {
+    setReCall(!reCall);
+  }, [mapinfo]);
+  useEffect(() => {
     if (data) {
       dispatch(setSpeciesData(data));
-      console.log("hello");
     }
   }, [data]);
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((location) => {
         setLocation(location);
-        console.log(location);
       });
     }
   }, []);
-
   return (
     <div className="d-flex">
       <Col
@@ -85,10 +109,29 @@ export default function MapContent() {
               zoom: 5,
             }}
             style={{ width: "100%", height: "100%" }}
-            mapStyle="https://api.maptiler.com/maps/streets/style.json?key=UrDMklIL2mFKyNiUv8tu"
+            mapStyle="https://api.maptiler.com/maps/openstreetmap/style.json?key=UrDMklIL2mFKyNiUv8tu"
           >
             <NavigationControl position="bottom-right" />
             <GeolocateControl position="bottom-right" />
+            <Source
+              id="my-data"
+              type="geojson"
+              data={{
+                type: "FeatureCollection",
+                features: [
+                  {
+                    type: "Feature",
+                    geometry: {
+                      type: "Polygon",
+                      coordinates: map,
+                    },
+                  },
+                ],
+              }}
+            >
+              <Layer {...layerStyle} />
+            </Source>
+
             {/* <Marker
               longitude={
                 location?.coords.longitude ? location?.coords.longitude : 0
