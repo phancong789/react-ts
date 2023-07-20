@@ -4,9 +4,11 @@
   .Cardinfo {
     padding-left: 1rem;
     padding-top: 1rem;
-    max-height: 152px;
-    min-height: 152px;
+    max-width: 70%;
+    max-height: 200px;
+    min-height: 172px;
     h3 {
+      font-size: 150%;
       margin: 0.5rem 0;
     }
   }

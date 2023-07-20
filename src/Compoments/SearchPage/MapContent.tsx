@@ -45,16 +45,21 @@ export default function MapContent() {
     type: "fill",
     source: "water",
     paint: {
-      "fill-color": "#007cbf",
+      "fill-color": "#bf000088",
+      "fill-outline-color": "#bf0000",
     },
   };
 
   var map = useMemo(
     () =>
-      mapinfo?.flatMap((geodata) => {
-        return geodata.geometry.coordinates.flatMap((data) =>
-          data.map((xdata) => xdata.map((x) => x))
-        );
+      // mapinfo?.flatMap((geodata) => {
+      //   return geodata.geometry.coordinates.flatMap((data) =>
+      //     data.map((xdata) => xdata.map((x) => x))
+      //   );
+      // }),
+
+      mapinfo?.map((map) => {
+        return { type: "Feature", geometry: map.geometry };
       }),
     [mapinfo]
   );
@@ -74,6 +79,7 @@ export default function MapContent() {
       });
     }
   }, []);
+  console.log(map);
   return (
     <div className="d-flex">
       <Col
@@ -118,15 +124,7 @@ export default function MapContent() {
               type="geojson"
               data={{
                 type: "FeatureCollection",
-                features: [
-                  {
-                    type: "Feature",
-                    geometry: {
-                      type: "Polygon",
-                      coordinates: map,
-                    },
-                  },
-                ],
+                features: map,
               }}
             >
               <Layer {...layerStyle} />
