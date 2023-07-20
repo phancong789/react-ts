@@ -109,7 +109,7 @@ export default function MapContent() {
               zoom: 5,
             }}
             style={{ width: "100%", height: "100%" }}
-            mapStyle="https://api.maptiler.com/maps/openstreetmap/style.json?key=UrDMklIL2mFKyNiUv8tu"
+            mapStyle="https://tiles.skymapglobal.vn/styles/basic/style.json"
           >
             <NavigationControl position="bottom-right" />
             <GeolocateControl position="bottom-right" />
