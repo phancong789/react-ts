@@ -5688,7 +5688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.25":
+"postcss@npm:^8.4.25, postcss@npm:^8.4.26":
   version: 8.4.26
   resolution: "postcss@npm:8.4.26"
   dependencies:
@@ -5870,9 +5870,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-map-gl@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "react-map-gl@npm:7.1.2"
+"react-map-gl@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "react-map-gl@npm:7.1.3"
   dependencies:
     "@maplibre/maplibre-gl-style-spec": ^19.2.1
     "@types/mapbox-gl": ">=1.0.0"
@@ -5886,7 +5886,7 @@ __metadata:
       optional: true
     maplibre-gl:
       optional: true
-  checksum: 017cd73ae99bc546e598001cbcb6aae374bb4347c0aa013f80fe4525a705e6f9049bd9cc144eeb218f0ceb40aec57565223f4d19c1a344c16347d8a15a63117a
+  checksum: defa281ebd706de14f7b8164330f7dd19f587d1a76657374f261129949399e714791091e1dbd6446eb37125c15222f5f265f8d9584c8a3128f9a967bedf344d4
   languageName: node
   linkType: hard
 
@@ -6062,7 +6062,7 @@ __metadata:
     react: ^18.2.0
     react-bootstrap: ^2.8.0
     react-dom: ^18.2.0
-    react-map-gl: ^7.1.2
+    react-map-gl: ^7.1.3
     react-native-svg: ^13.10.0
     react-qr-code: ^2.0.11
     react-redux: ^8.1.1
@@ -6070,10 +6070,10 @@ __metadata:
     react-select: ^5.7.4
     react-switch: 7.0.0
     react-toastify: ^9.1.3
-    sass: ^1.63.6
+    sass: ^1.64.0
     styled-components: ^6.0.4
     typescript: ^5.1.6
-    vite: ^4.4.4
+    vite: ^4.4.5
     vite-plugin-svgr: ^3.2.0
     vite-tsconfig-paths: ^4.2.0
     vitest: ^0.33.0
@@ -6329,16 +6329,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.63.6":
-  version: 1.63.6
-  resolution: "sass@npm:1.63.6"
+"sass@npm:^1.64.0":
+  version: 1.64.0
+  resolution: "sass@npm:1.64.0"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 3372319904658eeafaf78a09a6fcb3368a68e6d76fe3c43c2d009f4f72e475ab22b82ef483ef5c00fcda3ab00066846c0bd88c36b42771b855f6ab80c7eda541
+  checksum: b4eb9b1bdeb1c00e76427d7fe3e5f80d831327178cdee657aa4e014edfc64ebbfe43177147403da1e04d76a24f4093f5a9b1c8d9d80c94579937d8adc5a6ef66
   languageName: node
   linkType: hard
 
@@ -7136,7 +7136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0 || ^4.0.0, vite@npm:^4.4.4":
+"vite@npm:^3.0.0 || ^4.0.0":
   version: 4.4.4
   resolution: "vite@npm:4.4.4"
   dependencies:
@@ -7173,6 +7173,46 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 51c208e53680fa46f7166e49b037625ae43d507f85f1fd3da7e290263bccb77d5f8c466fe82746285927620afeeff949ac3b8e1b6a7b4fe7bfe11419729256b4
+  languageName: node
+  linkType: hard
+
+"vite@npm:^4.4.5":
+  version: 4.4.5
+  resolution: "vite@npm:4.4.5"
+  dependencies:
+    esbuild: ^0.18.10
+    fsevents: ~2.3.2
+    postcss: ^8.4.26
+    rollup: ^3.25.2
+  peerDependencies:
+    "@types/node": ">= 14"
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 825d8c13511b764710ca503e603746e20a7cb963194033dc606c46b1650a0d8986b577ba92507b54143cbf467032e9868ea04913a86a8fcb88b69c5b8551938b
   languageName: node
   linkType: hard
 

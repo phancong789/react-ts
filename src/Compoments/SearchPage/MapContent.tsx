@@ -52,12 +52,6 @@ export default function MapContent() {
 
   var map = useMemo(
     () =>
-      // mapinfo?.flatMap((geodata) => {
-      //   return geodata.geometry.coordinates.flatMap((data) =>
-      //     data.map((xdata) => xdata.map((x) => x))
-      //   );
-      // }),
-
       mapinfo?.map((map) => {
         return { type: "Feature", geometry: map.geometry };
       }),
@@ -79,7 +73,6 @@ export default function MapContent() {
       });
     }
   }, []);
-  console.log(map);
   return (
     <div className="d-flex">
       <Col

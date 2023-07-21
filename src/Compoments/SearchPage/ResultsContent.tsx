@@ -31,7 +31,6 @@ export default function ResultsContent() {
   React.useEffect(() => {
     if (data) {
       dispatch(setSpeciesData(data));
-      console.log("hello");
     }
   }, [data]);
 

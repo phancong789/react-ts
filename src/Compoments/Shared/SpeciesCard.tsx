@@ -7,13 +7,10 @@ import ArrowDownIcon from "mdi-react/ArrowDownIcon";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
-import { useId } from "react";
+import { useId, useState } from "react";
 import { useLazyGetMapinfoQuery } from "../../service/HomeAndSearchApi";
-import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
-import {
-  deleteMapInfo,
-  selectMapInfo,
-} from "../../features/HomeAndSearchSlice";
+import { useAppDispatch } from "../../CustomHook/hook";
+import { deleteMapInfo } from "../../features/HomeAndSearchSlice";
 
 const QrWapper = Styled.div`
   heigth:100px;
@@ -45,7 +42,8 @@ export default function SpeciesCard({
   showOnMap,
 }: SpecieData): React.JSX.Element {
   const checkboxid = useId();
-  const [triger, result] = useLazyGetMapinfoQuery();
+  const [triger] = useLazyGetMapinfoQuery();
+  const [ownInfoMapData, setOwnInfoMapData] = useState<number[]>();
   const dispatch = useAppDispatch();
   if (Specie == null || Specie === undefined) return <></>;
   let checkNull: string = "";
@@ -89,9 +87,14 @@ export default function SpeciesCard({
   }
   const checkedHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      await triger(Number(e.target.name));
+      try {
+        const data = await triger(Number(e.target.name)).unwrap();
+        setOwnInfoMapData(data.map((x) => x.id));
+      } catch (err) {
+        console.error(err);
+      }
     } else {
-      dispatch(deleteMapInfo());
+      if (ownInfoMapData) dispatch(deleteMapInfo(ownInfoMapData));
     }
   };
   return (

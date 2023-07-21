@@ -33,7 +33,7 @@ export interface tokenState {
   khubaoton: IGeneralFilterData[] | null;
   SearchResult: ISpecies[] | null;
   Species: IListData<ISpecies[]> | null;
-  mapinfo: IMapInfo[] | null;
+  mapinfo: IMapInfo[];
   status: "idle" | "loading" | "failed";
 }
 
@@ -43,7 +43,7 @@ const initialState: tokenState = {
   Province: null,
   khubaoton: null,
   SearchResult: null,
-  mapinfo: null,
+  mapinfo: [],
   status: "idle",
 };
 
@@ -66,8 +66,10 @@ const HomeAndSearchSlice = createSlice({
       state.status = "idle";
     },
 
-    deleteMapInfo: (state) => {
-      state.mapinfo = [];
+    deleteMapInfo: (state, action: PayloadAction<number[]>) => {
+      state.mapinfo = state.mapinfo.filter(
+        ({ id }) => !action.payload.includes(id)
+      );
       state.status = "idle";
     },
   },
@@ -93,21 +95,13 @@ const HomeAndSearchSlice = createSlice({
         state.status = "idle";
       }
     );
-    builder
-      // .addMatcher(
-      //   HomeAndSearchApi.endpoints.getMapinfo.matchPending,
-      //   (state) => {
-      //     state.mapinfo = null;
-      //     state.status = "idle";
-      //   }
-      // )
-      .addMatcher(
-        HomeAndSearchApi.endpoints.getMapinfo.matchFulfilled,
-        (state, { payload }) => {
-          state.mapinfo = payload;
-          state.status = "idle";
-        }
-      );
+    builder.addMatcher(
+      HomeAndSearchApi.endpoints.getMapinfo.matchFulfilled,
+      (state, { payload }) => {
+        state.mapinfo = state.mapinfo.concat(payload);
+        state.status = "idle";
+      }
+    );
   },
 });
 
