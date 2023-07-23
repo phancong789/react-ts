@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import IGeneralFilterData from "../../Interface/IGeneralFilterData";
 import { ProvinceApi } from "./ProvinceApi";
+import IListData from "../../Interface/IListData";
+import IMapInfo from "../../Interface/IMapInfo";
 
 export interface StartState {
-  Province: IGeneralFilterData[] | null;
-  mapinfo: number[];
+  Province: IListData<IMapInfo[]> | null;
+  mapinfo: IMapInfo[];
   status: "idle" | "loading" | "failed";
 }
 
@@ -19,10 +20,11 @@ const ProvinceSlice = createSlice({
   name: "ProvinceSlice",
   initialState,
   reducers: {
-    deleteMapInfo: (state, action: PayloadAction<number[]>) => {
-      state.mapinfo = state.mapinfo.filter(
-        (id) => !action.payload.includes(id)
-      );
+    setMapinfo: (state, action: PayloadAction<IMapInfo>) => {
+      state.mapinfo = [...state.mapinfo, action.payload];
+    },
+    deleteMapInfo: (state, action: PayloadAction<number>) => {
+      state.mapinfo = state.mapinfo.filter(({ id }) => id !== action.payload);
       state.status = "idle";
     },
   },
@@ -37,9 +39,10 @@ const ProvinceSlice = createSlice({
   },
 });
 
-export const { deleteMapInfo } = ProvinceSlice.actions;
+export const { setMapinfo, deleteMapInfo } = ProvinceSlice.actions;
 
 export const selectProvinces = (state: RootState) =>
   state.ProvinceSlice.Province;
+export const selectMapinfo = (state: RootState) => state.ProvinceSlice.mapinfo;
 
 export default ProvinceSlice.reducer;

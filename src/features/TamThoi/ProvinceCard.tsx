@@ -5,18 +5,17 @@ import "../../Compoments/Shared/assets/scss/SpeciesCard.scss";
 import { useId, useState } from "react";
 import { useLazyGetMapinfoQuery } from "../../service/HomeAndSearchApi";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
-import IGeneralFilterData from "../../Interface/IGeneralFilterData";
+import IMapInfo from "../../Interface/IMapInfo";
+import { deleteMapInfo, setMapinfo } from "./ProvinceSlice";
 
 interface SpecieData {
-  province: IGeneralFilterData | undefined;
-  hasImg: boolean;
+  province: IMapInfo;
   xxl?: number;
   xl?: number;
   lg?: number;
   md?: number;
   sm?: number;
   className?: string;
-  showOnMap?: boolean;
 }
 
 export default function ProvinceCard({
@@ -29,11 +28,17 @@ export default function ProvinceCard({
   className,
 }: SpecieData): React.JSX.Element {
   const checkboxid = useId();
-  const [triger] = useLazyGetMapinfoQuery();
-  const [ownInfoMapData, setOwnInfoMapData] = useState<number[]>();
+  const [ownInfoMapData, setOwnInfoMapData] = useState<number>(0);
   const dispatch = useAppDispatch();
 
-  const checkedHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const checkedHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      dispatch(setMapinfo(province));
+      setOwnInfoMapData(province.id);
+    } else {
+      dispatch(deleteMapInfo(ownInfoMapData));
+    }
+  };
   return (
     <Col
       xxl={xxl}
@@ -45,17 +50,12 @@ export default function ProvinceCard({
       className={"ProminentSpecieCard flex-grow-1 " + className}
     >
       <div className="Cardinfo">
-        <p>{""}</p>
-        <h3>{""}</h3>
-        <p>{""}</p>
+        <p>{province?.id}</p>
+        <h3>{province?.full_name}</h3>
+        <p>{province?.code}</p>
       </div>
       <div className="TakeLocation">
-        <input
-          onChange={checkedHandle}
-          type="checkbox"
-          name={""}
-          id={checkboxid}
-        />
+        <input onChange={checkedHandle} type="checkbox" id={checkboxid} />
         <label htmlFor={checkboxid}>Hiện thị trên bản đồ</label>
       </div>
     </Col>

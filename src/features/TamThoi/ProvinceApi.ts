@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../app/store";
 import * as env from "../../env";
-import IGeneralFilterData from "../../Interface/IGeneralFilterData";
+import IListData from "../../Interface/IListData";
+import IMapInfo from "../../Interface/IMapInfo";
 
 export const ProvinceApi = createApi({
   reducerPath: "ProvinceApi",
@@ -21,7 +22,7 @@ export const ProvinceApi = createApi({
   }),
   tagTypes: ["ProvinceApi"],
   endpoints: (builder) => ({
-    getProvince: builder.query<IGeneralFilterData[], any>({
+    getProvince: builder.query<IListData<IMapInfo[]>, any>({
       query: () => ({
         url: env.apiRoute.provinces,
         params: env.getProvinParams,
