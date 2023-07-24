@@ -32,7 +32,10 @@ const ProvinceSlice = createSlice({
     builder.addMatcher(
       ProvinceApi.endpoints.getProvince.matchFulfilled,
       (state, { payload }) => {
-        state.Province = payload;
+        if (state.Province) {
+          state.Province.list = state.Province.list.concat(payload.list);
+        }
+
         state.status = "idle";
       }
     );

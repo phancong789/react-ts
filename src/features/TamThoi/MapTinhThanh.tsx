@@ -12,9 +12,10 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
 import { Button, Col } from "react-bootstrap";
-import { useGetProvinceQuery } from "./ProvinceApi";
+import { useLazyGetProvinceQuery } from "./ProvinceApi";
 import { selectMapinfo, selectProvinces } from "./ProvinceSlice";
 import ProvinceCard from "./ProvinceCard";
+import * as env from "../../env";
 
 const Titles = styled.p`
   font-weight: bold;
@@ -24,7 +25,6 @@ const Titles = styled.p`
 `;
 
 export default function MapTinhThanh() {
-  const [showMore, setShowMore] = React.useState(1);
   const [reCall, setReCall] = React.useState(false);
   const [popup, setpopup] = React.useState<{
     longitude: number;
@@ -39,7 +39,7 @@ export default function MapTinhThanh() {
       coordinates: number[];
     };
   } | null>(null);
-  useGetProvinceQuery(0);
+  const [triger] = useLazyGetProvinceQuery();
   const ProvinceData = useAppSelector(selectProvinces);
   const MapinfoData = useAppSelector(selectMapinfo);
   const layerStyle: FillLayer = {
@@ -104,7 +104,11 @@ export default function MapTinhThanh() {
             }}
             variant="none border-bottom m-auto fs-4 border-2"
             onClick={() => {
-              setShowMore(showMore + 1);
+              env.getProvinParams.set(
+                "page",
+                (Number(env.getProvinParams.get("page")) + 1).toString()
+              );
+              triger(1);
             }}
           >
             tải thêm
