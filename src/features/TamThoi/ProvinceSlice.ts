@@ -34,6 +34,8 @@ const ProvinceSlice = createSlice({
       (state, { payload }) => {
         if (state.Province) {
           state.Province.list = state.Province.list.concat(payload.list);
+        } else {
+          state.Province = payload;
         }
 
         state.status = "idle";

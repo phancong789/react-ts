@@ -81,7 +81,9 @@ export default function MapTinhThanh() {
     });
     console.log("", feature);
   }, []);
-
+  useEffect(() => {
+    triger();
+  }, []);
   return (
     <div className="d-flex" style={{ minHeight: "100%" }}>
       <Col xxl={3} style={{ padding: "0 5px" }}>
