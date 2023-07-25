@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.4.2",
     "bootstrap": "5.3.0",
     "maplibre-gl": "^3.2.1",
     "mdi-react": "^9.2.0",
