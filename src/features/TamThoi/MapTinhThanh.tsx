@@ -26,14 +26,6 @@ const Titles = styled.p`
   margin-top: 1rem;
 `;
 
-function DrawControl(props: DrawControlProps) {
-  useControl(() => new MapboxDraw(props), {
-    position: props.position,
-  });
-
-  return null;
-}
-
 export default function MapTinhThanh() {
   const [reCall, setReCall] = React.useState(false);
   const [popup, setpopup] = React.useState<{
