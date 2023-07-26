@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import Map, {
+import MapGL, {
   NavigationControl,
   GeolocateControl,
   Source,
@@ -12,12 +12,15 @@ import Map, {
 import maplibregl from "maplibre-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "maplibre-gl/dist/maplibre-gl.css";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
-import { Button, Col } from "react-bootstrap";
+import { Button, Col, Nav, Row } from "react-bootstrap";
 import { useLazyGetProvinceQuery } from "./ProvinceApi";
 import { selectMapinfo, selectProvinces } from "./ProvinceSlice";
 import ProvinceCard from "./ProvinceCard";
 import * as env from "../../env";
+import { DrawPolygonMode, Editor } from "react-map-gl-draw";
+import DrawControl from "./draw-control";
 
 const Titles = styled.p`
   font-weight: bold;
@@ -65,6 +68,29 @@ export default function MapTinhThanh() {
     },
     geometry: x.geometry,
   }));
+
+  const [features, setFeatures] = useState({});
+
+  const onUpdate = useCallback((e: any) => {
+    setFeatures((currFeatures) => {
+      const newFeatures = { ...currFeatures };
+      for (const f of e.features) {
+        newFeatures[f.id] = f;
+      }
+      return newFeatures;
+    });
+  }, []);
+
+  const onDelete = useCallback((e: any) => {
+    setFeatures((currFeatures) => {
+      const newFeatures = { ...currFeatures };
+      for (const f of e.features) {
+        delete newFeatures[f.id];
+      }
+      return newFeatures;
+    });
+  }, []);
+
   useEffect(() => {
     setReCall(!reCall);
   }, [JSON.stringify(MapinfoData)]);
@@ -84,15 +110,27 @@ export default function MapTinhThanh() {
     console.log("", feature);
   }, []);
   useEffect(() => {
-    triger();
+    triger(0);
   }, []);
   return (
     <div className="d-flex" style={{ minHeight: "100%" }}>
       <Col xxl={3} style={{ padding: "0 5px" }}>
+        <Nav variant="pills" defaultActiveKey={0}>
+          <Nav.Item>
+            <Nav.Link eventKey={0} as="button">
+              Province
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey={1} as="button">
+              Custom Data
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
         <Titles>Kết quả {`(${ProvinceData?.pagination.total})`}</Titles>
         <div
           style={{ overflowY: "scroll", maxHeight: "83%" }}
-          className="mb-2 d-flex flex-column justify-content-center"
+          className="mb-2 d-flex flex-column"
         >
           {ProvinceData?.list.map((p) => (
             <ProvinceCard province={p} />
@@ -120,7 +158,7 @@ export default function MapTinhThanh() {
         </div>
       </Col>
       <div style={{ width: "100%", minHeight: "100%" }}>
-        <Map
+        <MapGL
           mapLib={maplibregl}
           initialViewState={{
             longitude: 112,
@@ -135,6 +173,18 @@ export default function MapTinhThanh() {
         >
           <NavigationControl position="bottom-right" />
           <GeolocateControl position="bottom-right" />
+          <DrawControl
+            position="top-left"
+            displayControlsDefault={false}
+            controls={{
+              polygon: true,
+              trash: true,
+            }}
+            defaultMode="draw_polygon"
+            onCreate={onUpdate}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
           <Source
             id="my-data"
             type="geojson"
@@ -162,7 +212,7 @@ export default function MapTinhThanh() {
               <p>Loại: {popup.type_data}</p>
             </Popup>
           )}
-        </Map>
+        </MapGL>
       </div>
     </div>
   );
