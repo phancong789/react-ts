@@ -7,8 +7,10 @@ import MapGL, {
   Layer,
   FillLayer,
   Popup,
+  useControl,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
@@ -26,6 +28,14 @@ const Titles = styled.p`
   margin-left: 1rem;
   margin-top: 1rem;
 `;
+
+function DrawControl(props: DrawControlProps) {
+  useControl(() => new MapboxDraw(props), {
+    position: props.position,
+  });
+
+  return null;
+}
 
 export default function MapTinhThanh() {
   const [reCall, setReCall] = React.useState(false);
