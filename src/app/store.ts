@@ -23,12 +23,11 @@ export const store = configureStore({
     ProvinceSlice: ProvinceReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      AuthApi.middleware,
-      HomeAndSearchApi.middleware,
-      UserApi.middleware,
-      ProvinceApi.middleware
-    ),
+    getDefaultMiddleware()
+      .concat(UserApi.middleware)
+      .concat(AuthApi.middleware)
+      .concat(HomeAndSearchApi.middleware)
+      .concat(ProvinceApi.middleware),
   devTools: true,
 });
 

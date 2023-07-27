@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import MapGL, {
+import Map, {
   NavigationControl,
   GeolocateControl,
   Source,
@@ -10,7 +10,6 @@ import MapGL, {
   useControl,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
@@ -19,7 +18,6 @@ import { useLazyGetProvinceQuery } from "./ProvinceApi";
 import { selectMapinfo, selectProvinces } from "./ProvinceSlice";
 import ProvinceCard from "./ProvinceCard";
 import * as env from "../../env";
-import { DrawPolygonMode, Editor } from "react-map-gl-draw";
 import DrawControl from "./draw-control";
 
 const Titles = styled.p`
@@ -44,9 +42,13 @@ export default function MapTinhThanh() {
       coordinates: number[];
     };
   } | null>(null);
+  const [features, setFeatures] = useState({});
+  const [switchList, setSwitchList] = useState<number>(0);
+
   const [triger] = useLazyGetProvinceQuery();
   const ProvinceData = useAppSelector(selectProvinces);
   const MapinfoData = useAppSelector(selectMapinfo);
+
   const layerStyle: FillLayer = {
     id: "water",
     type: "fill",
@@ -69,9 +71,7 @@ export default function MapTinhThanh() {
     geometry: x.geometry,
   }));
 
-  const [features, setFeatures] = useState({});
-
-  const onUpdate = useCallback((e: any) => {
+  const onUpdate = useCallback((e) => {
     setFeatures((currFeatures) => {
       const newFeatures = { ...currFeatures };
       for (const f of e.features) {
@@ -81,7 +81,7 @@ export default function MapTinhThanh() {
     });
   }, []);
 
-  const onDelete = useCallback((e: any) => {
+  const onDelete = useCallback((e) => {
     setFeatures((currFeatures) => {
       const newFeatures = { ...currFeatures };
       for (const f of e.features) {
@@ -115,7 +115,13 @@ export default function MapTinhThanh() {
   return (
     <div className="d-flex" style={{ minHeight: "100%" }}>
       <Col xxl={3} style={{ padding: "0 5px" }}>
-        <Nav variant="pills" defaultActiveKey={0}>
+        <Nav
+          variant="pills"
+          onSelect={(e) => {
+            setSwitchList(Number(e));
+          }}
+          defaultActiveKey={0}
+        >
           <Nav.Item>
             <Nav.Link eventKey={0} as="button">
               Province
@@ -127,38 +133,46 @@ export default function MapTinhThanh() {
             </Nav.Link>
           </Nav.Item>
         </Nav>
-        <Titles>Kết quả {`(${ProvinceData?.pagination.total})`}</Titles>
+        <Titles>
+          {switchList === 0
+            ? `Kết quả (${ProvinceData?.pagination.total})`
+            : "Dữ liệu đã tạo"}
+        </Titles>
         <div
           style={{ overflowY: "scroll", maxHeight: "83%" }}
           className="mb-2 d-flex flex-column"
         >
-          {ProvinceData?.list.map((p) => (
-            <ProvinceCard province={p} />
-          ))}
+          {switchList === 0 ? (
+            ProvinceData?.list.map((p) => <ProvinceCard province={p} />)
+          ) : (
+            <div></div>
+          )}
         </div>
-        <div style={{ height: 30 }} className="position-relative">
-          <Button
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-            variant="none border-bottom m-auto fs-4 border-2"
-            onClick={() => {
-              env.getProvinParams.set(
-                "page",
-                (Number(env.getProvinParams.get("page")) + 1).toString()
-              );
-              triger(1);
-            }}
-          >
-            tải thêm
-          </Button>
-        </div>
+        {switchList === 0 && (
+          <div style={{ height: 30 }} className="position-relative">
+            <Button
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+              variant="none border-bottom m-auto fs-4 border-2"
+              onClick={() => {
+                env.getProvinParams.set(
+                  "page",
+                  (Number(env.getProvinParams.get("page")) + 1).toString()
+                );
+                triger(1);
+              }}
+            >
+              tải thêm
+            </Button>
+          </div>
+        )}
       </Col>
       <div style={{ width: "100%", minHeight: "100%" }}>
-        <MapGL
+        <Map
           mapLib={maplibregl}
           initialViewState={{
             longitude: 112,
@@ -166,7 +180,6 @@ export default function MapTinhThanh() {
             zoom: 5,
           }}
           onClick={openPopUpHandle}
-          interactive={true}
           interactiveLayerIds={["water"]}
           style={{ width: "100%", height: "100%" }}
           mapStyle="https://tiles.skymapglobal.vn/styles/basic/style.json"
@@ -174,13 +187,15 @@ export default function MapTinhThanh() {
           <NavigationControl position="bottom-right" />
           <GeolocateControl position="bottom-right" />
           <DrawControl
-            position="top-left"
+            position="top-right"
             displayControlsDefault={false}
             controls={{
+              point: true,
+              line_string: true,
               polygon: true,
               trash: true,
             }}
-            defaultMode="draw_polygon"
+            defaultMode="simple_select"
             onCreate={onUpdate}
             onUpdate={onUpdate}
             onDelete={onDelete}
@@ -212,7 +227,7 @@ export default function MapTinhThanh() {
               <p>Loại: {popup.type_data}</p>
             </Popup>
           )}
-        </MapGL>
+        </Map>
       </div>
     </div>
   );
