@@ -187,6 +187,7 @@ export default function MapTinhThanh() {
           <NavigationControl position="bottom-right" />
           <GeolocateControl position="bottom-right" />
           <DrawControl
+            mode="draw_polygon"
             position="top-right"
             displayControlsDefault={false}
             controls={{
@@ -195,10 +196,12 @@ export default function MapTinhThanh() {
               polygon: true,
               trash: true,
             }}
-            defaultMode="simple_select"
             onCreate={onUpdate}
             onUpdate={onUpdate}
             onDelete={onDelete}
+            onModeChange={(e) => {
+              console.log(e);
+            }}
           />
           <Source
             id="my-data"
