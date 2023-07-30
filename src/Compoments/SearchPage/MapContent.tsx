@@ -7,9 +7,8 @@ import Map, {
   Source,
   Layer,
   FillLayer,
-} from "react-map-gl/maplibre";
-import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+} from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
 import {
   selectMapInfo,
@@ -101,7 +100,7 @@ export default function MapContent() {
       <div style={{ width: "100%", minHeight: "100%" }}>
         {location && (
           <Map
-            mapLib={maplibregl}
+            mapboxAccessToken="pk.eyJ1Ijoic3RlcGFua3V6bWluIiwiYSI6Ik1ieW5udm8ifQ.25EOEC2-N92NCWT0Ci9w-Q"
             initialViewState={{
               longitude: 112,
               latitude: 16.6,

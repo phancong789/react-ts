@@ -8,9 +8,8 @@ import Map, {
   FillLayer,
   Popup,
   useControl,
-} from "react-map-gl/maplibre";
-import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+} from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
 import { Button, Col, Nav, Row } from "react-bootstrap";
@@ -19,6 +18,11 @@ import { selectMapinfo, selectProvinces } from "./ProvinceSlice";
 import ProvinceCard from "./ProvinceCard";
 import * as env from "../../env";
 import DrawControl from "./draw-control";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import SimpleSelect from "./draw/simple_select"
+import DrawLineString from'./draw/linestring';
+import DrawRectangle from'./draw/rectangle'
+import DrawCircle from './draw/circle'
 
 const Titles = styled.p`
   font-weight: bold;
@@ -173,7 +177,7 @@ export default function MapTinhThanh() {
       </Col>
       <div style={{ width: "100%", minHeight: "100%" }}>
         <Map
-          mapLib={maplibregl}
+          mapboxAccessToken="pk.eyJ1Ijoic3RlcGFua3V6bWluIiwiYSI6Ik1ieW5udm8ifQ.25EOEC2-N92NCWT0Ci9w-Q"
           initialViewState={{
             longitude: 112,
             latitude: 16.6,
@@ -190,11 +194,21 @@ export default function MapTinhThanh() {
             mode="draw_polygon"
             position="top-right"
             displayControlsDefault={false}
-            controls={{
-              point: true,
-              line_string: true,
-              polygon: true,
-              trash: true,
+            controls={
+              {
+                point:true,
+                polygon:true,
+                line_string:true,
+                trash:true
+              }
+            }
+            modes={{
+              ...MapboxDraw.modes,
+              simple_select: SimpleSelect,
+              direct_select: MapboxDraw.modes.direct_select,
+              draw_line_string: DrawLineString,
+              draw_rectangle: DrawRectangle,
+              draw_circle: DrawCircle
             }}
             onCreate={onUpdate}
             onUpdate={onUpdate}
