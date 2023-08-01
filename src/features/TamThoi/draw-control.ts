@@ -1,11 +1,11 @@
+import react from "react";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import { useControl } from "react-map-gl/maplibre";
+import { useControl } from "react-map-gl";
 
-import type { ControlPosition } from "react-map-gl/maplibre";
+import type { MapRef, ControlPosition } from "react-map-gl";
 
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   position?: ControlPosition;
-  mode?: string;
 
   onCreate?: (evt: { features: object[] }) => void;
   onUpdate?: (evt: { features: object[]; action: string }) => void;
@@ -13,33 +13,29 @@ type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   onModeChange?: (e: any) => void;
 };
 
-export default function DrawControl(props: DrawControlProps) {
-  const draw = new MapboxDraw(props);
-  useControl<MapboxDraw>(
-    ({ map }) => {
+const DrawControl = react.forwardRef((props: DrawControlProps, ref) => {
+  let drawRef = useControl<MapboxDraw>(
+    () => new MapboxDraw(props),
+    ({ map }: { map: MapRef }) => {
       if (props.onCreate) map.on("draw.create", props.onCreate);
       if (props.onUpdate) map.on("draw.update", props.onUpdate);
       if (props.onDelete) map.on("draw.delete", props.onDelete);
       if (props.onModeChange) map.on("draw.modechange", props.onModeChange);
-      return draw;
     },
-    ({ map }) => {
+    ({ map }: { map: MapRef }) => {
       map.off("draw.create", props.onCreate);
       map.off("draw.update", props.onUpdate);
       map.off("draw.delete", props.onDelete);
       if (props.onModeChange) map.on("draw.modechange", props.onModeChange);
+      return drawRef;
     },
     {
       position: props.position,
     }
   );
+  react.useImperativeHandle(ref, () => drawRef, [drawRef]); // This way I exposed drawRef outside the component
 
   return null;
-}
+});
 
-DrawControl.defaultProps = {
-  onCreate: () => {},
-  onUpdate: () => {},
-  onDelete: () => {},
-  onModeChange: () => {},
-};
+export default DrawControl;

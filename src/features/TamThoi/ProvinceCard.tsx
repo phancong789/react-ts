@@ -16,6 +16,7 @@ interface SpecieData {
   md?: number;
   sm?: number;
   className?: string;
+  editFunc?: (data: IMapInfo) => void;
 }
 
 export default function ProvinceCard({
@@ -26,6 +27,7 @@ export default function ProvinceCard({
   md,
   sm,
   className,
+  editFunc,
 }: SpecieData): React.JSX.Element {
   const checkboxid = useId();
   const [ownInfoMapData, setOwnInfoMapData] = useState<number>(0);
@@ -54,9 +56,22 @@ export default function ProvinceCard({
         <h3>{province?.full_name}</h3>
         <p>{province?.code}</p>
       </div>
-      <div className="TakeLocation">
-        <input onChange={checkedHandle} type="checkbox" id={checkboxid} />
-        <label htmlFor={checkboxid}>Hiện thị trên bản đồ</label>
+      <div className="TakeLocation d-flex">
+        <div>
+          <input onChange={checkedHandle} type="checkbox" id={checkboxid} />
+          <label htmlFor={checkboxid}>Hiện thị trên bản đồ</label>
+        </div>
+        {editFunc && (
+          <div>
+            <button
+              onClick={() => {
+                editFunc(province);
+              }}
+            >
+              edit
+            </button>
+          </div>
+        )}
       </div>
     </Col>
   );

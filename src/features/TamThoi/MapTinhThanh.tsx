@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Map, {
   NavigationControl,
@@ -7,22 +7,23 @@ import Map, {
   Layer,
   FillLayer,
   Popup,
-  useControl,
 } from "react-map-gl";
+import { Feature, Geometry } from "geojson";
 import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
-import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
-import { Button, Col, Nav, Row } from "react-bootstrap";
+import { useAppSelector } from "../../CustomHook/hook";
+import { Button, Col, Nav } from "react-bootstrap";
 import { useLazyGetProvinceQuery } from "./ProvinceApi";
 import { selectMapinfo, selectProvinces } from "./ProvinceSlice";
 import ProvinceCard from "./ProvinceCard";
 import * as env from "../../env";
 import DrawControl from "./draw-control";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import SimpleSelect from "./draw/simple_select"
-import DrawLineString from'./draw/linestring';
-import DrawRectangle from'./draw/rectangle'
-import DrawCircle from './draw/circle'
+import SimpleSelect from "./draw/simple_select";
+import DrawLineString from "./draw/linestring";
+import DrawRectangle from "./draw/rectangle";
+import DrawCircle from "./draw/circle";
+import IMapInfo from "../../Interface/IMapInfo";
 
 const Titles = styled.p`
   font-weight: bold;
@@ -48,6 +49,7 @@ export default function MapTinhThanh() {
   } | null>(null);
   const [features, setFeatures] = useState({});
   const [switchList, setSwitchList] = useState<number>(0);
+  const drawRef = React.useRef<MapboxDraw>();
 
   const [triger] = useLazyGetProvinceQuery();
   const ProvinceData = useAppSelector(selectProvinces);
@@ -58,11 +60,12 @@ export default function MapTinhThanh() {
     type: "fill",
     source: "water",
     paint: {
-      "fill-color": "#bf000088",
-      "fill-outline-color": "#bf0000",
+      "fill-color": "blue",
+      "fill-outline-color": "red",
     },
   };
-  let map = MapinfoData.map((x) => ({
+  let map: Feature[] = MapinfoData.map((x) => ({
+    id: x.id,
     type: "Feature",
     properties: {
       name: x.name,
@@ -72,28 +75,38 @@ export default function MapTinhThanh() {
       centerPoint: x.center_point,
       fullName: x.full_name,
     },
-    geometry: x.geometry,
+    geometry: x.geometry as Geometry,
   }));
 
+  ///@ts-ignore
   const onUpdate = useCallback((e) => {
     setFeatures((currFeatures) => {
       const newFeatures = { ...currFeatures };
       for (const f of e.features) {
+        ///@ts-ignore
         newFeatures[f.id] = f;
       }
       return newFeatures;
     });
   }, []);
-
+  ///@ts-ignore
   const onDelete = useCallback((e) => {
     setFeatures((currFeatures) => {
       const newFeatures = { ...currFeatures };
       for (const f of e.features) {
+        ///@ts-ignore
         delete newFeatures[f.id];
       }
       return newFeatures;
     });
   }, []);
+
+  const changeTo = (data: IMapInfo) => {
+    console.log(map);
+    drawRef.current?.changeMode("direct_select" as never, {
+      featureIds: ["21"],
+    });
+  };
 
   useEffect(() => {
     setReCall(!reCall);
@@ -111,7 +124,6 @@ export default function MapTinhThanh() {
       fullName: feature.properties.fullName,
       type_data: feature.properties.type_data,
     });
-    console.log("", feature);
   }, []);
   useEffect(() => {
     triger(0);
@@ -147,7 +159,9 @@ export default function MapTinhThanh() {
           className="mb-2 d-flex flex-column"
         >
           {switchList === 0 ? (
-            ProvinceData?.list.map((p) => <ProvinceCard province={p} />)
+            ProvinceData?.list.map((p) => (
+              <ProvinceCard province={p} editFunc={changeTo} />
+            ))
           ) : (
             <div></div>
           )}
@@ -191,30 +205,29 @@ export default function MapTinhThanh() {
           <NavigationControl position="bottom-right" />
           <GeolocateControl position="bottom-right" />
           <DrawControl
-            mode="draw_polygon"
+            ref={drawRef}
             position="top-right"
             displayControlsDefault={false}
-            controls={
-              {
-                point:true,
-                polygon:true,
-                line_string:true,
-                trash:true
-              }
-            }
+            controls={{
+              point: true,
+              polygon: true,
+              line_string: true,
+              trash: true,
+            }}
             modes={{
               ...MapboxDraw.modes,
               simple_select: SimpleSelect,
               direct_select: MapboxDraw.modes.direct_select,
               draw_line_string: DrawLineString,
               draw_rectangle: DrawRectangle,
-              draw_circle: DrawCircle
+              draw_circle: DrawCircle,
             }}
+            defaultMode="simple_select"
             onCreate={onUpdate}
             onUpdate={onUpdate}
             onDelete={onDelete}
             onModeChange={(e) => {
-              console.log(e);
+              console.log("b", drawRef.current?.getMode());
             }}
           />
           <Source

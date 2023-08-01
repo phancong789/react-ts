@@ -27,7 +27,6 @@ const Titles = styled.p`
 `;
 
 export default function MapContent() {
-  const [location, setLocation] = React.useState<GeolocationPosition>();
   const [showMore, setShowMore] = React.useState(1);
   const [reCall, setReCall] = React.useState(false);
   const { data, isLoading, isFetching, isError } = useGetSpeciesQuery({
@@ -65,13 +64,7 @@ export default function MapContent() {
       dispatch(setSpeciesData(data));
     }
   }, [data]);
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((location) => {
-        setLocation(location);
-      });
-    }
-  }, []);
+
   return (
     <div className="d-flex">
       <Col
@@ -98,31 +91,30 @@ export default function MapContent() {
         </div>
       </Col>
       <div style={{ width: "100%", minHeight: "100%" }}>
-        {location && (
-          <Map
-            mapboxAccessToken="pk.eyJ1Ijoic3RlcGFua3V6bWluIiwiYSI6Ik1ieW5udm8ifQ.25EOEC2-N92NCWT0Ci9w-Q"
-            initialViewState={{
-              longitude: 112,
-              latitude: 16.6,
-              zoom: 5,
+        <Map
+          mapboxAccessToken="pk.eyJ1Ijoic3RlcGFua3V6bWluIiwiYSI6Ik1ieW5udm8ifQ.25EOEC2-N92NCWT0Ci9w-Q"
+          initialViewState={{
+            longitude: 112,
+            latitude: 16.6,
+            zoom: 5,
+          }}
+          style={{ width: "100%", height: "100%" }}
+          mapStyle="https://tiles.skymapglobal.vn/styles/basic/style.json"
+        >
+          <NavigationControl position="bottom-right" />
+          <GeolocateControl position="bottom-right" />
+          <Source
+            id="my-data"
+            type="geojson"
+            data={{
+              type: "FeatureCollection",
+              features: map,
             }}
-            style={{ width: "100%", height: "100%" }}
-            mapStyle="https://tiles.skymapglobal.vn/styles/basic/style.json"
           >
-            <NavigationControl position="bottom-right" />
-            <GeolocateControl position="bottom-right" />
-            <Source
-              id="my-data"
-              type="geojson"
-              data={{
-                type: "FeatureCollection",
-                features: map,
-              }}
-            >
-              <Layer {...layerStyle} />
-            </Source>
+            <Layer {...layerStyle} />
+          </Source>
 
-            {/* <Marker
+          {/* <Marker
               longitude={
                 location?.coords.longitude ? location?.coords.longitude : 0
               }
@@ -130,8 +122,7 @@ export default function MapContent() {
                 location?.coords.latitude ? location?.coords.latitude : 0
               }
             /> */}
-          </Map>
-        )}
+        </Map>
       </div>
     </div>
   );
