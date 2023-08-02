@@ -3,7 +3,7 @@ export default interface IMapInfo {
   full_name: string;
   id: number;
   code: string;
-  geometry: { type: string; coordinates: number[][][][] };
+  geometry: { type: string; coordinates: number[][][] };
   name: string;
   type_data: string;
 }
