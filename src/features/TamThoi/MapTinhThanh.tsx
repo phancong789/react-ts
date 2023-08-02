@@ -7,22 +7,17 @@ import Map, {
   Layer,
   FillLayer,
   Popup,
-  useControl,
 } from "react-map-gl";
+import { Button, Col, Nav, Row } from "react-bootstrap";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { useAppDispatch, useAppSelector } from "../../CustomHook/hook";
-import { Button, Col, Nav, Row } from "react-bootstrap";
 import { useLazyGetProvinceQuery } from "./ProvinceApi";
 import { selectMapinfo, selectProvinces } from "./ProvinceSlice";
 import ProvinceCard from "./ProvinceCard";
 import * as env from "../../env";
 import DrawControl from "./draw-control";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import SimpleSelect from "./draw/simple_select"
-import DrawLineString from'./draw/linestring';
-import DrawRectangle from'./draw/rectangle'
-import DrawCircle from './draw/circle'
 
 const Titles = styled.p`
   font-weight: bold;
@@ -194,21 +189,11 @@ export default function MapTinhThanh() {
             mode="draw_polygon"
             position="top-right"
             displayControlsDefault={false}
-            controls={
-              {
-                point:true,
-                polygon:true,
-                line_string:true,
-                trash:true
-              }
-            }
-            modes={{
-              ...MapboxDraw.modes,
-              simple_select: SimpleSelect,
-              direct_select: MapboxDraw.modes.direct_select,
-              draw_line_string: DrawLineString,
-              draw_rectangle: DrawRectangle,
-              draw_circle: DrawCircle
+            controls={{
+              point: true,
+              polygon: true,
+              line_string: true,
+              trash: true,
             }}
             onCreate={onUpdate}
             onUpdate={onUpdate}

@@ -1,5 +1,5 @@
 // from https://jsfiddle.net/fxi/xf51zet4/
-class extendDrawBar {
+export default class ExtendDrawBar {
   constructor(opt) {
     const ctrl = this;
     ctrl.draw = opt.draw;
@@ -25,8 +25,8 @@ class extendDrawBar {
   }
   addButton(opt) {
     const ctrl = this;
-    const elButton = document.createElement('button');
-    elButton.className = 'mapbox-gl-draw_ctrl-draw-btn';
+    const elButton = document.createElement("button");
+    elButton.className = "mapbox-gl-draw_ctrl-draw-btn";
     if (opt.classes instanceof Array) {
       opt.classes.forEach((c) => {
         elButton.classList.add(c);
@@ -42,5 +42,3 @@ class extendDrawBar {
     opt.elButton.remove();
   }
 }
-
-module.exports = extendDrawBar;
