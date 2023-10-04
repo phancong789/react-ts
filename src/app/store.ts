@@ -7,23 +7,27 @@ import authorReducer from "../features/authorSlice";
 import HomeAndSearchReducer from "../features/HomeAndSearchSlice";
 import { setupListeners } from "@reduxjs/toolkit/dist/query/react";
 import UiReducer from "../features/UiSlice";
+import { ProvinceApi } from "../features/TamThoi/ProvinceApi";
+import ProvinceReducer from "../features/TamThoi/ProvinceSlice";
 
 export const store = configureStore({
   reducer: {
     [AuthApi.reducerPath]: AuthApi.reducer,
     [HomeAndSearchApi.reducerPath]: HomeAndSearchApi.reducer,
     [UserApi.reducerPath]: UserApi.reducer,
+    [ProvinceApi.reducerPath]: ProvinceApi.reducer,
     usersSilce: usersReducer,
     HomeAndSearchSlice: HomeAndSearchReducer,
     authorSlice: authorReducer,
     uiSilce: UiReducer,
+    ProvinceSlice: ProvinceReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      AuthApi.middleware,
-      HomeAndSearchApi.middleware,
-      UserApi.middleware
-    ),
+    getDefaultMiddleware()
+      .concat(UserApi.middleware)
+      .concat(AuthApi.middleware)
+      .concat(HomeAndSearchApi.middleware)
+      .concat(ProvinceApi.middleware),
   devTools: true,
 });
 

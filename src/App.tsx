@@ -7,6 +7,7 @@ import SearchPage from "./Pages/SearchPage";
 import ControlPanelPage from "./Pages/ControlPanelPage";
 import UserManagePage from "./Pages/UserManagePage";
 import PrivateRoute from "./ultis/PrivateRoute";
+import MapTinhThanh from "./features/TamThoi/MapTinhThanh";
 
 const BodyFake = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/dang-nhap" element={<LoginPage />} />
+        <Route path="/tintuc" element={<MapTinhThanh />} />
         <Route element={<PrivateRoute />}>
           <Route path="/bang-dieu-khien" element={<ControlPanelPage />} />
           <Route path="/he-thong-nguoi-dung" element={<UserManagePage />} />

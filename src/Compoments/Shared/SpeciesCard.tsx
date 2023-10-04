@@ -1,12 +1,16 @@
 import Styled from "styled-components";
 import QRCode from "react-qr-code";
+import { Col } from "react-bootstrap";
 import Specie from "../../Interface/ISpecies";
 import HelpCircleOutlineIcon from "mdi-react/HelpCircleOutlineIcon";
 import ArrowDownIcon from "mdi-react/ArrowDownIcon";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
-import { Col } from "react-bootstrap";
 import * as env from "../../env";
 import "./assets/scss/SpeciesCard.scss";
+import { useId, useState } from "react";
+import { useLazyGetMapinfoQuery } from "../../service/HomeAndSearchApi";
+import { useAppDispatch } from "../../CustomHook/hook";
+import { deleteMapInfo } from "../../features/HomeAndSearchSlice";
 
 const QrWapper = Styled.div`
   heigth:100px;
@@ -23,6 +27,7 @@ interface SpecieData {
   md?: number;
   sm?: number;
   className?: string;
+  showOnMap?: boolean;
 }
 
 export default function SpeciesCard({
@@ -34,15 +39,20 @@ export default function SpeciesCard({
   md,
   sm,
   className,
-}: SpecieData) {
-  if (Specie == null || Specie === undefined) return;
+  showOnMap,
+}: SpecieData): React.JSX.Element {
+  const checkboxid = useId();
+  const [triger] = useLazyGetMapinfoQuery();
+  const [ownInfoMapData, setOwnInfoMapData] = useState<number[]>();
+  const dispatch = useAppDispatch();
+  if (Specie == null || Specie === undefined) return <></>;
   let checkNull: string = "";
   let hientrang = [];
   let randomImgList: string[] = [
-    process.env.PUBLIC_URL + "/image1.png",
-    process.env.PUBLIC_URL + "/image2.png",
-    process.env.PUBLIC_URL + "/image6.png",
-    process.env.PUBLIC_URL + "/image7.png",
+    "/image1.png",
+    "/image2.png",
+    "/image6.png",
+    "/image7.png",
   ];
 
   let randomImgIndex = Math.floor(Math.random() * randomImgList.length);
@@ -75,6 +85,18 @@ export default function SpeciesCard({
       );
       break;
   }
+  const checkedHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      try {
+        const data = await triger(Number(e.target.name)).unwrap();
+        setOwnInfoMapData(data.map((x) => x.id));
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      if (ownInfoMapData) dispatch(deleteMapInfo(ownInfoMapData));
+    }
+  };
   return (
     <Col
       xxl={xxl}
@@ -82,7 +104,8 @@ export default function SpeciesCard({
       lg={lg}
       md={md}
       sm={sm}
-      className={"ProminentSpecieCard " + className}
+      style={{ padding: 0, borderRadius: 5 }}
+      className={"ProminentSpecieCard flex-grow-1 " + className}
     >
       {hasImg ? (
         <div className="imgWapper">
@@ -150,6 +173,17 @@ export default function SpeciesCard({
             )}
           </div>
         </div>
+        {showOnMap && (
+          <div className="TakeLocation">
+            <input
+              onChange={checkedHandle}
+              type="checkbox"
+              name={Specie.id}
+              id={checkboxid}
+            />
+            <label htmlFor={checkboxid}>Hiện thị trên bản đồ</label>
+          </div>
+        )}
       </div>
     </Col>
   );

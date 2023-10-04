@@ -12,6 +12,13 @@ export let getUserParams = new URLSearchParams({
   perpage: "10",
 });
 
+export let getProvinParams = new URLSearchParams({
+  showGeometry: "true",
+  paginate: "true",
+  page: "1",
+  perpage: "18",
+});
+
 let apiRoute = {
   me: "api/me",
   role: "api/roles",

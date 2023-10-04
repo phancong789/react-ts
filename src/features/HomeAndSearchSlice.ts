@@ -4,6 +4,7 @@ import { HomeAndSearchApi } from "../service/HomeAndSearchApi";
 import ISpecies from "../Interface/ISpecies";
 import IListData from "../Interface/IListData";
 import IGeneralFilterData from "../Interface/IGeneralFilterData";
+import IMapInfo from "../Interface/IMapInfo";
 
 export interface INew {
   list: {
@@ -32,6 +33,7 @@ export interface tokenState {
   khubaoton: IGeneralFilterData[] | null;
   SearchResult: ISpecies[] | null;
   Species: IListData<ISpecies[]> | null;
+  mapinfo: IMapInfo[];
   status: "idle" | "loading" | "failed";
 }
 
@@ -41,6 +43,7 @@ const initialState: tokenState = {
   Province: null,
   khubaoton: null,
   SearchResult: null,
+  mapinfo: [],
   status: "idle",
 };
 
@@ -60,6 +63,13 @@ const HomeAndSearchSlice = createSlice({
 
     setSearchResult: (state, action: PayloadAction<ISpecies[]>) => {
       state.SearchResult = action.payload;
+      state.status = "idle";
+    },
+
+    deleteMapInfo: (state, action: PayloadAction<number[]>) => {
+      state.mapinfo = state.mapinfo.filter(
+        ({ id }) => !action.payload.includes(id)
+      );
       state.status = "idle";
     },
   },
@@ -85,10 +95,18 @@ const HomeAndSearchSlice = createSlice({
         state.status = "idle";
       }
     );
+    builder.addMatcher(
+      HomeAndSearchApi.endpoints.getMapinfo.matchFulfilled,
+      (state, { payload }) => {
+        state.mapinfo = state.mapinfo.concat(payload);
+        state.status = "idle";
+      }
+    );
   },
 });
 
-export const { setSearchResult, setSpeciesData } = HomeAndSearchSlice.actions;
+export const { setSearchResult, setSpeciesData, deleteMapInfo } =
+  HomeAndSearchSlice.actions;
 
 export const selectSearch = (state: RootState) =>
   state.HomeAndSearchSlice.SearchResult;
@@ -101,5 +119,8 @@ export const selectProvinces = (state: RootState) =>
 
 export const selectkhubaotons = (state: RootState) =>
   state.HomeAndSearchSlice.khubaoton;
+
+export const selectMapInfo = (state: RootState) =>
+  state.HomeAndSearchSlice.mapinfo;
 
 export default HomeAndSearchSlice.reducer;
